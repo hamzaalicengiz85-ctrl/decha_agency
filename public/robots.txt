@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://decha-agency.netlify.app/sitemap.xml
