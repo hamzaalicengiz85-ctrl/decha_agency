@@ -7,6 +7,7 @@ import { Spinner } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
 import { projects } from '../data/content'
+import { fileCode, initials } from '../lib/initials'
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -21,7 +22,6 @@ export default function ProjectDetail() {
   usePageMeta({
     title: project?.title ?? 'Proje',
     description: project?.summary,
-    image: project?.cover_url,
   })
 
   if (loading) {
@@ -35,7 +35,7 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="text-3xl font-bold text-fg">Proje bulunamadı</h1>
+        <h1 className="font-display text-headline font-bold uppercase text-fg">Proje bulunamadı</h1>
         <p className="mt-4 text-fg-muted">Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.</p>
         <Button to="/projeler" className="mt-8">
           Tüm projelere dön
@@ -61,13 +61,13 @@ export default function ProjectDetail() {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div>
-            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent-ink">
+            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink">
               {project.category}
             </span>
-            <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
+            <h1 className="mt-5 font-display text-display font-bold uppercase leading-tight">
               {project.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg text-fg-muted">{project.summary}</p>
+            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">{project.summary}</p>
           </div>
 
           <dl className="grid grid-cols-2 gap-4">
@@ -83,20 +83,33 @@ export default function ProjectDetail() {
         </div>
       </Section>
 
+      {/* Künye şeridi: fotoğraf yerine dosya kimliği */}
       <div className="container">
-        <div className="overflow-hidden rounded-none border border-line/20">
-          <img
-            src={project.cover_url}
-            alt={`${project.title} kapak görseli`}
-            className="aspect-[16/9] w-full object-cover"
+        <div className="panel relative flex items-center justify-between gap-6 overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
+          <span
+            className="absolute inset-0 opacity-60"
+            aria-hidden="true"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(135deg, rgb(var(--c-line) / 0.05) 0 1px, transparent 1px 8px)',
+            }}
           />
+          <span className="relative font-display text-[3.4rem] font-bold leading-none text-fg/85 sm:text-[5rem]">
+            {initials(project.client || project.title)}
+          </span>
+          <div className="relative text-right">
+            <p className="eyebrow">Dosya kodu</p>
+            <p className="num mt-1 font-mono text-[13px] text-fg">
+              {fileCode(project.slug, project.year)}
+            </p>
+          </div>
         </div>
       </div>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <h2 className="text-2xl font-bold">Proje hakkında</h2>
+            <h2 className="font-display text-[20px] font-bold uppercase">Proje hakkında</h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-fg-muted">
               {String(project.description ?? '')
                 .split('\n')
@@ -142,7 +155,7 @@ export default function ProjectDetail() {
 
       {related.length > 0 ? (
         <Section spacing="top-none" className="bg-bg-soft/60">
-          <h2 className="text-2xl font-bold">Diğer projeler</h2>
+          <h2 className="font-display text-[20px] font-bold uppercase">Diğer projeler</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link
@@ -150,12 +163,12 @@ export default function ProjectDetail() {
                 to={`/projeler/${item.slug}`}
                 className="panel panel-hover flex items-center gap-4 p-5"
               >
-                <img
-                  src={item.cover_url}
-                  alt=""
-                  loading="lazy"
-                  className="h-16 w-16 shrink-0 rounded-none object-cover"
-                />
+                <span
+                  className="grid h-14 w-14 shrink-0 place-items-center border border-line/25 font-display text-[15px] font-bold text-fg"
+                  aria-hidden="true"
+                >
+                  {initials(item.client || item.title)}
+                </span>
                 <div>
                   <p className="font-bold text-fg">{item.title}</p>
                   <p className="mt-1 text-xs text-fg-subtle">{item.category}</p>

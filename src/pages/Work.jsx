@@ -3,7 +3,6 @@ import Section from '../components/ui/Section'
 import SectionHeading from '../components/ui/SectionHeading'
 import ProjectCard from '../components/ProjectCard'
 import CTA from '../components/home/CTA'
-import Crt from '../components/ui/Crt'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
@@ -50,49 +49,45 @@ export default function Work() {
       </Section>
 
       <Section spacing="top-none">
-        <Crt label="Arşiv Terminali" channel={`${filtered.length} KAYIT`}>
-          <div className="px-4 py-10 sm:px-8 sm:py-12">
-            {/* Dolap sekmesi filtreleri */}
-            <div className="flex flex-wrap items-center justify-center gap-1.5 border-b border-line/25 pb-6">
-              <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
-                Sınıflandırma:
-              </span>
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() => setActiveCategory(category)}
-                  aria-pressed={activeCategory === category}
-                  className={classNames(
-                    'min-h-[36px] border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] transition',
-                    activeCategory === category
-                      ? 'border-accent bg-accent/20 text-fg'
-                      : 'border-line/30 text-fg-muted hover:border-line/50 hover:text-fg',
-                  )}
-                >
-                  {category}
-                </button>
+        {/* Dolap sekmesi filtreleri */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-line/25 py-5">
+          <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
+            Sınıflandırma:
+          </span>
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              aria-pressed={activeCategory === category}
+              className={classNames(
+                'min-h-[36px] border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] transition',
+                activeCategory === category
+                  ? 'border-accent bg-accent/20 text-fg'
+                  : 'border-line/30 text-fg-muted hover:border-line/50 hover:text-fg',
+              )}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-8">
+          {loading ? (
+            <CardSkeleton count={6} />
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              title="Bu sınıfta kayıt yok"
+              description="Başka bir sınıflandırma seçmeyi deneyin."
+            />
+          ) : (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((project) => (
+                <ProjectCard key={project.id ?? project.slug} project={project} />
               ))}
             </div>
-
-            <div className="mt-8">
-              {loading ? (
-                <CardSkeleton count={6} />
-              ) : filtered.length === 0 ? (
-                <EmptyState
-                  title="Bu sınıfta kayıt yok"
-                  description="Başka bir sınıflandırma seçmeyi deneyin."
-                />
-              ) : (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((project) => (
-                    <ProjectCard key={project.id ?? project.slug} project={project} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Crt>
+          )}
+        </div>
       </Section>
 
       <CTA />

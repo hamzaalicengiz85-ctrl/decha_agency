@@ -141,8 +141,8 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     ├── index.css             # Token'lar (kağıt + fosfor) + CRT/damga/plaka malzemeleri
     ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
-    │   ├── layout/           # Navbar, Footer, Layout, ScrollToTop
-    │   ├── ui/               # Crt, Button, Stamp, Logo, Section, Icon, Loader…
+    │   ├── layout/           # TvShell, Navbar, Footer, Layout, ScrollToTop
+    │   ├── ui/               # Button, Stamp, Logo, Section, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
     │   ├── ProjectCard.jsx / PostCard.jsx / ServiceCard.jsx / TestimonialCard.jsx
@@ -184,28 +184,46 @@ ayrılmıştır — dolgu renkleri ham kalır, metin renkleri ölçülmüş tür
 | Endüstriyel Kahve | `rgb(74 50 37)` | `--c-fg` · ana metin (9.42), CRT gövde dökümü, hairline'lar |
 | Arduvaz Grisi | `rgb(92 100 102)` | `--c-fg-muted` / `--c-fg-subtle` · ikincil metin (5.60 / 4.81) |
 
-### İki yüzey, tek token seti
+### Tek yüzey
 
-Site iki yüzeyden oluşur ve **aynı** token adlarını kullanır:
+Ekranın içi tek bir yüzeydir: bürokrasi kağıdı. Renkler CSS değişkeni olarak
+`:root` üzerinde tanımlıdır, Tailwind bunları okur; bileşenlerde sabit renk
+(örn. `text-slate-400`) kullanılmaz — yalnızca anlamsal token'lar:
+`bg`, `bg-soft`, `bg-elev`, `fg`, `fg-muted`, `fg-subtle`, `line`,
+`accent`, `accent-ink`, `accent-fg`, `highlight`, `danger`.
 
-- **Kağıt** (`:root`) — bürokrasi zemini, milimetrik ızgara ve kağıt dokusu
-- **Fosfor** (`.screen-phosphor`) — CRT ekranının içi; koyu, sıcak, bej metinli
+### Televizyon kasası
 
-`.screen-phosphor` token'ları yeniden tanımladığı için, ekranın **içine giren her
-bileşen** (kart, form, buton) ayrı bir varyanta ihtiyaç duymadan otomatik uyum sağlar.
+Site bölüm bölüm pencerelere değil, **tek bir televizyonun içine** yerleşir.
+`TvShell` viewport'u çevreleyen sabit katmanları çizer; sayfa bu kasanın
+içindeki tüp camında akar:
 
-### CRT bileşeni
+| Katman | İş |
+| ------ | -- |
+| `tv-glass` | Tüp camı: kağıt yüzey, milimetrik ızgara, doku |
+| `tv-sweep` | Ekranda inen yayın taraması bandı |
+| `tv-overlay` | Cam yansıması + tarama çizgileri + köşe karartması |
+| `tv-bezel` | Döküm kasa — ortası CSS maskesiyle oyulur |
+| `tv-lip` | Cam ile kasa arasındaki gölgeli geçiş |
+| `tv-hardware` | Vidalar, havalandırma ızgarası, kadranlar, güç ledi |
+| `tv-boot` | Açılışta tüpün ısınma animasyonu |
 
-```jsx
-<Crt label="Arşiv · Kanal 02" channel="SEÇİLİ İŞLER" tone="phosphor">
-  {/* içerik */}
-</Crt>
-```
+Hepsi `pointer-events: none` — tıklama ve kaydırma içeriğe geçer. Kasa
+kalınlığı `--bz-t / --bz-x / --bz-b` değişkenlerinden gelir ve mobilde incelir;
+içerik ile menü bu değişkenlere göre konumlanır.
 
-Kasa katmanları: döküm gövde (kahve degrade + gren) → köşe vidaları → künye plakası
-ve led → tüp camı (yastık kavisli köşeler) → tarama çizgileri → köşe karartması →
-cam yansıması → alt havalandırma ve kadranlar. `tone="paper"` açık ekran verir
-(proje ve blog kartlarındaki küçük monitörler bunu kullanır).
+Kasa maskesi `padding` + `mask-composite: exclude` ile kurulur: eleman viewport'u
+kaplar, `content-box` maskesi ortayı keser, geriye yalnızca çerçeve halkası kalır.
+İç köşe yarıçapı dış yarıçaptan otomatik türer.
+
+### Görsel kullanılmaz
+
+Sitede fotoğraf yoktur. Proje ve yazı kartları monogram, dosya kodu ve ölçüm
+değerleriyle kurulur; ekip ve referanslar baş harf künyeleriyle gösterilir.
+Bu sayede dış CDN'e hiçbir istek gitmez ve site tamamen kendi kaynaklarıyla çalışır.
+
+Supabase şemasındaki `cover_url` / `avatar_url` kolonları duruyor — ileride gerçek
+proje görselleri eklenmek istenirse veri kaybı olmadan kullanılabilir.
 
 ### Tipografi
 
@@ -220,13 +238,12 @@ destek). Google Fonts CDN'e istek gitmez.
 
 Kontrast iki katmanda doğrulanmıştır:
 
-1. **Token düzeyi** — her iki yüzeyde de 8 renk çiftinin tamamı 4.5:1 üzerinde.
+1. **Token düzeyi** — 8 renk çiftinin tamamı 4.5:1 üzerinde.
 2. **Gerçek piksel düzeyi** — CRT kaplamaları (tarama çizgileri + köşe karartması)
-   metnin üzerinde durduğu için ekran görüntüsünden piksel örneklenerek ölçüldü:
-   gövde metni 5.02, ekran kenarındaki vurgu metni 5.41.
+   metnin üzerinde durduğu için ekran görüntüsünden piksel örneklenerek ölçüldü.
 
-Butonlar 44px dokunma hedefini korur; `prefers-reduced-motion` altında tarama bandı,
-yanıp sönen ledler ve tüm geçişler durur.
+Butonlar 44px dokunma hedefini korur; `prefers-reduced-motion` altında açılış
+animasyonu, tarama bandı, yanıp sönen ledler ve tüm geçişler durur.
 
 ### Boşluk ölçeği
 

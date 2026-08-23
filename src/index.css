@@ -72,42 +72,24 @@
     --panel-shadow: 3px 3px 0 rgb(74 50 37 / 0.14);
 
     --grain-op: 0.05;
+
+    /* Televizyon kasası ölçüleri */
+    --bz-t: 13px;
+    --bz-x: 13px;
+    --bz-b: 34px;
+    --tv-outer-radius: 22px;
+    --tv-inner-radius: 10px;
     --map-filter: saturate(0.62) sepia(0.24) contrast(1.03);
   }
+}
 
-  /* ---------- EKRAN: fosfor tüpü ----------
-     Bir CRT ekranının içine giren her bileşen bu token'ları devralır,
-     böylece kartlar/formlar ayrı bir varyanta ihtiyaç duymadan koyu görünür. */
-  .screen-phosphor {
-    color-scheme: dark;
-
-    --c-bg: 22 17 13;
-    --c-bg-soft: 29 22 17;
-    --c-bg-elev: 40 30 23;
-
-    /* Fosfor beji 10.75 · ikincil 6.90 · üçüncül 4.86 */
-    --c-fg: 217 195 165;
-    --c-fg-muted: 168 158 143;
-    --c-fg-subtle: 138 132 122;
-
-    /* Koyu zeminde ham turuncu metin için de yeterli (6.43) */
-    --c-accent: 255 107 0;
-    --c-accent-ink: 255 107 0;
-    --c-accent-fg: 26 19 15;
-
-    --c-highlight: 229 169 60;
-    --c-highlight-fg: 26 19 15;
-
-    --c-danger: 213 99 103;
-    --c-danger-fg: 26 19 15;
-
-    --c-line: 217 195 165;
-    --line-op: 0.16;
-    --line-op-strong: 0.3;
-
-    --panel-fill: linear-gradient(168deg, rgb(217 195 165 / 0.1), rgb(217 195 165 / 0.04));
-    --panel-border: rgb(217 195 165 / 0.2);
-    --panel-shadow: 3px 3px 0 rgb(0 0 0 / 0.35);
+@media (min-width: 768px) {
+  :root {
+    --bz-t: 22px;
+    --bz-x: 24px;
+    --bz-b: 54px;
+    --tv-outer-radius: 40px;
+    --tv-inner-radius: 18px;
   }
 }
 
@@ -117,27 +99,15 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  body {
-    @apply bg-bg font-sans text-fg-muted antialiased;
-    min-height: 100vh;
-    /* Milimetrik kağıt: bürokratik form zemini */
-    background-image:
-      linear-gradient(rgb(var(--c-line) / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-line) / 0.05) 1px, transparent 1px),
-      linear-gradient(180deg, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 30%);
-    background-size: 26px 26px, 26px 26px, 100% 100%;
-    background-attachment: fixed;
+  html {
+    /* Ekran dışında kalan her yer kasa rengi (aşırı kaydırmada da doğru görünür) */
+    background-color: rgb(var(--bezel-3));
   }
 
-  /* Kağıt dokusu */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: var(--grain-op);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  body {
+    @apply font-sans text-fg-muted antialiased;
+    min-height: 100vh;
+    background: transparent;
   }
 
   h1,
@@ -174,149 +144,6 @@
 }
 
 @layer components {
-  /* ============================================================
-     CRT · TÜPLÜ TELEVİZYON
-     Katmanlar: döküm gövde → iç çerçeve gölgesi → tüp camı →
-     tarama çizgileri → köşe karartması → cam yansıması
-     ============================================================ */
-
-  .crt {
-    position: relative;
-    border-radius: 26px;
-    padding: 16px;
-    background:
-      linear-gradient(
-        168deg,
-        rgb(var(--bezel-1)) 0%,
-        rgb(var(--bezel-2)) 46%,
-        rgb(var(--bezel-3)) 100%
-      );
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.16),
-      inset 0 -2px 6px rgb(0 0 0 / 0.4),
-      0 18px 40px -24px rgb(28 18 12 / 0.8);
-  }
-
-  @media (min-width: 640px) {
-    .crt {
-      border-radius: 32px;
-      padding: 22px;
-    }
-  }
-
-  /* Gövde üzerindeki döküm dokusu */
-  .crt::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0.16;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23b)'/%3E%3C/svg%3E");
-  }
-
-  /* Tüp camı */
-  .crt-screen {
-    position: relative;
-    overflow: hidden;
-    /* Tüpün köşe kavisi: dikdörtgenden çok "yastık" biçimi */
-    border-radius: 14px / 20px;
-    background-color: rgb(var(--c-bg));
-    box-shadow:
-      inset 0 0 0 1px rgb(0 0 0 / 0.5),
-      inset 0 0 26px rgb(0 0 0 / 0.55);
-  }
-
-  @media (min-width: 640px) {
-    .crt-screen {
-      border-radius: 20px / 30px;
-    }
-  }
-
-  /* Tarama çizgileri + köşe karartması + cam yansıması */
-  .crt-screen::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        rgb(0 0 0 / 0.16) 0px,
-        rgb(0 0 0 / 0.16) 1px,
-        transparent 1px,
-        transparent 3px
-      ),
-      radial-gradient(
-        ellipse 78% 74% at 50% 46%,
-        transparent 52%,
-        rgb(0 0 0 / 0.42) 100%
-      );
-  }
-
-  .crt-screen::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    pointer-events: none;
-    background: linear-gradient(
-      104deg,
-      rgb(255 255 255 / 0.09) 0%,
-      rgb(255 255 255 / 0.03) 22%,
-      transparent 42%
-    );
-  }
-
-  /* Kağıt ekranda tarama çizgileri daha yumuşak olmalı */
-  .crt-screen.screen-paper::before {
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        rgb(74 50 37 / 0.05) 0px,
-        rgb(74 50 37 / 0.05) 1px,
-        transparent 1px,
-        transparent 3px
-      ),
-      radial-gradient(
-        ellipse 80% 76% at 50% 46%,
-        transparent 56%,
-        rgb(74 50 37 / 0.16) 100%
-      );
-  }
-
-  .crt-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Fosfor parıltısı — yalnızca koyu ekranlarda */
-  .screen-phosphor .phosphor {
-    text-shadow: 0 0 14px rgb(var(--c-accent) / 0.32);
-  }
-
-  /* Yayın taraması: ekranda aşağı inen ince ışık bandı */
-  .crt-sweep {
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    z-index: 3;
-    height: 28%;
-    pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.05), transparent);
-    animation: crt-sweep 7s linear infinite;
-  }
-
-  @keyframes crt-sweep {
-    0% {
-      transform: translateY(-120%);
-    }
-    100% {
-      transform: translateY(460%);
-    }
-  }
-
   /* ---------- Gövde üzerindeki donanım parçaları ---------- */
 
   /* Vida başı */
@@ -481,5 +308,192 @@
 
   .link-underline {
     @apply relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full;
+  }
+}
+
+@layer components {
+  /* ============================================================
+     TELEVİZYON KASASI · tüm siteyi çevreler
+     Sayfa, kasanın içindeki tüp camında akar. Kasa, tarama
+     çizgileri ve cam yansıması sabittir; içerik altlarında kayar.
+     ============================================================ */
+
+  /* Tüp camı: kağıt yüzey, milimetrik ızgara ve kağıt dokusu burada */
+  .tv-glass {
+    position: fixed;
+    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    z-index: 0;
+    border-radius: var(--tv-inner-radius);
+    pointer-events: none;
+    background-color: rgb(var(--c-bg));
+    background-image:
+      linear-gradient(rgb(var(--c-line) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-line) / 0.05) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 26%);
+    background-size: 26px 26px, 26px 26px, 100% 100%;
+  }
+
+  /* Kağıt dokusu + tarama çizgileri + köşe karartması + cam yansıması */
+  .tv-overlay {
+    position: fixed;
+    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    z-index: 40;
+    border-radius: var(--tv-inner-radius);
+    pointer-events: none;
+    background-image:
+      /* cam yansıması */
+      linear-gradient(
+        108deg,
+        rgb(255 255 255 / 0.16) 0%,
+        rgb(255 255 255 / 0.05) 18%,
+        transparent 38%
+      ),
+      /* tarama çizgileri */
+      repeating-linear-gradient(
+        0deg,
+        rgb(var(--c-fg) / 0.07) 0px,
+        rgb(var(--c-fg) / 0.07) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      /* köşe karartması */
+      radial-gradient(
+        ellipse 92% 88% at 50% 48%,
+        transparent 58%,
+        rgb(40 26 18 / 0.26) 100%
+      );
+  }
+
+  /* Kasa: viewport'un tamamını kaplar, ortası maskeyle oyulur */
+  .tv-bezel {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    padding: var(--bz-t) var(--bz-x) var(--bz-b);
+    border-radius: var(--tv-outer-radius);
+    background:
+      linear-gradient(
+        158deg,
+        rgb(var(--bezel-1)) 0%,
+        rgb(var(--bezel-2)) 44%,
+        rgb(var(--bezel-3)) 100%
+      );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Döküm dokusu ve tüp ağzındaki iç gölge */
+  .tv-bezel-texture {
+    position: fixed;
+    inset: 0;
+    z-index: 61;
+    pointer-events: none;
+    opacity: 0.14;
+    padding: var(--bz-t) var(--bz-x) var(--bz-b);
+    border-radius: var(--tv-outer-radius);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23b)'/%3E%3C/svg%3E");
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  /* Tüp ağzı: cam ile kasa arasındaki gölgeli geçiş */
+  .tv-lip {
+    position: fixed;
+    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    z-index: 62;
+    pointer-events: none;
+    border-radius: var(--tv-inner-radius);
+    box-shadow:
+      inset 0 0 0 1px rgb(28 18 12 / 0.55),
+      inset 0 2px 10px rgb(28 18 12 / 0.3),
+      0 0 0 1px rgb(255 255 255 / 0.06);
+  }
+
+  /* Kasa üzerindeki donanım: vidalar, havalandırma, kadranlar, led */
+  .tv-hardware {
+    position: fixed;
+    inset: 0;
+    z-index: 63;
+    pointer-events: none;
+  }
+
+  /* Yayın taraması */
+  .tv-sweep {
+    position: fixed;
+    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    z-index: 41;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: var(--tv-inner-radius);
+  }
+
+  .tv-sweep::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    height: 22%;
+    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.07), transparent);
+    animation: tv-sweep 9s linear infinite;
+  }
+
+  @keyframes tv-sweep {
+    0% {
+      transform: translateY(-130%);
+    }
+    100% {
+      transform: translateY(560%);
+    }
+  }
+
+  /* Açılış: tüpün ısınması */
+  .tv-boot {
+    position: fixed;
+    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    z-index: 70;
+    pointer-events: none;
+    border-radius: var(--tv-inner-radius);
+    background: rgb(var(--bezel-3));
+    animation: tv-boot 1s ease-out forwards;
+  }
+
+  @keyframes tv-boot {
+    0% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+    45% {
+      opacity: 1;
+      clip-path: inset(49% 0 49% 0);
+    }
+    75% {
+      opacity: 0.55;
+      clip-path: inset(50% 0 50% 0);
+    }
+    100% {
+      opacity: 0;
+      clip-path: inset(50% 0 50% 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tv-boot {
+      display: none;
+    }
+    .tv-sweep {
+      display: none;
+    }
   }
 }

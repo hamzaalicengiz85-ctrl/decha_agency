@@ -5,9 +5,6 @@ import Icon from '../components/ui/Icon'
 import { usePageMeta } from '../lib/seo'
 import { SITE, faqs } from '../data/content'
 
-// Koyu paletlerde OpenStreetMap karosu tersine çevrilir; açık palette dokunulmaz.
-const MAP_FILTER = 'var(--map-filter)'
-
 const channels = [
   { icon: 'mail', label: 'E-posta', value: SITE.email, href: `mailto:${SITE.email}` },
   {
@@ -63,15 +60,22 @@ export default function Contact() {
               </div>
             ))}
 
-            <div className="panel overflow-hidden bg-bg-soft">
-              <iframe
-                title="Ofis konumu haritası"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=28.9%2C41.0%2C29.1%2C41.12&layer=mapnik"
-                className="h-56 w-full border-0"
-                style={{ filter: MAP_FILTER }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+            <div className="panel p-5">
+              <p className="eyebrow">Konum kaydı</p>
+              <dl className="mt-4 space-y-2.5 font-mono text-[12px]">
+                {[
+                  ['Enlem', '41.0812 K'],
+                  ['Boylam', '29.0094 D'],
+                  ['Bölge', 'Beşiktaş / İstanbul'],
+                  ['Zaman dilimi', 'UTC+03:00'],
+                ].map(([k, v]) => (
+                  <div key={k} className="flex items-baseline justify-between gap-4">
+                    <dt className="text-fg-subtle">{k}</dt>
+                    <dd className="dotted-rule flex-1" aria-hidden="true" />
+                    <dd className="num text-fg">{v}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
 

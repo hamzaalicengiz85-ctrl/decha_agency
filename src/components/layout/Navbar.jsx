@@ -29,22 +29,10 @@ export default function Navbar() {
   }, [open])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      {/* Bürokratik üst şerit: dosya numarası ve durum satırı */}
-      <div className="border-b border-line/20 bg-[rgb(var(--bezel-3))] text-[rgb(217_195_165)]">
-        <div className="container flex h-7 items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
-          <span className="flex items-center gap-2">
-            <span className="led h-1.5 w-1.5" aria-hidden="true" />
-            Decha Ajans Bürosu
-          </span>
-          <span className="hidden sm:inline opacity-70">Dosya no: DA-2026-0417</span>
-          <span className="num opacity-70">Durum: Açık</span>
-        </div>
-      </div>
-
+    <header className="fixed left-[var(--bz-x)] right-[var(--bz-x)] top-[var(--bz-t)] z-50">
       {/* Kontrol paneli */}
       <nav
-        className="border-b border-line/25 bg-bg-elev/95 backdrop-blur-sm"
+        className="rounded-t-[var(--tv-inner-radius)] border-b border-line/25 bg-bg-elev/97 backdrop-blur-md"
         aria-label="Ana menü"
       >
         <div className="container flex h-14 items-center justify-between gap-4 sm:h-16">

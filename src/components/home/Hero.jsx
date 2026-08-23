@@ -1,6 +1,5 @@
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
-import Crt from '../ui/Crt'
 import { stats } from '../../data/content'
 
 export default function Hero() {
@@ -8,8 +7,7 @@ export default function Hero() {
     <section className="relative py-8 sm:py-12">
       <div className="container relative">
         {/* Ana yayın monitörü */}
-        <Crt label="Yayın · Kanal 01" channel="DA-2026-0417">
-          <div className="px-6 py-12 text-center sm:px-10 sm:py-16">
+        <div className="px-2 py-14 text-center sm:py-20">
             <p className="eyebrow animate-fade-up">
               Kayıt açık
               <span className="ml-2 inline-block h-2 w-2 animate-blink bg-accent align-middle" />
@@ -47,8 +45,7 @@ export default function Hero() {
                 </div>
               ))}
             </div>
-          </div>
-        </Crt>
+        </div>
       </div>
     </section>
   )

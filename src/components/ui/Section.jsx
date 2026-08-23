@@ -7,11 +7,11 @@ import { useScrollReveal } from '../../hooks/useScrollReveal'
  * masaüstünde sessizce etkisiz kalıyordu.
  */
 const SPACING = {
-  default: 'py-20 sm:py-28',
-  tight: 'py-14 sm:py-20',
-  intro: 'pb-10 pt-14 sm:pb-12 sm:pt-16', // sayfa başlığı bloğu
-  'top-none': 'pb-20 sm:pb-28',
-  'bottom-none': 'pt-20 sm:pt-28',
+  default: 'py-14 sm:py-20',
+  tight: 'py-10 sm:py-14',
+  intro: 'pb-8 pt-12 sm:pb-10 sm:pt-14', // sayfa başlığı bloğu
+  'top-none': 'pb-14 sm:pb-20',
+  'bottom-none': 'pt-14 sm:pt-20',
   none: '',
 }
 

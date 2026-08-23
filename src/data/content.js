@@ -1,6 +1,11 @@
 /**
  * Supabase erişilemediğinde (env yok / tablo boş / ağ hatası) kullanılan
  * yerel içerik. supabase/seed.sql ile birebir aynı verilerdir.
+ *
+ * Site fotoğraf kullanmaz: proje ve yazı kartları monogram, dosya kodu ve
+ * ölçüm değerleriyle kurulur. Bu yüzden burada görsel alanı bulunmaz.
+ * (Supabase şemasında cover_url / avatar_url kolonları duruyor; ileride
+ * görsel eklenmek istenirse veri kaybı olmadan kullanılabilir.)
  */
 
 export const SITE = {
@@ -97,8 +102,6 @@ export const projects = [
     summary: 'Bireysel yatırımcılar için portföy takip paneli.',
     description:
       'Nova Bank için gerçek zamanlı portföy takibi, risk analizi ve raporlama sunan bir web uygulaması tasarladık ve geliştirdik. Kullanıcıların ortalama oturum süresi %62 arttı.',
-    cover_url:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
     tags: ['React', 'Supabase', 'Design System'],
     metrics: [
       { label: 'Oturum süresi', value: '+%62' },
@@ -117,8 +120,6 @@ export const projects = [
     summary: 'Tur rezervasyon platformu ve mobil deneyim.',
     description:
       'Atlas Turizm’in rezervasyon akışını baştan kurguladık. Ödeme adımlarını 5’ten 2’ye indirerek sepet terk oranını ciddi biçimde düşürdük.',
-    cover_url:
-      'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80',
     tags: ['E-Ticaret', 'UX', 'Ödeme Entegrasyonu'],
     metrics: [
       { label: 'Sepet terk', value: '-%41' },
@@ -137,8 +138,6 @@ export const projects = [
     summary: 'Organik gıda markası için uçtan uca kimlik.',
     description:
       'Logo, ambalaj, tipografi ve dijital varlıkları kapsayan bütünsel bir marka kimliği geliştirdik. Marka bilinirliği ilk 6 ayda iki katına çıktı.',
-    cover_url:
-      'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80',
     tags: ['Branding', 'Ambalaj', 'Art Direction'],
     metrics: [
       { label: 'Bilinirlik', value: '2x' },
@@ -157,8 +156,6 @@ export const projects = [
     summary: 'Kronik hasta takibi için mobil uygulama.',
     description:
       'Hastaların ilaç ve ölçüm takibini kolaylaştıran, hekimle veri paylaşımı sağlayan bir mobil uygulama geliştirdik.',
-    cover_url:
-      'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
     tags: ['React Native', 'Sağlık', 'KVKK'],
     metrics: [
       { label: 'Günlük aktif', value: '18K' },
@@ -177,8 +174,6 @@ export const projects = [
     summary: 'B2B ekipler için proje yönetim aracı.',
     description:
       'Sıfırdan tasarım sistemi kurarak Kite’ın ürününü yeniden inşa ettik; yeni kullanıcı aktivasyonu belirgin şekilde arttı.',
-    cover_url:
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
     tags: ['SaaS', 'Design System', 'B2B'],
     metrics: [
       { label: 'Aktivasyon', value: '+%45' },
@@ -197,8 +192,6 @@ export const projects = [
     summary: 'Mimarlık ofisi için portfolyo sitesi.',
     description:
       'Görsel ağırlıklı projeleri öne çıkaran, hızlı ve sade bir kurumsal site tasarladık.',
-    cover_url:
-      'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&q=80',
     tags: ['Kurumsal', 'CMS', 'SEO'],
     metrics: [
       { label: 'Organik trafik', value: '+%120' },
@@ -217,7 +210,6 @@ export const testimonials = [
     company: 'Nova Bank',
     quote:
       'Decha ile çalışmak bir ajansla değil, kendi ekibimizin bir parçasıyla çalışmak gibiydi. Sonuçlar hedeflerimizin üzerinde geldi.',
-    avatar_url: 'https://i.pravatar.cc/120?img=47',
     rating: 5,
     order_no: 1,
   },
@@ -228,7 +220,6 @@ export const testimonials = [
     company: 'Kite',
     quote:
       'Ürünümüzü baştan kurguladılar. Tasarım sistemi sayesinde artık yeni özellikleri günler içinde çıkarabiliyoruz.',
-    avatar_url: 'https://i.pravatar.cc/120?img=12',
     rating: 5,
     order_no: 2,
   },
@@ -239,7 +230,6 @@ export const testimonials = [
     company: 'Atlas Turizm',
     quote:
       'Rezervasyon akışındaki iyileştirmeler ilk ayda kendini amorti etti. Süreç boyunca iletişim çok şeffaftı.',
-    avatar_url: 'https://i.pravatar.cc/120?img=32',
     rating: 5,
     order_no: 3,
   },
@@ -252,8 +242,6 @@ export const posts = [
     title: 'Web Sitesi Hızı Neden Dönüşümün En Sessiz Katili?',
     excerpt:
       'Sayfa yükleme süresindeki her 100 ms gecikmenin satışa etkisini ve pratik optimizasyon adımlarını anlatıyoruz.',
-    cover_url:
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
     category: 'Performans',
     author: 'Decha Ekibi',
     published_at: '2026-05-14',
@@ -266,8 +254,6 @@ export const posts = [
     title: 'Küçük Ekipler İçin Tasarım Sistemi Kurma Rehberi',
     excerpt:
       'Bir tasarım sistemine ne zaman ihtiyaç duyulur, nereden başlanır ve nasıl sürdürülür?',
-    cover_url:
-      'https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80',
     category: 'Tasarım',
     author: 'Decha Ekibi',
     published_at: '2026-04-02',
@@ -280,8 +266,6 @@ export const posts = [
     title: 'Supabase ile 2 Haftada MVP Çıkarmak',
     excerpt:
       'Kimlik doğrulama, veritabanı ve dosya depolamayı tek çatı altında toplayarak nasıl hız kazandık?',
-    cover_url:
-      'https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?auto=format&fit=crop&w=1200&q=80',
     category: 'Geliştirme',
     author: 'Decha Ekibi',
     published_at: '2026-02-20',

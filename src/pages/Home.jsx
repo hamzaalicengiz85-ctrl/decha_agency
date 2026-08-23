@@ -5,7 +5,6 @@ import Process from '../components/home/Process'
 import CTA from '../components/home/CTA'
 import Section from '../components/ui/Section'
 import SectionHeading from '../components/ui/SectionHeading'
-import Crt from '../components/ui/Crt'
 import ServiceCard from '../components/ServiceCard'
 import ProjectCard from '../components/ProjectCard'
 import TestimonialCard from '../components/TestimonialCard'
@@ -74,36 +73,31 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Arşiv monitörü */}
       <Section>
-        <Crt label="Arşiv · Kanal 02" channel="SEÇİLİ İŞLER">
-          <div className="px-5 py-12 sm:px-9 sm:py-16">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <SectionHeading
                 code="02"
                 eyebrow="Kayıtlı dosyalar"
                 title="Sonuç üreten projeler"
                 description="Her projede önce hedefi, sonra tasarımı konuşuruz."
               />
-              <Button to="/projeler" variant="outline" size="sm" className="self-start md:self-auto">
-                Tüm arşiv
-                <Icon name="arrow" className="h-3.5 w-3.5" />
-              </Button>
-            </div>
+          <Button to="/projeler" variant="outline" size="sm" className="self-start md:self-auto">
+            Tüm arşiv
+            <Icon name="arrow" className="h-3.5 w-3.5" />
+          </Button>
+        </div>
 
-            <div className="mt-10">
-              {projectsLoading ? (
-                <CardSkeleton count={3} />
-              ) : (
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                  {projectList.map((project) => (
-                    <ProjectCard key={project.id ?? project.slug} project={project} />
-                  ))}
-                </div>
-              )}
+        <div className="mt-10">
+          {projectsLoading ? (
+            <CardSkeleton count={3} />
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {projectList.map((project) => (
+                <ProjectCard key={project.id ?? project.slug} project={project} />
+              ))}
             </div>
-          </div>
-        </Crt>
+          )}
+        </div>
       </Section>
 
       <Process />

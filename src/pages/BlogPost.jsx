@@ -22,7 +22,6 @@ export default function BlogPost() {
   usePageMeta({
     title: post?.title ?? 'Blog',
     description: post?.excerpt,
-    image: post?.cover_url,
   })
 
   if (loading) {
@@ -36,7 +35,7 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="text-3xl font-bold text-fg">Yazı bulunamadı</h1>
+        <h1 className="font-display text-headline font-bold uppercase text-fg">Yazı bulunamadı</h1>
         <p className="mt-4 text-fg-muted">Aradığınız yazı kaldırılmış veya adresi değişmiş olabilir.</p>
         <Button to="/blog" className="mt-8">
           Blog’a dön
@@ -67,19 +66,13 @@ export default function BlogPost() {
             {post.author ? <span>· {post.author}</span> : null}
           </div>
 
-          <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
-          <p className="mt-5 text-lg text-fg-muted">{post.excerpt}</p>
+          <h1 className="mt-5 font-display text-headline font-bold uppercase leading-tight">{post.title}</h1>
+          <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">{post.excerpt}</p>
         </div>
       </Section>
 
       <div className="container">
-        <div className="mx-auto max-w-4xl overflow-hidden rounded-none border border-line/20">
-          <img
-            src={post.cover_url}
-            alt={post.title}
-            className="aspect-[16/9] w-full object-cover"
-          />
-        </div>
+        <div className="dotted-rule mx-auto max-w-3xl" aria-hidden="true" />
       </div>
 
       <Section>
@@ -94,7 +87,7 @@ export default function BlogPost() {
 
         {others.length > 0 ? (
           <div className="mx-auto mt-16 max-w-3xl border-t border-line/20 pt-10">
-            <h2 className="text-xl font-bold">Bunlar da ilginizi çekebilir</h2>
+            <h2 className="font-display text-[18px] font-bold uppercase">Bunlar da ilginizi çekebilir</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
                 <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">

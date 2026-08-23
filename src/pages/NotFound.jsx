@@ -1,5 +1,4 @@
 import Button from '../components/ui/Button'
-import Crt from '../components/ui/Crt'
 import Stamp from '../components/ui/Stamp'
 import { usePageMeta } from '../lib/seo'
 
@@ -8,8 +7,7 @@ export default function NotFound() {
 
   return (
     <div className="container py-14">
-      <Crt label="Hata · Kanal 404" channel="KAYIT YOK">
-        <div className="flex min-h-[52vh] flex-col items-center justify-center px-6 py-16 text-center">
+      <div className="flex min-h-[52vh] flex-col items-center justify-center px-6 py-16 text-center">
           <Stamp>Dosya kapalı</Stamp>
           <p className="phosphor num mt-8 font-display text-6xl font-bold text-accent sm:text-7xl">
             404
@@ -26,8 +24,7 @@ export default function NotFound() {
               Büroya danış
             </Button>
           </div>
-        </div>
-      </Crt>
+      </div>
     </div>
   )
 }

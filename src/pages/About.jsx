@@ -4,6 +4,7 @@ import CTA from '../components/home/CTA'
 import Icon from '../components/ui/Icon'
 import { usePageMeta } from '../lib/seo'
 import { stats } from '../data/content'
+import { initials } from '../lib/initials'
 
 const values = [
   {
@@ -29,10 +30,10 @@ const values = [
 ]
 
 const team = [
-  { name: 'Deniz Yılmaz', role: 'Kurucu & Kreatif Direktör', avatar: 'https://i.pravatar.cc/300?img=15' },
-  { name: 'Cem Arslan', role: 'Teknoloji Direktörü', avatar: 'https://i.pravatar.cc/300?img=68' },
-  { name: 'Nil Şahin', role: 'Ürün Tasarımcısı', avatar: 'https://i.pravatar.cc/300?img=45' },
-  { name: 'Barış Öz', role: 'Büyüme Uzmanı', avatar: 'https://i.pravatar.cc/300?img=60' },
+  { name: 'Deniz Yılmaz', role: 'Kurucu & Kreatif Direktör' },
+  { name: 'Cem Arslan', role: 'Teknoloji Direktörü' },
+  { name: 'Nil Şahin', role: 'Ürün Tasarımcısı' },
+  { name: 'Barış Öz', role: 'Büyüme Uzmanı' },
 ]
 
 export default function About() {
@@ -57,16 +58,37 @@ export default function About() {
 
       <Section spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-none border border-line/20">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
-              alt="Decha Agency ekibi çalışırken"
-              loading="lazy"
-              className="aspect-[4/3] w-full object-cover grayscale-[0.3] sepia-[0.15]"
+          <div className="panel relative overflow-hidden p-8 sm:p-10">
+            <span
+              className="absolute inset-0 opacity-60"
+              aria-hidden="true"
+              style={{
+                backgroundImage:
+                  'repeating-linear-gradient(135deg, rgb(var(--c-line) / 0.05) 0 1px, transparent 1px 8px)',
+              }}
             />
+            <div className="relative">
+              <p className="eyebrow">Kuruluş kaydı</p>
+              <p className="num mt-4 font-display text-[4rem] font-bold leading-none text-fg sm:text-[5.5rem]">
+                2018
+              </p>
+              <div className="mt-8 grid gap-px border border-line/25 bg-line/20 sm:grid-cols-2">
+                {[
+                  ['Merkez', 'Levent, İstanbul'],
+                  ['Kadro', '12 kişi'],
+                  ['Faaliyet alanı', 'Tasarım · Yazılım'],
+                  ['Dosya durumu', 'Açık'],
+                ].map(([k, v]) => (
+                  <div key={k} className="bg-bg-elev px-4 py-3">
+                    <p className="eyebrow">{k}</p>
+                    <p className="mt-1 font-mono text-[12.5px] text-fg">{v}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
           <div>
-            <h2 className="text-3xl font-bold">Ajans değil, uzatılmış ekibiniz</h2>
+            <h2 className="font-display text-headline font-bold uppercase">Ajans değil, uzatılmış ekibiniz</h2>
             <div className="mt-5 space-y-4 leading-relaxed text-fg-muted">
               <p>
                 Projelere dışarıdan bakan bir tedarikçi gibi değil, ekibinizin bir parçası gibi
@@ -113,12 +135,14 @@ export default function About() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member) => (
             <div key={member.name} className="panel overflow-hidden pb-1 text-center">
-              <img
-                src={member.avatar}
-                alt={member.name}
-                loading="lazy"
-                className="aspect-square w-full object-cover grayscale-[0.4] sepia-[0.18]"
-              />
+              <div
+                className="grid aspect-square w-full place-items-center border-b border-line/20 bg-line/[0.05]"
+                aria-hidden="true"
+              >
+                <span className="font-display text-[2rem] font-bold text-fg/80">
+                  {initials(member.name)}
+                </span>
+              </div>
               <div className="p-5">
                 <p className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-fg">{member.name}</p>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle">{member.role}</p>

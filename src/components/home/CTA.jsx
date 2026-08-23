@@ -1,14 +1,12 @@
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
-import Crt from '../ui/Crt'
 import { SITE } from '../../data/content'
 
 export default function CTA() {
   return (
     <section className="py-16 sm:py-20">
       <div className="container">
-        <Crt label="Duyuru" channel="ACİL">
-          <div className="px-6 py-14 text-center sm:px-12 sm:py-20">
+        <div className="panel px-6 py-14 text-center sm:px-12 sm:py-20">
             <p className="eyebrow">
               Randevu
               <span className="ml-2 inline-block h-2 w-2 animate-blink bg-accent align-middle" />
@@ -29,8 +27,7 @@ export default function CTA() {
                 {SITE.email}
               </Button>
             </div>
-          </div>
-        </Crt>
+        </div>
       </div>
     </section>
   )

@@ -1,6 +1,5 @@
 import Section from '../ui/Section'
 import SectionHeading from '../ui/SectionHeading'
-import Crt from '../ui/Crt'
 import { processSteps } from '../../data/content'
 
 export default function Process() {
@@ -15,10 +14,9 @@ export default function Process() {
       />
 
       <div className="mt-12">
-        <Crt label="İzleme · Kanal 03" channel="SÜREÇ" sweep={false}>
-          <ol className="grid gap-px bg-line/20 md:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((item) => (
-              <li key={item.step} className="bg-bg p-7">
+        <ol className="grid gap-px border border-line/25 bg-line/20 md:grid-cols-2 lg:grid-cols-4">
+          {processSteps.map((item) => (
+            <li key={item.step} className="bg-bg-elev p-7">
                 <div className="flex items-baseline gap-2">
                   <span className="num font-display text-3xl font-bold text-accent-ink">
                     {item.step}
@@ -30,9 +28,8 @@ export default function Process() {
                 </h3>
                 <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{item.text}</p>
               </li>
-            ))}
-          </ol>
-        </Crt>
+          ))}
+        </ol>
       </div>
     </Section>
   )
