@@ -18,7 +18,7 @@ export default function Blog() {
   })
 
   return (
-    <Section className="pt-16 sm:pt-20">
+    <Section spacing="bottom-none">
       <SectionHeading
         eyebrow="Blog"
         title="Öğrendiklerimizi paylaşıyoruz"

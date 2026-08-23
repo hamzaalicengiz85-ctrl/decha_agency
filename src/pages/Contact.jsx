@@ -28,7 +28,7 @@ export default function Contact() {
 
   return (
     <>
-      <Section className="pb-10 pt-16 sm:pt-20">
+      <Section spacing="intro">
         <SectionHeading
           eyebrow="İletişim"
           title="Projenizi konuşalım"
@@ -38,7 +38,7 @@ export default function Contact() {
         />
       </Section>
 
-      <Section className="pt-0">
+      <Section spacing="top-none">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-4">
             {channels.map((channel) => (
@@ -78,7 +78,7 @@ export default function Contact() {
         </div>
       </Section>
 
-      <Section className="bg-bg-soft/60 pt-0">
+      <Section spacing="top-none" className="bg-bg-soft/60">
         <SectionHeading eyebrow="SSS" title="Sık sorulan sorular" align="center" />
         <div className="mx-auto mt-12 max-w-3xl space-y-4">
           {faqs.map((faq) => (

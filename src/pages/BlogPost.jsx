@@ -49,7 +49,7 @@ export default function BlogPost() {
 
   return (
     <>
-      <Section className="pb-8 pt-12">
+      <Section spacing="intro">
         <div className="mx-auto max-w-3xl">
           <Link
             to="/blog"

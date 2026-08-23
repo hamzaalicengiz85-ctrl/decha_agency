@@ -26,14 +26,14 @@ export default class ErrorBoundary extends Component {
             Beklenmeyen bir hata oluştu. Sayfayı yenilemeyi deneyebilirsiniz.
           </p>
           {import.meta.env.DEV && this.state.error ? (
-            <pre className="mt-6 overflow-x-auto rounded-xl bg-black/40 p-4 text-left text-xs text-red-400">
+            <pre className="mt-6 overflow-x-auto rounded-xl border border-red-500/25 bg-red-500/[0.06] p-4 text-left text-xs text-red-500">
               {String(this.state.error?.message ?? this.state.error)}
             </pre>
           ) : null}
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-fg transition hover:brightness-110"
+            className="mt-8 min-h-[44px] rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-fg transition hover:brightness-110"
           >
             Sayfayı yenile
           </button>

@@ -37,7 +37,7 @@ export default function Work() {
 
   return (
     <>
-      <Section className="pb-10 pt-16 sm:pt-20">
+      <Section spacing="intro">
         <SectionHeading
           eyebrow="Projeler"
           title="Yaptığımız işler kendini anlatsın"
@@ -47,7 +47,7 @@ export default function Work() {
         />
       </Section>
 
-      <Section className="pt-0">
+      <Section spacing="top-none">
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((category) => (
             <button

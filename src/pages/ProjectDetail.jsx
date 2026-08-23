@@ -50,7 +50,7 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <Section className="pb-8 pt-12">
+      <Section spacing="intro">
         <Link
           to="/projeler"
           className="inline-flex items-center gap-2 text-sm text-fg-muted transition hover:text-fg"
@@ -141,7 +141,7 @@ export default function ProjectDetail() {
       </Section>
 
       {related.length > 0 ? (
-        <Section className="bg-bg-soft/60 pt-0">
+        <Section spacing="top-none" className="bg-bg-soft/60">
           <h2 className="text-2xl font-bold">Diğer projeler</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (

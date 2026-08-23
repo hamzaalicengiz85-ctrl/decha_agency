@@ -14,7 +14,6 @@
 @layer base {
   /* ---------- A · TITANYUM ---------- */
   /* Sıcak grafit taban, şampanya-titanyum vurgu. Neredeyse monokrom. */
-  :root,
   [data-palette='titanium'] {
     color-scheme: dark;
 
@@ -87,8 +86,9 @@
     --map-filter: invert(93%) hue-rotate(175deg) saturate(0.8) brightness(0.92);
   }
 
-  /* ---------- C · SEDEF (açık) ---------- */
+  /* ---------- C · SEDEF (açık) — VARSAYILAN ---------- */
   /* Kırık beyaz kağıt, mürekkep siyahı, sinyal turuncusu. Editoryal. */
+  :root,
   [data-palette='pearl'] {
     color-scheme: light;
 

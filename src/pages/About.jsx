@@ -44,7 +44,7 @@ export default function About() {
 
   return (
     <>
-      <Section className="pb-10 pt-16 sm:pt-20">
+      <Section spacing="intro">
         <SectionHeading
           eyebrow="Hakkımızda"
           title="Dijital ürünler geliştiren küçük ama iddialı bir ekibiz"
@@ -54,7 +54,7 @@ export default function About() {
         />
       </Section>
 
-      <Section className="pt-0">
+      <Section spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="overflow-hidden rounded-3xl border hairline">
             <img

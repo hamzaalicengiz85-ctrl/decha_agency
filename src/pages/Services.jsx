@@ -22,7 +22,7 @@ export default function Services() {
 
   return (
     <>
-      <Section className="pb-10 pt-16 sm:pt-20">
+      <Section spacing="intro">
         <SectionHeading
           eyebrow="Hizmetler"
           title="İhtiyacınız olan her şey, tek ekipte"
@@ -32,7 +32,7 @@ export default function Services() {
         />
       </Section>
 
-      <Section className="pt-0">
+      <Section spacing="top-none">
         {loading ? (
           <CardSkeleton count={6} />
         ) : serviceList.length === 0 ? (

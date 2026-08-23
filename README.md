@@ -12,6 +12,7 @@ yayınlama için **Netlify** kullanır.
 - [Supabase kurulumu](#supabase-kurulumu)
 - [Netlify ile yayınlama](#netlify-ile-yayınlama)
 - [Proje yapısı](#proje-yapısı)
+- [Tasarım sistemi](#tasarım-sistemi)
 - [Komutlar](#komutlar)
 - [Nasıl çalışıyor?](#nasıl-çalışıyor)
 
@@ -23,7 +24,7 @@ yayınlama için **Netlify** kullanır.
 | ------------- | ---------------------------------- |
 | Arayüz        | React 18, React Router 6           |
 | Derleme       | Vite 5                             |
-| Stil          | Tailwind CSS 3                     |
+| Stil          | Tailwind CSS 3 (CSS değişkeni token'ları) |
 | Veritabanı    | Supabase (PostgreSQL + RLS)        |
 | Yayın         | Netlify                            |
 | Test          | Vitest + Testing Library           |
@@ -128,6 +129,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 ├── netlify.toml              # Netlify derleme, redirect ve güvenlik başlıkları
 ├── public/
 │   ├── _redirects            # SPA fallback (yedek kural)
+│   ├── fonts/                # Self-host değişken fontlar (woff2)
 │   ├── favicon.svg
 │   └── robots.txt
 ├── supabase/
@@ -136,7 +138,8 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 └── src/
     ├── App.jsx               # Rotalar (lazy loading ile)
     ├── main.jsx              # Giriş noktası
-    ├── index.css             # Tailwind katmanları + tema
+    ├── index.css             # Tailwind katmanları + 3 palet + cam paneller
+    ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
     │   ├── layout/           # Navbar, Footer, Layout, ScrollToTop
     │   ├── ui/               # Button, Section, Icon, Loader…
@@ -155,6 +158,60 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     ├── pages/                # Home, Services, Work, ProjectDetail, About, Blog, BlogPost, Contact, NotFound
     └── test/                 # Vitest testleri
 ```
+
+---
+
+## Tasarım sistemi
+
+Tüm renkler `src/index.css` içinde **CSS değişkeni** olarak tanımlıdır; Tailwind bu
+değişkenleri okur. Bileşenlerde sabit renk (örn. `text-slate-400`) kullanılmaz —
+sadece anlamsal token'lar: `bg`, `bg-soft`, `bg-elev`, `fg`, `fg-muted`, `fg-subtle`,
+`line`, `accent`, `accent-fg`.
+
+### Palet değiştirme
+
+Palet `index.html` içindeki tek bir öznitelikle değişir:
+
+```html
+<html lang="tr" data-palette="pearl">
+```
+
+| Değer      | Palet     | Karakter                                                        |
+| ---------- | --------- | --------------------------------------------------------------- |
+| `pearl`    | **Sedef** | **Varsayılan.** Kırık beyaz kağıt, mürekkep siyahı, sinyal turuncusu. Açık, editoryal, premium. |
+| `titanium` | Titanyum  | Sıcak grafit zemin, şampanya-titanyum vurgu. Neredeyse monokrom, Apple donanım hissi. |
+| `abyss`    | Abyss     | Derin petrol mürekkep, aurora mint vurgu. Koyu, teknik, fütüristik. |
+
+Öznitelik hiç verilmezse Sedef paleti geçerli olur (`:root` varsayılanı).
+
+### Cam paneller
+
+`.glass` sınıfı Apple tarzı yarı saydam yüzeyi üretir: katmanlı dolgu + `backdrop-filter`
+bulanıklığı + doygunluk artışı + üst kenarda 1px ışık çizgisi + yumuşak ortam gölgesi.
+Her palet kendi cam değerlerini tanımlar, bu yüzden açık temada da doğru görünür.
+
+### Tipografi
+
+- **Instrument Sans** — başlıklar
+- **Inter** — gövde metni
+- **JetBrains Mono** — etiketler, sayılar, üst başlıklar (eyebrow)
+
+Fontlar `public/fonts/` altında **self-host** edilir (değişken woff2, latin + latin-ext).
+Google Fonts CDN'e istek gitmez: daha hızlı ilk boyama, üçüncü taraf bağımlılığı yok,
+Türkçe karakterler (ğ, ı, ş, İ) eksiksiz.
+
+### Erişilebilirlik
+
+Kontrast oranları tarayıcıda ölçülerek doğrulanmıştır. Üç palette de gövde, ikincil ve
+üçüncül metin ile vurgu üzerindeki metin **4.5:1** eşiğini geçer. Butonlar 44px dokunma
+hedefini korur, `prefers-reduced-motion` desteklenir.
+
+### Boşluk ölçeği
+
+`<Section>` bileşeninin dikey boşluğu `spacing` prop'u ile verilir
+(`default`, `tight`, `intro`, `top-none`, `bottom-none`, `none`).
+className üzerinden `pt-0` gibi sınıflar geçmeyin — duyarlı varsayılan (`sm:py-28`)
+medya sorgusu içinde olduğu için bunlar masaüstünde sessizce etkisiz kalır.
 
 ---
 
