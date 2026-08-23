@@ -8,15 +8,16 @@ export default function Hero() {
       <div className="container relative">
         {/* Ana yayın monitörü */}
         <div className="px-2 py-14 text-center sm:py-20">
-            <p className="eyebrow animate-fade-up">
+            <p className="flex animate-fade-up items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-accent">
+              <span className="h-2 w-2 animate-blink bg-accent" aria-hidden="true" />
               Kayıt açık
-              <span className="ml-2 inline-block h-2 w-2 animate-blink bg-accent align-middle" />
+              <span className="hatch inline-block h-2.5 w-14" aria-hidden="true" />
             </p>
 
-            <h1 className="phosphor mt-6 animate-fade-up text-display font-bold uppercase">
+            <h1 className="phosphor mt-7 animate-fade-up text-display font-bold uppercase text-accent">
               Markanızı dijitalde
               <br className="hidden sm:block" />{' '}
-              <span className="text-accent-ink">büyüten</span> tasarım ve yazılım
+              <span className="bg-accent px-2 text-accent-fg">büyüten</span> tasarım ve yazılım
             </h1>
 
             <p className="mx-auto mt-7 max-w-xl animate-fade-up font-mono text-[13px] leading-relaxed text-fg-muted">
@@ -35,10 +36,21 @@ export default function Hero() {
             </div>
 
             {/* Ekran altı okuma satırı */}
-            <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-px border border-line/20 bg-line/20 sm:grid-cols-4">
-              {stats.map((item) => (
-                <div key={item.label} className="bg-bg px-4 py-5">
-                  <p className="num font-display text-2xl font-bold text-accent-ink sm:text-3xl">
+            {/* Ölçüm paneli: grafik kağıdı zemin, turuncu ayraçlar */}
+            <div className="panel brackets grid-field mx-auto mt-14 grid max-w-3xl grid-cols-2 sm:grid-cols-4">
+              {stats.map((item, index) => (
+                <div
+                  key={item.label}
+                  className={[
+                    'px-4 py-6',
+                    index % 2 === 1 ? 'border-l border-accent/30' : '',
+                    index >= 2 ? 'border-t border-accent/30 sm:border-t-0' : '',
+                    index >= 1 ? 'sm:border-l sm:border-accent/30' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                >
+                  <p className="num phosphor font-display text-2xl font-bold text-accent sm:text-3xl">
                     {item.value}
                   </p>
                   <p className="eyebrow mt-1.5">{item.label}</p>

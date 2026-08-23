@@ -41,7 +41,7 @@ export default function Contact() {
           <div className="space-y-4">
             {channels.map((channel) => (
               <div key={channel.label} className="panel flex items-start gap-4 p-5">
-                <span className="grid h-10 w-10 shrink-0 place-items-center border border-line/25 text-accent-ink">
+                <span className="grid h-10 w-10 shrink-0 place-items-center border border-accent/35 text-accent">
                   <Icon name={channel.icon} className="h-5 w-5" />
                 </span>
                 <div>
@@ -49,7 +49,7 @@ export default function Contact() {
                   {channel.href ? (
                     <a
                       href={channel.href}
-                      className="mt-1.5 block font-mono text-[13px] text-fg transition hover:text-accent-ink"
+                      className="mt-1.5 block font-mono text-[13px] text-fg transition hover:text-accent"
                     >
                       {channel.value}
                     </a>
@@ -91,11 +91,11 @@ export default function Contact() {
               key={faq.q}
               className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.02em] text-fg">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.06em] text-accent">
                 {faq.q}
                 <Icon
                   name="plus"
-                  className="h-5 w-5 shrink-0 text-accent-ink transition group-open:rotate-45"
+                  className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
                 />
               </summary>
               <p className="mt-4 text-sm leading-relaxed text-fg-muted">{faq.a}</p>

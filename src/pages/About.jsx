@@ -72,14 +72,14 @@ export default function About() {
               <p className="num mt-4 font-display text-[4rem] font-bold leading-none text-fg sm:text-[5.5rem]">
                 2018
               </p>
-              <div className="mt-8 grid gap-px border border-line/25 bg-line/20 sm:grid-cols-2">
+              <div className="mt-8 grid gap-px border border-accent/35 bg-accent/25 sm:grid-cols-2">
                 {[
                   ['Merkez', 'Levent, İstanbul'],
                   ['Kadro', '12 kişi'],
                   ['Faaliyet alanı', 'Tasarım · Yazılım'],
                   ['Dosya durumu', 'Açık'],
                 ].map(([k, v]) => (
-                  <div key={k} className="bg-bg-elev px-4 py-3">
+                  <div key={k} className="bg-bg px-4 py-3">
                     <p className="eyebrow">{k}</p>
                     <p className="mt-1 font-mono text-[12.5px] text-fg">{v}</p>
                   </div>
@@ -104,7 +104,7 @@ export default function About() {
             <dl className="mt-10 grid grid-cols-2 gap-4">
               {stats.map((item) => (
                 <div key={item.label} className="panel p-5">
-                  <dd className="font-display text-2xl font-bold text-fg">{item.value}</dd>
+                  <dd className="font-display text-2xl font-bold text-accent">{item.value}</dd>
                   <dt className="mt-1 eyebrow">
                     {item.label}
                   </dt>
@@ -120,10 +120,10 @@ export default function About() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
             <div key={value.title} className="panel panel-hover p-7">
-              <span className="grid h-10 w-10 place-items-center border border-line/25 text-accent-ink">
+              <span className="grid h-10 w-10 place-items-center border border-accent/35 text-accent">
                 <Icon name={value.icon} className="h-5 w-5" />
               </span>
-              <h3 className="mt-5 text-lg font-bold text-fg">{value.title}</h3>
+              <h3 className="mt-5 font-display text-[15px] font-bold uppercase text-accent">{value.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-fg-muted">{value.text}</p>
             </div>
           ))}
@@ -136,7 +136,7 @@ export default function About() {
           {team.map((member) => (
             <div key={member.name} className="panel overflow-hidden pb-1 text-center">
               <div
-                className="grid aspect-square w-full place-items-center border-b border-line/20 bg-line/[0.05]"
+                className="grid aspect-square w-full place-items-center border-b border-accent/30 bg-accent/8"
                 aria-hidden="true"
               >
                 <span className="font-display text-[2rem] font-bold text-fg/80">

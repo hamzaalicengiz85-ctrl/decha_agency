@@ -4,7 +4,7 @@ export default function ClientMarquee() {
   const items = [...clients, ...clients]
 
   return (
-    <section className="border-y border-line/20 bg-bg-soft/70 py-6">
+    <section className="border-y border-accent/30 bg-bg-soft/70 py-6">
       <div className="container flex items-center gap-4">
         <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.22em] text-fg-subtle sm:inline">
           Kayıtlı kurumlar

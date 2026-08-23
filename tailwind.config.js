@@ -26,6 +26,7 @@ export default {
         highlight: 'rgb(var(--c-highlight) / <alpha-value>)',
         'highlight-fg': 'rgb(var(--c-highlight-fg) / <alpha-value>)',
         danger: 'rgb(var(--c-danger) / <alpha-value>)',
+        'danger-fill': 'rgb(var(--c-danger-fill) / <alpha-value>)',
         'danger-fg': 'rgb(var(--c-danger-fg) / <alpha-value>)',
       },
       fontFamily: {

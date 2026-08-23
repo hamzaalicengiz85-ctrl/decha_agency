@@ -52,8 +52,8 @@ export default function Services() {
         <ol className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((item) => (
             <li key={item.step} className="panel p-6">
-              <span className="num font-display text-3xl font-bold text-accent-ink">{item.step}</span>
-              <h3 className="mt-4 text-lg font-bold text-fg">{item.title}</h3>
+              <span className="num font-display text-3xl font-bold text-accent">{item.step}</span>
+              <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-accent">{item.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.text}</p>
             </li>
           ))}
@@ -68,11 +68,11 @@ export default function Services() {
               key={faq.q}
               className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.02em] text-fg">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.06em] text-accent">
                 {faq.q}
                 <Icon
                   name="plus"
-                  className="h-5 w-5 shrink-0 text-accent-ink transition group-open:rotate-45"
+                  className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
                 />
               </summary>
               <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{faq.a}</p>

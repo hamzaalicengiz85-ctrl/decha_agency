@@ -163,34 +163,50 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 
 ## Tasarım sistemi
 
-Görsel dil: **retro bürokrasi** — 60–70'ler kurum estetiği, tüplü televizyon
-monitörleri, damgalı dosya kartları ve daktilo formları. Referans, Loki dizisindeki
-TVA kurumunun görsel dünyasıdır; markalı varlıklar kopyalanmaz, yalnızca estetik
-yorumlanır.
+Görsel dil: **retro bürokratik terminal** — 60–70'ler kurum estetiği, tüplü
+televizyon kasası ve tek renk turuncu bir kontrol arayüzü. Referans, Loki
+dizisindeki TVA kurumunun TemPad arayüzüdür; markalı varlıklar kopyalanmaz,
+yalnızca renk ve arayüz dili yorumlanır.
 
 ### Marka renkleri ve rolleri
 
-Ham renkler her yerde kullanılamaz: turuncu ve hardal, açık zeminde küçük metin için
-kontrast eşiğini geçmez (ölçülen 1.67 ve 1.22). Bu yüzden her renk bir **role**
-ayrılmıştır — dolgu renkleri ham kalır, metin renkleri ölçülmüş türevlerdir.
+Ham renkler her yerde kullanılamaz. Ölçüm sonucu: ekran zemininde (sıcak siyah)
+Kritik Kırmızı 3.34, Endüstriyel Kahve 1.67 kalıyor. Bu yüzden her renk bir
+**role** ayrılmıştır — dolgu renkleri ham kalır, metin renkleri ölçülmüş
+türevlerdir.
 
-| Renk | Değer | Rolü |
-| ---- | ----- | ---- |
-| TVA Turuncusu | `rgb(255 107 0)` | `--c-accent` · buton dolgusu, led, grafik öğeler. Metin olarak **kullanılmaz** |
-| — türevi | `rgb(164 78 18)` | `--c-accent-ink` · kağıt zeminde vurgu metni (4.54) |
-| Hardal Sarısı | `rgb(229 169 60)` | `--c-highlight` · ikincil dolgu; üzerine kahve metin (5.68) |
-| Kritik Kırmızı | `rgb(195 32 38)` | `--c-danger` · damgalar, form hataları (4.70) |
-| Memur Beji | `rgb(217 195 165)` | Sayfa zemininin kaynağı; CRT ekranında fosfor metin rengi (10.98) |
-| Endüstriyel Kahve | `rgb(74 50 37)` | `--c-fg` · ana metin (9.42), CRT gövde dökümü, hairline'lar |
-| Arduvaz Grisi | `rgb(92 100 102)` | `--c-fg-muted` / `--c-fg-subtle` · ikincil metin (5.60 / 4.81) |
+| Renk | Değer | Rolü | Kontrast |
+| ---- | ----- | ---- | -------- |
+| TVA Turuncusu | `rgb(255 107 0)` | `--c-accent` · çerçeveler, başlıklar, etiketler, dolgular. Koyu ekranda metin olarak da yeterli | 6.91 |
+| Memur Beji | `rgb(217 195 165)` | `--c-fg` · gövde metni | 11.55 |
+| Arduvaz Grisi → türevi | `rgb(176 158 133)` / `rgb(136 121 102)` | `--c-fg-muted` / `--c-fg-subtle` | 7.58 / 4.67 |
+| Hardal Sarısı | `rgb(229 169 60)` | `--c-highlight` · ikincil dolgu | 9.46 |
+| Kritik Kırmızı | `rgb(195 32 38)` | `--c-danger-fill` · uyarı bantları (dolgu) | üzerine metin 5.47 |
+| — türevi | `rgb(232 112 108)` | `--c-danger` · hata metni | 6.54 |
+| Endüstriyel Kahve | `rgb(74 50 37)` | Televizyon kasasının döküm rengi (ekran içinde metin olarak kullanılmaz) | — |
 
-### Tek yüzey
+### Terminal arayüz dili
 
-Ekranın içi tek bir yüzeydir: bürokrasi kağıdı. Renkler CSS değişkeni olarak
-`:root` üzerinde tanımlıdır, Tailwind bunları okur; bileşenlerde sabit renk
-(örn. `text-slate-400`) kullanılmaz — yalnızca anlamsal token'lar:
-`bg`, `bg-soft`, `bg-elev`, `fg`, `fg-muted`, `fg-subtle`, `line`,
-`accent`, `accent-ink`, `accent-fg`, `highlight`, `danger`.
+Referanstan alınan öğeler, hepsi yeniden kullanılabilir sınıflar:
+
+| Sınıf | Karşılığı |
+| ----- | --------- |
+| `.panel` | 1px turuncu çerçeve + dışında ikinci ince hat |
+| `.brackets` | Dört köşede L işareti (sekiz arka plan katmanı, ek DOM gerekmez) |
+| `.hatch` | Başlık şeritlerindeki eğik tarama dokusu |
+| `.grid-field` | Panel içi grafik kağıdı zemini |
+| `.list-row` | Liste satırı; seçili olan dolu turuncu, üzerine ekran siyahı |
+| `.key` | Terminal butonu; keskin köşe, çift çerçeve |
+| `.stamp` | Kauçuk damga |
+| `.phosphor` | Turuncu metinlerde tüp ışıması |
+
+İki sabit arayüz parçası referansın imzasıdır ve gerçek işlev taşır:
+
+- **Sol ikon rayı** (`Rail`) — masaüstünde ekranın sol kenarında; alttaki ince iz
+  sayfa ilerlemesini gösterir. Üst menüyle çakışan ikinci bir gezinme sunmadığı
+  için ekran okuyuculardan gizlidir.
+- **Alt durum şeridi** (`Hud`) — sabit sayı yığını yerine gerçek durumu gösterir:
+  aktif bölüm kodu, canlı saat, sayfa konumu yüzdesi.
 
 ### Televizyon kasası
 
@@ -200,7 +216,7 @@ içindeki tüp camında akar:
 
 | Katman | İş |
 | ------ | -- |
-| `tv-glass` | Tüp camı: kağıt yüzey, milimetrik ızgara, doku |
+| `tv-glass` | Tüp camı: fosfor zemin, turuncu grafik ızgarası |
 | `tv-sweep` | Ekranda inen yayın taraması bandı |
 | `tv-overlay` | Cam yansıması + tarama çizgileri + köşe karartması |
 | `tv-bezel` | Döküm kasa — ortası CSS maskesiyle oyulur |

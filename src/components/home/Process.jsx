@@ -14,16 +14,16 @@ export default function Process() {
       />
 
       <div className="mt-12">
-        <ol className="grid gap-px border border-line/25 bg-line/20 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="panel brackets grid gap-px bg-accent/25 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((item) => (
-            <li key={item.step} className="bg-bg-elev p-7">
+            <li key={item.step} className="bg-bg p-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="num font-display text-3xl font-bold text-accent-ink">
+                  <span className="num font-display text-3xl font-bold text-accent">
                     {item.step}
                   </span>
-                  <span className="h-px flex-1 bg-line/25" aria-hidden="true" />
+                  <span className="hatch h-2 flex-1" aria-hidden="true" />
                 </div>
-                <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-fg">
+                <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-accent">
                   {item.title}
                 </h3>
                 <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{item.text}</p>

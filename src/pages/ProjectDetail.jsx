@@ -35,7 +35,7 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="font-display text-headline font-bold uppercase text-fg">Proje bulunamadı</h1>
+        <h1 className="font-display text-headline font-bold uppercase text-accent">Proje bulunamadı</h1>
         <p className="mt-4 text-fg-muted">Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.</p>
         <Button to="/projeler" className="mt-8">
           Tüm projelere dön
@@ -61,7 +61,7 @@ export default function ProjectDetail() {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div>
-            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink">
+            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
               {project.category}
             </span>
             <h1 className="mt-5 font-display text-display font-bold uppercase leading-tight">
@@ -124,7 +124,7 @@ export default function ProjectDetail() {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="border border-line/25 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-fg-subtle"
+                    className="border border-accent/35 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-fg-subtle"
                   >
                     {tag}
                   </span>
@@ -141,7 +141,7 @@ export default function ProjectDetail() {
               <dl className="mt-6 space-y-6">
                 {metrics.map((metric) => (
                   <div key={metric.label}>
-                    <dd className="font-display text-3xl font-bold text-accent-ink">
+                    <dd className="font-display text-3xl font-bold text-accent">
                       {metric.value}
                     </dd>
                     <dt className="mt-1 text-sm text-fg-muted">{metric.label}</dt>
@@ -164,7 +164,7 @@ export default function ProjectDetail() {
                 className="panel panel-hover flex items-center gap-4 p-5"
               >
                 <span
-                  className="grid h-14 w-14 shrink-0 place-items-center border border-line/25 font-display text-[15px] font-bold text-fg"
+                  className="grid h-14 w-14 shrink-0 place-items-center border border-accent/35 font-display text-[15px] font-bold text-fg"
                   aria-hidden="true"
                 >
                   {initials(item.client || item.title)}

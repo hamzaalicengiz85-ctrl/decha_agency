@@ -32,13 +32,13 @@ export default function Navbar() {
     <header className="fixed left-[var(--bz-x)] right-[var(--bz-x)] top-[var(--bz-t)] z-50">
       {/* Kontrol paneli */}
       <nav
-        className="rounded-t-[var(--tv-inner-radius)] border-b border-line/25 bg-bg-elev/97 backdrop-blur-md"
+        className="border border-accent/45 bg-bg/95 backdrop-blur-sm"
         aria-label="Ana menü"
       >
         <div className="container flex h-14 items-center justify-between gap-4 sm:h-16">
           <Link to="/" className="flex items-center gap-2.5" aria-label="Decha Agency ana sayfa">
             <Logo className="h-8 w-8" />
-            <span className="font-display text-[17px] font-bold uppercase tracking-[0.08em] text-fg">
+            <span className="font-display text-[16px] font-bold uppercase tracking-[0.14em] text-accent">
               Decha
             </span>
           </Link>
@@ -54,11 +54,11 @@ export default function Navbar() {
                       'flex items-baseline gap-1.5 border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition',
                       isActive
                         ? 'border-accent/60 bg-accent/15 text-fg'
-                        : 'border-transparent text-fg-muted hover:border-line/25 hover:text-fg',
+                        : 'border-transparent text-fg-muted hover:border-accent/35 hover:text-fg',
                     )
                   }
                 >
-                  <span className="num text-[9px] opacity-55">{link.code}</span>
+                  <span className="num text-[9px] opacity-65">{link.code}</span>
                   {link.label}
                 </NavLink>
               </li>
@@ -74,7 +74,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
-            className="grid h-11 w-11 place-items-center border border-line/25 text-fg lg:hidden"
+            className="grid h-11 w-11 place-items-center border border-accent/50 text-accent lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Menüyü kapat' : 'Menüyü aç'}
@@ -87,7 +87,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         className={classNames(
-          'overflow-hidden border-b border-line/25 bg-bg-elev transition-[max-height] duration-300 lg:hidden',
+          'overflow-hidden border-x border-b border-accent/45 bg-bg transition-[max-height] duration-300 lg:hidden',
           open ? 'max-h-[75vh]' : 'invisible max-h-0',
         )}
         aria-hidden={!open}
@@ -95,14 +95,14 @@ export default function Navbar() {
       >
         <ul className="container flex flex-col py-2">
           {links.map((link) => (
-            <li key={link.to} className="border-b border-line/12 last:border-0">
+            <li key={link.to} className="border-b border-accent/20 last:border-0">
               <NavLink
                 to={link.to}
                 end={link.to === '/'}
                 className={({ isActive }) =>
                   classNames(
-                    'flex items-baseline gap-3 px-1 py-3.5 font-mono text-[13px] uppercase tracking-[0.12em] transition',
-                    isActive ? 'text-accent-ink' : 'text-fg-muted',
+                    'flex items-baseline gap-3 px-3 py-3.5 font-mono text-[13px] uppercase tracking-[0.12em] transition-colors',
+                    isActive ? 'bg-accent text-accent-fg' : 'text-accent',
                   )
                 }
               >

@@ -104,28 +104,28 @@ export default function ContactForm() {
 
   const inputClass = (field) =>
     classNames(
-      'w-full border bg-bg/60 px-3 py-2.5 font-mono text-[13px] text-fg transition placeholder:text-fg-subtle/60 focus:border-accent focus:bg-bg-elev focus:outline-none',
-      errors[field] ? 'border-danger bg-danger/[0.06]' : 'border-line/30',
+      'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-[13px] text-fg transition placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none',
+      errors[field] ? 'border-danger bg-danger/10' : 'border-accent/40',
     )
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="panel p-0">
+    <form onSubmit={handleSubmit} noValidate className="panel brackets p-0">
       {/* Resmî form başlığı */}
-      <div className="flex items-center justify-between border-b-2 border-line/25 bg-line/[0.06] px-5 py-3">
+      <div className="flex items-center justify-between border-b border-accent/45 bg-accent/10 px-5 py-3">
         <div>
-          <p className="font-display text-[13px] font-bold uppercase tracking-[0.1em] text-fg">
+          <p className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-accent">
             Başvuru Formu
           </p>
           <p className="eyebrow mt-0.5">Form DA-42 · Tüm alanlar okunaklı doldurulmalıdır</p>
         </div>
-        <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle sm:block">
+        <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-accent/70 sm:block">
           Rev. 2026.04
         </span>
       </div>
 
       <div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
         <div>
-          <label htmlFor="name" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="name" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             Ad Soyad <span className="text-danger">*</span>
           </label>
           <input
@@ -145,7 +145,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="email" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             E-posta <span className="text-danger">*</span>
           </label>
           <input
@@ -165,7 +165,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="phone" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="phone" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             Telefon
           </label>
           <input
@@ -181,7 +181,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="company" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="company" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             Şirket
           </label>
           <input
@@ -196,7 +196,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="service" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="service" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             İlgilendiğiniz hizmet
           </label>
           <select
@@ -216,7 +216,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="budget" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="budget" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             Bütçe aralığı
           </label>
           <select
@@ -236,7 +236,7 @@ export default function ContactForm() {
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="message" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-fg-muted">
+          <label htmlFor="message" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
             Projeniz <span className="text-danger">*</span>
           </label>
           <textarea
@@ -256,13 +256,13 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 border-t border-dashed border-line/30 px-5 py-4 text-[12.5px] leading-relaxed text-fg-muted sm:px-6">
+      <label className="flex cursor-pointer items-start gap-3 border-t border-dashed border-accent/30 px-5 py-4 text-[12.5px] leading-relaxed text-fg-muted sm:px-6">
         <input
           type="checkbox"
           name="kvkk"
           checked={values.kvkk}
           onChange={handleChange}
-          className="mt-0.5 h-4 w-4 rounded border-line/20 bg-transparent text-accent-ink accent-[rgb(var(--c-accent))]"
+          className="mt-0.5 h-4 w-4 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
         />
         <span>
           Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).
@@ -270,12 +270,12 @@ export default function ContactForm() {
         </span>
       </label>
 
-      <div className="flex flex-col gap-4 border-t border-line/25 bg-line/[0.04] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
+      <div className="flex flex-col gap-4 border-t border-accent/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
         <Button type="submit" disabled={status === 'loading'} size="lg">
           {status === 'loading' ? 'Gönderiliyor…' : 'Mesajı Gönder'}
           {status !== 'loading' ? <Icon name="arrow" className="h-4 w-4" /> : null}
         </Button>
-        <p className="text-xs text-fg-subtle">Ortalama yanıt süremiz 1 iş günü.</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">Ortalama yanıt: 1 iş günü</p>
       </div>
 
       {feedback ? (
@@ -285,7 +285,7 @@ export default function ContactForm() {
           className={classNames(
             'mx-5 mb-5 flex items-start gap-2 border p-3.5 font-mono text-[12px] sm:mx-6',
             status === 'success'
-              ? 'border-accent-ink/40 bg-accent/10 text-accent-ink'
+              ? 'border-accent bg-accent/12 text-accent'
               : 'border-red-500/30 bg-red-500/10 text-danger',
           )}
         >

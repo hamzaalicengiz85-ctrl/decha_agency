@@ -6,12 +6,12 @@ export default function CTA() {
   return (
     <section className="py-16 sm:py-20">
       <div className="container">
-        <div className="panel px-6 py-14 text-center sm:px-12 sm:py-20">
+        <div className="panel brackets grid-field px-6 py-14 text-center sm:px-12 sm:py-20">
             <p className="eyebrow">
               Randevu
               <span className="ml-2 inline-block h-2 w-2 animate-blink bg-accent align-middle" />
             </p>
-            <h2 className="phosphor mx-auto mt-5 max-w-2xl text-headline font-bold uppercase">
+            <h2 className="phosphor mx-auto mt-5 max-w-2xl text-headline font-bold uppercase text-accent">
               Projenizi kayda geçirelim
             </h2>
             <p className="mx-auto mt-5 max-w-lg font-mono text-[13px] leading-relaxed text-fg-muted">

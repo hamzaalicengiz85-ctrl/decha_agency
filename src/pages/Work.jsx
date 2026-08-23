@@ -50,7 +50,7 @@ export default function Work() {
 
       <Section spacing="top-none">
         {/* Dolap sekmesi filtreleri */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-line/25 py-5">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5">
           <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
             Sınıflandırma:
           </span>
@@ -61,10 +61,10 @@ export default function Work() {
               onClick={() => setActiveCategory(category)}
               aria-pressed={activeCategory === category}
               className={classNames(
-                'min-h-[36px] border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] transition',
+                'min-h-[36px] border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-150',
                 activeCategory === category
-                  ? 'border-accent bg-accent/20 text-fg'
-                  : 'border-line/30 text-fg-muted hover:border-line/50 hover:text-fg',
+                  ? 'border-accent bg-accent text-accent-fg'
+                  : 'border-accent/35 text-accent hover:bg-accent hover:text-accent-fg',
               )}
             >
               {category}

@@ -116,7 +116,7 @@ export default function Home() {
         </div>
         <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
           Referanslarımızla görüşmek ister misiniz?{' '}
-          <Link to="/iletisim" className="link-underline text-accent-ink">
+          <Link to="/iletisim" className="link-underline text-accent">
             Bize yazın
           </Link>
         </p>

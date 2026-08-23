@@ -35,7 +35,7 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="font-display text-headline font-bold uppercase text-fg">Yazı bulunamadı</h1>
+        <h1 className="font-display text-headline font-bold uppercase text-accent">Yazı bulunamadı</h1>
         <p className="mt-4 text-fg-muted">Aradığınız yazı kaldırılmış veya adresi değişmiş olabilir.</p>
         <Button to="/blog" className="mt-8">
           Blog’a dön
@@ -59,7 +59,7 @@ export default function BlogPost() {
           </Link>
 
           <div className="mt-8 flex items-center gap-3 text-xs text-fg-subtle">
-            <span className="rounded-full bg-accent/10 px-3 py-1 font-medium text-accent-ink">
+            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
               {post.category}
             </span>
             <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
@@ -86,13 +86,13 @@ export default function BlogPost() {
         </article>
 
         {others.length > 0 ? (
-          <div className="mx-auto mt-16 max-w-3xl border-t border-line/20 pt-10">
+          <div className="mx-auto mt-16 max-w-3xl border-t border-accent/30 pt-10">
             <h2 className="font-display text-[18px] font-bold uppercase">Bunlar da ilginizi çekebilir</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
                 <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">
-                  <p className="text-xs text-accent-ink">{item.category}</p>
-                  <p className="mt-2 font-bold leading-snug text-fg">{item.title}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">{item.category}</p>
+                  <p className="mt-2 font-display text-[13px] font-bold uppercase leading-snug text-accent">{item.title}</p>
                 </Link>
               ))}
             </div>
