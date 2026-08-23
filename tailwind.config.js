@@ -4,51 +4,43 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: { DEFAULT: '1.25rem', lg: '2rem' },
-      screens: { '2xl': '1280px' },
+      padding: { DEFAULT: '1.25rem', lg: '2.5rem' },
+      screens: { '2xl': '1240px' },
     },
     extend: {
+      // Renkler CSS değişkenlerinden okunur; palet <html data-palette> ile değişir.
       colors: {
-        ink: {
-          950: '#07080c',
-          900: '#0b0d14',
-          800: '#12141d',
-          700: '#1b1e2b',
-          600: '#272b3b',
-        },
-        brand: {
-          50: '#eef6ff',
-          100: '#d9ecff',
-          200: '#bcdcff',
-          300: '#8ec7ff',
-          400: '#59a7ff',
-          500: '#3385fb',
-          600: '#1d66f0',
-          700: '#1751dc',
-          800: '#1943b2',
-          900: '#1a3c8c',
-        },
-        accent: {
-          400: '#8b5cf6',
-          500: '#7c3aed',
-          600: '#6d28d9',
-        },
+        bg: 'rgb(var(--c-bg) / <alpha-value>)',
+        'bg-soft': 'rgb(var(--c-bg-soft) / <alpha-value>)',
+        'bg-elev': 'rgb(var(--c-bg-elev) / <alpha-value>)',
+        fg: 'rgb(var(--c-fg) / <alpha-value>)',
+        'fg-muted': 'rgb(var(--c-fg-muted) / <alpha-value>)',
+        'fg-subtle': 'rgb(var(--c-fg-subtle) / <alpha-value>)',
+        line: 'rgb(var(--c-line) / <alpha-value>)',
+        accent: 'rgb(var(--c-accent) / <alpha-value>)',
+        'accent-fg': 'rgb(var(--c-accent-fg) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
-        display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['"Instrument Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
-      boxShadow: {
-        glow: '0 0 60px -15px rgba(51, 133, 251, 0.55)',
-        card: '0 20px 45px -25px rgba(0, 0, 0, 0.85)',
+      fontSize: {
+        // Görsel hiyerarşi için sıkı başlık ölçeği
+        display: ['clamp(2.4rem, 4.6vw, 3.75rem)', { lineHeight: '1.06', letterSpacing: '-0.032em' }],
+        headline: ['clamp(1.75rem, 2.9vw, 2.5rem)', { lineHeight: '1.12', letterSpacing: '-0.026em' }],
       },
-      backgroundImage: {
-        'grid-fade':
-          'radial-gradient(circle at 50% 0%, rgba(51,133,251,0.18), transparent 60%)',
+      borderRadius: {
+        '2xl': '18px',
+        '3xl': '26px',
+      },
+      transitionTimingFunction: {
+        // Apple'ın tercih ettiği yumuşak çıkış eğrisi
+        smooth: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
         'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '0%': { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         marquee: {
@@ -57,8 +49,8 @@ export default {
         },
       },
       animation: {
-        'fade-up': 'fade-up 0.6s ease-out both',
-        marquee: 'marquee 28s linear infinite',
+        'fade-up': 'fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
+        marquee: 'marquee 40s linear infinite',
       },
     },
   },

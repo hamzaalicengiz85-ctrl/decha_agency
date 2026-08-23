@@ -58,8 +58,8 @@ export default function Work() {
               className={classNames(
                 'rounded-full border px-5 py-2 text-sm font-medium transition',
                 activeCategory === category
-                  ? 'border-brand-500 bg-brand-500/15 text-white'
-                  : 'border-white/10 text-slate-400 hover:border-white/25 hover:text-white',
+                  ? 'border-accent bg-accent/10 text-fg'
+                  : 'border-line/[0.12] text-fg-muted hover:border-line/25 hover:text-fg',
               )}
             >
               {category}

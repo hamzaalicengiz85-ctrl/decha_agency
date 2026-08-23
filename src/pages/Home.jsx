@@ -72,7 +72,7 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section className="bg-ink-900/30">
+      <Section className="bg-bg-soft/60">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Seçili işler"
@@ -111,9 +111,9 @@ export default function Home() {
             <TestimonialCard key={testimonial.id ?? testimonial.name} testimonial={testimonial} />
           ))}
         </div>
-        <p className="mt-10 text-center text-sm text-slate-500">
+        <p className="mt-10 text-center text-sm text-fg-subtle">
           Referanslarımızla görüşmek ister misiniz?{' '}
-          <Link to="/iletisim" className="link-underline font-semibold text-brand-300">
+          <Link to="/iletisim" className="link-underline font-semibold text-accent">
             Bize yazın
           </Link>
         </p>

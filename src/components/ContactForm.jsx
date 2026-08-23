@@ -104,16 +104,16 @@ export default function ContactForm() {
 
   const inputClass = (field) =>
     classNames(
-      'w-full rounded-xl border bg-ink-950/60 px-4 py-3 text-sm text-white placeholder:text-slate-600 transition focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500',
-      errors[field] ? 'border-rose-500/70' : 'border-white/10',
+      'w-full rounded-xl border bg-fg/[0.03] px-4 py-3 text-sm text-fg transition duration-300 placeholder:text-fg-subtle/70 focus:border-accent focus:outline-none',
+      errors[field] ? 'border-red-500/70' : 'border-line/[0.14]',
     )
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="surface p-6 sm:p-8">
+    <form onSubmit={handleSubmit} noValidate className="glass p-6 sm:p-8">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-300">
-            Ad Soyad <span className="text-rose-400">*</span>
+          <label htmlFor="name" className="mb-2 block text-[13px] font-medium text-fg">
+            Ad Soyad <span className="text-red-400">*</span>
           </label>
           <input
             id="name"
@@ -127,13 +127,13 @@ export default function ContactForm() {
             aria-describedby={errors.name ? 'name-error' : undefined}
           />
           {errors.name ? (
-            <p id="name-error" className="mt-1.5 text-xs text-rose-400">{errors.name}</p>
+            <p id="name-error" className="mt-1.5 text-xs text-red-400">{errors.name}</p>
           ) : null}
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-2 block text-sm font-medium text-slate-300">
-            E-posta <span className="text-rose-400">*</span>
+          <label htmlFor="email" className="mb-2 block text-[13px] font-medium text-fg">
+            E-posta <span className="text-red-400">*</span>
           </label>
           <input
             id="email"
@@ -147,12 +147,12 @@ export default function ContactForm() {
             aria-describedby={errors.email ? 'email-error' : undefined}
           />
           {errors.email ? (
-            <p id="email-error" className="mt-1.5 text-xs text-rose-400">{errors.email}</p>
+            <p id="email-error" className="mt-1.5 text-xs text-red-400">{errors.email}</p>
           ) : null}
         </div>
 
         <div>
-          <label htmlFor="phone" className="mb-2 block text-sm font-medium text-slate-300">
+          <label htmlFor="phone" className="mb-2 block text-[13px] font-medium text-fg">
             Telefon
           </label>
           <input
@@ -164,11 +164,11 @@ export default function ContactForm() {
             placeholder="+90 5xx xxx xx xx"
             className={inputClass('phone')}
           />
-          {errors.phone ? <p className="mt-1.5 text-xs text-rose-400">{errors.phone}</p> : null}
+          {errors.phone ? <p className="mt-1.5 text-xs text-red-400">{errors.phone}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="company" className="mb-2 block text-sm font-medium text-slate-300">
+          <label htmlFor="company" className="mb-2 block text-[13px] font-medium text-fg">
             Şirket
           </label>
           <input
@@ -183,7 +183,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="service" className="mb-2 block text-sm font-medium text-slate-300">
+          <label htmlFor="service" className="mb-2 block text-[13px] font-medium text-fg">
             İlgilendiğiniz hizmet
           </label>
           <select
@@ -203,7 +203,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="budget" className="mb-2 block text-sm font-medium text-slate-300">
+          <label htmlFor="budget" className="mb-2 block text-[13px] font-medium text-fg">
             Bütçe aralığı
           </label>
           <select
@@ -223,8 +223,8 @@ export default function ContactForm() {
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="message" className="mb-2 block text-sm font-medium text-slate-300">
-            Projeniz <span className="text-rose-400">*</span>
+          <label htmlFor="message" className="mb-2 block text-[13px] font-medium text-fg">
+            Projeniz <span className="text-red-400">*</span>
           </label>
           <textarea
             id="message"
@@ -238,22 +238,22 @@ export default function ContactForm() {
             aria-describedby={errors.message ? 'message-error' : undefined}
           />
           {errors.message ? (
-            <p id="message-error" className="mt-1.5 text-xs text-rose-400">{errors.message}</p>
+            <p id="message-error" className="mt-1.5 text-xs text-red-400">{errors.message}</p>
           ) : null}
         </div>
       </div>
 
-      <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm text-slate-400">
+      <label className="mt-7 flex cursor-pointer items-start gap-3 text-[13px] leading-relaxed text-fg-muted">
         <input
           type="checkbox"
           name="kvkk"
           checked={values.kvkk}
           onChange={handleChange}
-          className="mt-0.5 h-4 w-4 rounded border-white/20 bg-ink-950 text-brand-500 focus:ring-brand-500"
+          className="mt-0.5 h-4 w-4 rounded border-line/20 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
         />
         <span>
           Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).
-          {errors.kvkk ? <span className="block text-xs text-rose-400">{errors.kvkk}</span> : null}
+          {errors.kvkk ? <span className="block text-xs text-red-400">{errors.kvkk}</span> : null}
         </span>
       </label>
 
@@ -262,7 +262,7 @@ export default function ContactForm() {
           {status === 'loading' ? 'Gönderiliyor…' : 'Mesajı Gönder'}
           {status !== 'loading' ? <Icon name="arrow" className="h-4 w-4" /> : null}
         </Button>
-        <p className="text-xs text-slate-500">Ortalama yanıt süremiz 1 iş günü.</p>
+        <p className="text-xs text-fg-subtle">Ortalama yanıt süremiz 1 iş günü.</p>
       </div>
 
       {feedback ? (
@@ -272,8 +272,8 @@ export default function ContactForm() {
           className={classNames(
             'mt-5 flex items-start gap-2 rounded-xl border p-4 text-sm',
             status === 'success'
-              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-              : 'border-rose-500/30 bg-rose-500/10 text-rose-300',
+              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
+              : 'border-red-500/30 bg-red-500/10 text-red-400',
           )}
         >
           <Icon name={status === 'success' ? 'check' : 'close'} className="mt-0.5 h-4 w-4 shrink-0" />

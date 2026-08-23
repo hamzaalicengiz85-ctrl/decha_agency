@@ -4,18 +4,22 @@ export default function ClientMarquee() {
   const items = [...clients, ...clients]
 
   return (
-    <section className="border-y border-white/10 bg-ink-900/40 py-10">
+    <section className="border-y hairline py-12">
       <div className="container">
-        <p className="text-center text-xs uppercase tracking-[0.24em] text-slate-500">
-          Birlikte çalıştığımız markalar
-        </p>
+        <p className="eyebrow text-center">Birlikte çalıştığımız markalar</p>
       </div>
-      <div className="relative mt-8 overflow-hidden">
-        <div className="flex w-max animate-marquee gap-14 px-7">
+      <div
+        className="relative mt-9 overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)',
+          WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)',
+        }}
+      >
+        <div className="flex w-max animate-marquee gap-16 px-8">
           {items.map((client, index) => (
             <span
               key={`${client}-${index}`}
-              className="whitespace-nowrap font-display text-xl font-bold text-slate-600 transition hover:text-slate-300"
+              className="whitespace-nowrap font-display text-lg font-medium tracking-[-0.02em] text-fg-muted/70 transition duration-300 hover:text-fg"
             >
               {client}
             </span>

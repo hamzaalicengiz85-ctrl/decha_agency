@@ -35,8 +35,8 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="text-3xl font-bold text-white">Proje bulunamadı</h1>
-        <p className="mt-4 text-slate-400">Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.</p>
+        <h1 className="text-3xl font-bold text-fg">Proje bulunamadı</h1>
+        <p className="mt-4 text-fg-muted">Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.</p>
         <Button to="/projeler" className="mt-8">
           Tüm projelere dön
         </Button>
@@ -53,7 +53,7 @@ export default function ProjectDetail() {
       <Section className="pb-8 pt-12">
         <Link
           to="/projeler"
-          className="inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-white"
+          className="inline-flex items-center gap-2 text-sm text-fg-muted transition hover:text-fg"
         >
           <Icon name="arrow" className="h-4 w-4 rotate-180" />
           Projeler
@@ -61,30 +61,30 @@ export default function ProjectDetail() {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div>
-            <span className="rounded-full bg-brand-500/10 px-3 py-1 text-xs font-medium text-brand-300">
+            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
               {project.category}
             </span>
-            <h1 className="mt-5 text-4xl font-extrabold leading-tight sm:text-5xl">
+            <h1 className="mt-5 text-4xl font-semibold leading-tight sm:text-5xl">
               {project.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg text-slate-400">{project.summary}</p>
+            <p className="mt-5 max-w-2xl text-lg text-fg-muted">{project.summary}</p>
           </div>
 
           <dl className="grid grid-cols-2 gap-4">
-            <div className="surface p-5">
-              <dt className="text-xs uppercase tracking-widest text-slate-500">Müşteri</dt>
-              <dd className="mt-2 font-semibold text-white">{project.client}</dd>
+            <div className="glass p-5">
+              <dt className="eyebrow">Müşteri</dt>
+              <dd className="mt-2 font-semibold text-fg">{project.client}</dd>
             </div>
-            <div className="surface p-5">
-              <dt className="text-xs uppercase tracking-widest text-slate-500">Yıl</dt>
-              <dd className="mt-2 font-semibold text-white">{project.year}</dd>
+            <div className="glass p-5">
+              <dt className="eyebrow">Yıl</dt>
+              <dd className="mt-2 font-semibold text-fg">{project.year}</dd>
             </div>
           </dl>
         </div>
       </Section>
 
       <div className="container">
-        <div className="overflow-hidden rounded-3xl border border-white/10">
+        <div className="overflow-hidden rounded-3xl border hairline">
           <img
             src={project.cover_url}
             alt={`${project.title} kapak görseli`}
@@ -97,7 +97,7 @@ export default function ProjectDetail() {
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           <div>
             <h2 className="text-2xl font-bold">Proje hakkında</h2>
-            <div className="mt-5 space-y-4 text-base leading-relaxed text-slate-400">
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-fg-muted">
               {String(project.description ?? '')
                 .split('\n')
                 .filter(Boolean)
@@ -111,7 +111,7 @@ export default function ProjectDetail() {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/10 px-4 py-1.5 text-sm text-slate-300"
+                    className="rounded-full border hairline px-4 py-1.5 text-sm text-fg-muted"
                   >
                     {tag}
                   </span>
@@ -121,17 +121,17 @@ export default function ProjectDetail() {
           </div>
 
           {metrics.length > 0 ? (
-            <aside className="surface h-fit p-7">
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-slate-400">
+            <aside className="glass h-fit p-7">
+              <h3 className="eyebrow">
                 Sonuçlar
               </h3>
               <dl className="mt-6 space-y-6">
                 {metrics.map((metric) => (
                   <div key={metric.label}>
-                    <dd className="font-display text-3xl font-extrabold text-gradient">
+                    <dd className="font-display text-3xl font-semibold text-accent">
                       {metric.value}
                     </dd>
-                    <dt className="mt-1 text-sm text-slate-400">{metric.label}</dt>
+                    <dt className="mt-1 text-sm text-fg-muted">{metric.label}</dt>
                   </div>
                 ))}
               </dl>
@@ -141,14 +141,14 @@ export default function ProjectDetail() {
       </Section>
 
       {related.length > 0 ? (
-        <Section className="bg-ink-900/30 pt-0">
+        <Section className="bg-bg-soft/60 pt-0">
           <h2 className="text-2xl font-bold">Diğer projeler</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link
                 key={item.slug}
                 to={`/projeler/${item.slug}`}
-                className="surface surface-hover flex items-center gap-4 p-5"
+                className="glass glass-hover flex items-center gap-4 p-5"
               >
                 <img
                   src={item.cover_url}
@@ -157,8 +157,8 @@ export default function ProjectDetail() {
                   className="h-16 w-16 shrink-0 rounded-xl object-cover"
                 />
                 <div>
-                  <p className="font-semibold text-white">{item.title}</p>
-                  <p className="mt-1 text-xs text-slate-500">{item.category}</p>
+                  <p className="font-semibold text-fg">{item.title}</p>
+                  <p className="mt-1 text-xs text-fg-subtle">{item.category}</p>
                 </div>
               </Link>
             ))}

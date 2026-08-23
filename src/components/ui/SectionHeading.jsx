@@ -13,19 +13,21 @@ export default function SectionHeading({
   className,
 }) {
   return (
-    <div
-      className={classNames('max-w-2xl', align === 'center' && 'mx-auto text-center', className)}
-    >
+    <div className={classNames('max-w-2xl', align === 'center' && 'mx-auto text-center', className)}>
       {eyebrow ? (
-        <span className="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-brand-200">
-          {eyebrow}
-        </span>
+        <div
+          className={classNames(
+            'flex items-center gap-3',
+            align === 'center' && 'justify-center',
+          )}
+        >
+          <span className="h-px w-6 bg-accent/60" />
+          <span className="eyebrow">{eyebrow}</span>
+        </div>
       ) : null}
-      <Heading className="mt-5 text-3xl font-bold leading-tight sm:text-4xl lg:text-[2.75rem]">
-        {title}
-      </Heading>
+      <Heading className="mt-5 text-headline font-semibold">{title}</Heading>
       {description ? (
-        <p className="mt-4 text-base leading-relaxed text-slate-400 sm:text-lg">{description}</p>
+        <p className="mt-5 text-base leading-relaxed text-fg-muted sm:text-[17px]">{description}</p>
       ) : null}
     </div>
   )
