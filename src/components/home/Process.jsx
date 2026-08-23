@@ -1,28 +1,39 @@
 import Section from '../ui/Section'
 import SectionHeading from '../ui/SectionHeading'
+import Crt from '../ui/Crt'
 import { processSteps } from '../../data/content'
 
 export default function Process() {
   return (
     <Section>
       <SectionHeading
-        eyebrow="Süreç"
-        title="Nasıl çalışıyoruz?"
-        description="Şeffaf, ölçülebilir ve tahmin edilebilir. Her aşamada nerede olduğunuzu bilirsiniz."
+        code="03"
+        eyebrow="İşleyiş"
+        title="Dosya nasıl ilerler?"
+        description="Şeffaf, ölçülebilir ve tahmin edilebilir. Her aşama kayıt altına alınır."
         align="center"
       />
 
-      {/* Adımlar tek bir hairline hat üzerinde ilerler — zaman çizelgesi hissi. */}
-      <ol className="relative mt-16 grid gap-px overflow-hidden rounded-2xl border hairline md:grid-cols-2 lg:grid-cols-4"
-          style={{ backgroundColor: 'rgb(var(--c-line) / var(--line-op))' }}>
-        {processSteps.map((item) => (
-          <li key={item.step} className="group bg-bg p-8 transition duration-500 hover:bg-bg-soft">
-            <span className="num font-mono text-xs tracking-[0.2em] text-accent">{item.step}</span>
-            <h3 className="mt-5 text-lg font-semibold text-fg">{item.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.text}</p>
-          </li>
-        ))}
-      </ol>
+      <div className="mt-12">
+        <Crt label="İzleme · Kanal 03" channel="SÜREÇ" sweep={false}>
+          <ol className="grid gap-px bg-line/20 md:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((item) => (
+              <li key={item.step} className="bg-bg p-7">
+                <div className="flex items-baseline gap-2">
+                  <span className="num font-display text-3xl font-bold text-accent-ink">
+                    {item.step}
+                  </span>
+                  <span className="h-px flex-1 bg-line/25" aria-hidden="true" />
+                </div>
+                <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-fg">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{item.text}</p>
+              </li>
+            ))}
+          </ol>
+        </Crt>
+      </div>
     </Section>
   )
 }

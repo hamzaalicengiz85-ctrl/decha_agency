@@ -11,12 +11,12 @@ export default function Layout() {
       <ScrollToTop />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-accent-fg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-medium focus:uppercase focus:text-accent-fg"
       >
         İçeriğe geç
       </a>
       <Navbar />
-      <main id="main" className="flex-1 pt-24 sm:pt-28">
+      <main id="main" className="flex-1 pt-[84px] sm:pt-[92px]">
         <Suspense
           fallback={
             <div className="flex min-h-[60vh] items-center justify-center">

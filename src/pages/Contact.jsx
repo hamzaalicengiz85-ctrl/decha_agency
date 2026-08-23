@@ -30,7 +30,8 @@ export default function Contact() {
     <>
       <Section spacing="intro">
         <SectionHeading
-          eyebrow="İletişim"
+          code="06"
+          eyebrow="Başvuru masası"
           title="Projenizi konuşalım"
           as="h1"
           description="Formu doldurun, en geç 1 iş günü içinde size dönüş yapalım. Dilerseniz doğrudan e-posta veya telefonla da ulaşabilirsiniz."
@@ -42,8 +43,8 @@ export default function Contact() {
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-4">
             {channels.map((channel) => (
-              <div key={channel.label} className="glass flex items-start gap-4 p-6">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-accent/10 text-accent">
+              <div key={channel.label} className="panel flex items-start gap-4 p-5">
+                <span className="grid h-10 w-10 shrink-0 place-items-center border border-line/25 text-accent-ink">
                   <Icon name={channel.icon} className="h-5 w-5" />
                 </span>
                 <div>
@@ -51,18 +52,18 @@ export default function Contact() {
                   {channel.href ? (
                     <a
                       href={channel.href}
-                      className="mt-1 block font-semibold text-fg transition hover:text-accent"
+                      className="mt-1.5 block font-mono text-[13px] text-fg transition hover:text-accent-ink"
                     >
                       {channel.value}
                     </a>
                   ) : (
-                    <p className="mt-1 font-semibold text-fg">{channel.value}</p>
+                    <p className="mt-1.5 font-mono text-[13px] text-fg">{channel.value}</p>
                   )}
                 </div>
               </div>
             ))}
 
-            <div className="glass overflow-hidden bg-bg-elev">
+            <div className="panel overflow-hidden bg-bg-soft">
               <iframe
                 title="Ofis konumu haritası"
                 src="https://www.openstreetmap.org/export/embed.html?bbox=28.9%2C41.0%2C29.1%2C41.12&layer=mapnik"
@@ -79,18 +80,18 @@ export default function Contact() {
       </Section>
 
       <Section spacing="top-none" className="bg-bg-soft/60">
-        <SectionHeading eyebrow="SSS" title="Sık sorulan sorular" align="center" />
+        <SectionHeading code="05" eyebrow="Bilgi notu" title="Sık sorulan sorular" align="center" />
         <div className="mx-auto mt-12 max-w-3xl space-y-4">
           {faqs.map((faq) => (
             <details
               key={faq.q}
-              className="glass group px-6 py-5 [&_summary::-webkit-details-marker]:hidden"
+              className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-fg">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.02em] text-fg">
                 {faq.q}
                 <Icon
                   name="plus"
-                  className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
+                  className="h-5 w-5 shrink-0 text-accent-ink transition group-open:rotate-45"
                 />
               </summary>
               <p className="mt-4 text-sm leading-relaxed text-fg-muted">{faq.a}</p>

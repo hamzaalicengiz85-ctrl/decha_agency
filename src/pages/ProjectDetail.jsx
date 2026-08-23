@@ -61,30 +61,30 @@ export default function ProjectDetail() {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div>
-            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent-ink">
               {project.category}
             </span>
-            <h1 className="mt-5 text-4xl font-semibold leading-tight sm:text-5xl">
+            <h1 className="mt-5 text-4xl font-bold leading-tight sm:text-5xl">
               {project.title}
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-fg-muted">{project.summary}</p>
           </div>
 
           <dl className="grid grid-cols-2 gap-4">
-            <div className="glass p-5">
+            <div className="panel p-5">
               <dt className="eyebrow">Müşteri</dt>
-              <dd className="mt-2 font-semibold text-fg">{project.client}</dd>
+              <dd className="mt-2 font-bold text-fg">{project.client}</dd>
             </div>
-            <div className="glass p-5">
+            <div className="panel p-5">
               <dt className="eyebrow">Yıl</dt>
-              <dd className="mt-2 font-semibold text-fg">{project.year}</dd>
+              <dd className="mt-2 font-bold text-fg">{project.year}</dd>
             </div>
           </dl>
         </div>
       </Section>
 
       <div className="container">
-        <div className="overflow-hidden rounded-3xl border hairline">
+        <div className="overflow-hidden rounded-none border border-line/20">
           <img
             src={project.cover_url}
             alt={`${project.title} kapak görseli`}
@@ -111,7 +111,7 @@ export default function ProjectDetail() {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border hairline px-4 py-1.5 text-sm text-fg-muted"
+                    className="border border-line/25 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-fg-subtle"
                   >
                     {tag}
                   </span>
@@ -121,14 +121,14 @@ export default function ProjectDetail() {
           </div>
 
           {metrics.length > 0 ? (
-            <aside className="glass h-fit p-7">
+            <aside className="panel h-fit p-7">
               <h3 className="eyebrow">
                 Sonuçlar
               </h3>
               <dl className="mt-6 space-y-6">
                 {metrics.map((metric) => (
                   <div key={metric.label}>
-                    <dd className="font-display text-3xl font-semibold text-accent">
+                    <dd className="font-display text-3xl font-bold text-accent-ink">
                       {metric.value}
                     </dd>
                     <dt className="mt-1 text-sm text-fg-muted">{metric.label}</dt>
@@ -148,16 +148,16 @@ export default function ProjectDetail() {
               <Link
                 key={item.slug}
                 to={`/projeler/${item.slug}`}
-                className="glass glass-hover flex items-center gap-4 p-5"
+                className="panel panel-hover flex items-center gap-4 p-5"
               >
                 <img
                   src={item.cover_url}
                   alt=""
                   loading="lazy"
-                  className="h-16 w-16 shrink-0 rounded-xl object-cover"
+                  className="h-16 w-16 shrink-0 rounded-none object-cover"
                 />
                 <div>
-                  <p className="font-semibold text-fg">{item.title}</p>
+                  <p className="font-bold text-fg">{item.title}</p>
                   <p className="mt-1 text-xs text-fg-subtle">{item.category}</p>
                 </div>
               </Link>

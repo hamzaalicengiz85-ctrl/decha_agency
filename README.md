@@ -138,11 +138,11 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 └── src/
     ├── App.jsx               # Rotalar (lazy loading ile)
     ├── main.jsx              # Giriş noktası
-    ├── index.css             # Tailwind katmanları + 3 palet + cam paneller
+    ├── index.css             # Token'lar (kağıt + fosfor) + CRT/damga/plaka malzemeleri
     ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
     │   ├── layout/           # Navbar, Footer, Layout, ScrollToTop
-    │   ├── ui/               # Button, Section, Icon, Loader…
+    │   ├── ui/               # Crt, Button, Stamp, Logo, Section, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
     │   ├── ProjectCard.jsx / PostCard.jsx / ServiceCard.jsx / TestimonialCard.jsx
@@ -163,48 +163,70 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 
 ## Tasarım sistemi
 
-Tüm renkler `src/index.css` içinde **CSS değişkeni** olarak tanımlıdır; Tailwind bu
-değişkenleri okur. Bileşenlerde sabit renk (örn. `text-slate-400`) kullanılmaz —
-sadece anlamsal token'lar: `bg`, `bg-soft`, `bg-elev`, `fg`, `fg-muted`, `fg-subtle`,
-`line`, `accent`, `accent-fg`.
+Görsel dil: **retro bürokrasi** — 60–70'ler kurum estetiği, tüplü televizyon
+monitörleri, damgalı dosya kartları ve daktilo formları. Referans, Loki dizisindeki
+TVA kurumunun görsel dünyasıdır; markalı varlıklar kopyalanmaz, yalnızca estetik
+yorumlanır.
 
-### Palet değiştirme
+### Marka renkleri ve rolleri
 
-Palet `index.html` içindeki tek bir öznitelikle değişir:
+Ham renkler her yerde kullanılamaz: turuncu ve hardal, açık zeminde küçük metin için
+kontrast eşiğini geçmez (ölçülen 1.67 ve 1.22). Bu yüzden her renk bir **role**
+ayrılmıştır — dolgu renkleri ham kalır, metin renkleri ölçülmüş türevlerdir.
 
-```html
-<html lang="tr" data-palette="pearl">
+| Renk | Değer | Rolü |
+| ---- | ----- | ---- |
+| TVA Turuncusu | `rgb(255 107 0)` | `--c-accent` · buton dolgusu, led, grafik öğeler. Metin olarak **kullanılmaz** |
+| — türevi | `rgb(164 78 18)` | `--c-accent-ink` · kağıt zeminde vurgu metni (4.54) |
+| Hardal Sarısı | `rgb(229 169 60)` | `--c-highlight` · ikincil dolgu; üzerine kahve metin (5.68) |
+| Kritik Kırmızı | `rgb(195 32 38)` | `--c-danger` · damgalar, form hataları (4.70) |
+| Memur Beji | `rgb(217 195 165)` | Sayfa zemininin kaynağı; CRT ekranında fosfor metin rengi (10.98) |
+| Endüstriyel Kahve | `rgb(74 50 37)` | `--c-fg` · ana metin (9.42), CRT gövde dökümü, hairline'lar |
+| Arduvaz Grisi | `rgb(92 100 102)` | `--c-fg-muted` / `--c-fg-subtle` · ikincil metin (5.60 / 4.81) |
+
+### İki yüzey, tek token seti
+
+Site iki yüzeyden oluşur ve **aynı** token adlarını kullanır:
+
+- **Kağıt** (`:root`) — bürokrasi zemini, milimetrik ızgara ve kağıt dokusu
+- **Fosfor** (`.screen-phosphor`) — CRT ekranının içi; koyu, sıcak, bej metinli
+
+`.screen-phosphor` token'ları yeniden tanımladığı için, ekranın **içine giren her
+bileşen** (kart, form, buton) ayrı bir varyanta ihtiyaç duymadan otomatik uyum sağlar.
+
+### CRT bileşeni
+
+```jsx
+<Crt label="Arşiv · Kanal 02" channel="SEÇİLİ İŞLER" tone="phosphor">
+  {/* içerik */}
+</Crt>
 ```
 
-| Değer      | Palet     | Karakter                                                        |
-| ---------- | --------- | --------------------------------------------------------------- |
-| `pearl`    | **Sedef** | **Varsayılan.** Kırık beyaz kağıt, mürekkep siyahı, sinyal turuncusu. Açık, editoryal, premium. |
-| `titanium` | Titanyum  | Sıcak grafit zemin, şampanya-titanyum vurgu. Neredeyse monokrom, Apple donanım hissi. |
-| `abyss`    | Abyss     | Derin petrol mürekkep, aurora mint vurgu. Koyu, teknik, fütüristik. |
-
-Öznitelik hiç verilmezse Sedef paleti geçerli olur (`:root` varsayılanı).
-
-### Cam paneller
-
-`.glass` sınıfı Apple tarzı yarı saydam yüzeyi üretir: katmanlı dolgu + `backdrop-filter`
-bulanıklığı + doygunluk artışı + üst kenarda 1px ışık çizgisi + yumuşak ortam gölgesi.
-Her palet kendi cam değerlerini tanımlar, bu yüzden açık temada da doğru görünür.
+Kasa katmanları: döküm gövde (kahve degrade + gren) → köşe vidaları → künye plakası
+ve led → tüp camı (yastık kavisli köşeler) → tarama çizgileri → köşe karartması →
+cam yansıması → alt havalandırma ve kadranlar. `tone="paper"` açık ekran verir
+(proje ve blog kartlarındaki küçük monitörler bunu kullanır).
 
 ### Tipografi
 
-- **Instrument Sans** — başlıklar
-- **Inter** — gövde metni
-- **JetBrains Mono** — etiketler, sayılar, üst başlıklar (eyebrow)
+- **Chakra Petch** — başlıklar; köşeli, retro-teknik karakter
+- **Archivo** — gövde metni
+- **IBM Plex Mono** — form alanları, etiketler, dosya numaraları, terminal okumaları
 
-Fontlar `public/fonts/` altında **self-host** edilir (değişken woff2, latin + latin-ext).
-Google Fonts CDN'e istek gitmez: daha hızlı ilk boyama, üçüncü taraf bağımlılığı yok,
-Türkçe karakterler (ğ, ı, ş, İ) eksiksiz.
+Fontlar `public/fonts/` altında self-host edilir (latin + latin-ext → Türkçe tam
+destek). Google Fonts CDN'e istek gitmez.
 
 ### Erişilebilirlik
 
-Kontrast oranları tarayıcıda ölçülerek doğrulanmıştır. Üç palette de gövde, ikincil ve
-üçüncül metin ile vurgu üzerindeki metin **4.5:1** eşiğini geçer. Butonlar 44px dokunma
-hedefini korur, `prefers-reduced-motion` desteklenir.
+Kontrast iki katmanda doğrulanmıştır:
+
+1. **Token düzeyi** — her iki yüzeyde de 8 renk çiftinin tamamı 4.5:1 üzerinde.
+2. **Gerçek piksel düzeyi** — CRT kaplamaları (tarama çizgileri + köşe karartması)
+   metnin üzerinde durduğu için ekran görüntüsünden piksel örneklenerek ölçüldü:
+   gövde metni 5.02, ekran kenarındaki vurgu metni 5.41.
+
+Butonlar 44px dokunma hedefini korur; `prefers-reduced-motion` altında tarama bandı,
+yanıp sönen ledler ve tüm geçişler durur.
 
 ### Boşluk ölçeği
 

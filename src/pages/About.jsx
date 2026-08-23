@@ -46,7 +46,8 @@ export default function About() {
     <>
       <Section spacing="intro">
         <SectionHeading
-          eyebrow="Hakkımızda"
+          code="03"
+          eyebrow="Kurum künyesi"
           title="Dijital ürünler geliştiren küçük ama iddialı bir ekibiz"
           as="h1"
           description="2018'den bu yana kurumsal markalar ve girişimler için tasarım ve yazılım üretiyoruz. İşimizi ajans değil, ürün ekibi gibi yapıyoruz."
@@ -56,12 +57,12 @@ export default function About() {
 
       <Section spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl border hairline">
+          <div className="overflow-hidden rounded-none border border-line/20">
             <img
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
               alt="Decha Agency ekibi çalışırken"
               loading="lazy"
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-[4/3] w-full object-cover grayscale-[0.3] sepia-[0.15]"
             />
           </div>
           <div>
@@ -80,8 +81,8 @@ export default function About() {
 
             <dl className="mt-10 grid grid-cols-2 gap-4">
               {stats.map((item) => (
-                <div key={item.label} className="glass p-5">
-                  <dd className="font-display text-2xl font-semibold text-fg">{item.value}</dd>
+                <div key={item.label} className="panel p-5">
+                  <dd className="font-display text-2xl font-bold text-fg">{item.value}</dd>
                   <dt className="mt-1 eyebrow">
                     {item.label}
                   </dt>
@@ -93,11 +94,11 @@ export default function About() {
       </Section>
 
       <Section className="bg-bg-soft/60">
-        <SectionHeading eyebrow="Değerlerimiz" title="Bizi biz yapan dört ilke" align="center" />
+        <SectionHeading code="07" eyebrow="Yönetmelik" title="Bizi biz yapan dört ilke" align="center" />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
-            <div key={value.title} className="glass glass-hover p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-accent/10 text-accent">
+            <div key={value.title} className="panel panel-hover p-7">
+              <span className="grid h-10 w-10 place-items-center border border-line/25 text-accent-ink">
                 <Icon name={value.icon} className="h-5 w-5" />
               </span>
               <h3 className="mt-5 text-lg font-bold text-fg">{value.title}</h3>
@@ -108,19 +109,19 @@ export default function About() {
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="Ekip" title="Projenizde çalışacak kişiler" align="center" />
+        <SectionHeading code="08" eyebrow="Personel" title="Projenizde çalışacak kişiler" align="center" />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member) => (
-            <div key={member.name} className="glass overflow-hidden text-center">
+            <div key={member.name} className="panel overflow-hidden pb-1 text-center">
               <img
                 src={member.avatar}
                 alt={member.name}
                 loading="lazy"
-                className="aspect-square w-full object-cover"
+                className="aspect-square w-full object-cover grayscale-[0.4] sepia-[0.18]"
               />
               <div className="p-5">
-                <p className="font-semibold text-fg">{member.name}</p>
-                <p className="mt-1 text-xs text-fg-subtle">{member.role}</p>
+                <p className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-fg">{member.name}</p>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle">{member.role}</p>
               </div>
             </div>
           ))}

@@ -4,26 +4,29 @@ export default function ClientMarquee() {
   const items = [...clients, ...clients]
 
   return (
-    <section className="border-y hairline py-12">
-      <div className="container">
-        <p className="eyebrow text-center">Birlikte çalıştığımız markalar</p>
-      </div>
-      <div
-        className="relative mt-9 overflow-hidden"
-        style={{
-          maskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)',
-          WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)',
-        }}
-      >
-        <div className="flex w-max animate-marquee gap-16 px-8">
-          {items.map((client, index) => (
-            <span
-              key={`${client}-${index}`}
-              className="whitespace-nowrap font-display text-lg font-medium tracking-[-0.02em] text-fg-muted/70 transition duration-300 hover:text-fg"
-            >
-              {client}
-            </span>
-          ))}
+    <section className="border-y border-line/20 bg-bg-soft/70 py-6">
+      <div className="container flex items-center gap-4">
+        <span className="hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.22em] text-fg-subtle sm:inline">
+          Kayıtlı kurumlar
+        </span>
+        <div
+          className="relative flex-1 overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)',
+            WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)',
+          }}
+        >
+          <div className="flex w-max animate-marquee items-center gap-10">
+            {items.map((client, index) => (
+              <span
+                key={`${client}-${index}`}
+                className="flex items-center gap-3 whitespace-nowrap font-mono text-[12px] uppercase tracking-[0.16em] text-fg-muted"
+              >
+                <span className="h-1 w-1 bg-accent" aria-hidden="true" />
+                {client}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

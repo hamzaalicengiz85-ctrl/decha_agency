@@ -24,7 +24,8 @@ export default function Services() {
     <>
       <Section spacing="intro">
         <SectionHeading
-          eyebrow="Hizmetler"
+          code="01"
+          eyebrow="Hizmet kataloğu"
           title="İhtiyacınız olan her şey, tek ekipte"
           as="h1"
           description="Strateji, tasarım, yazılım ve pazarlamayı birbirinden kopuk süreçler olarak değil; tek bir bütün olarak ele alıyoruz."
@@ -38,20 +39,20 @@ export default function Services() {
         ) : serviceList.length === 0 ? (
           <EmptyState title="Henüz hizmet eklenmemiş" />
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {serviceList.map((service) => (
-              <ServiceCard key={service.id ?? service.slug} service={service} />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {serviceList.map((service, index) => (
+              <ServiceCard key={service.id ?? service.slug} service={service} index={index} />
             ))}
           </div>
         )}
       </Section>
 
       <Section className="bg-bg-soft/60">
-        <SectionHeading eyebrow="Çalışma şeklimiz" title="4 adımda net bir süreç" align="center" />
+        <SectionHeading code="03" eyebrow="İşleyiş" title="4 adımda net bir süreç" align="center" />
         <ol className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((item) => (
-            <li key={item.step} className="glass p-7">
-              <span className="font-display text-4xl font-semibold text-fg/10">{item.step}</span>
+            <li key={item.step} className="panel p-6">
+              <span className="num font-display text-3xl font-bold text-accent-ink">{item.step}</span>
               <h3 className="mt-4 text-lg font-bold text-fg">{item.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.text}</p>
             </li>
@@ -60,21 +61,21 @@ export default function Services() {
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="SSS" title="Sık sorulan sorular" align="center" />
+        <SectionHeading code="05" eyebrow="Bilgi notu" title="Sık sorulan sorular" align="center" />
         <div className="mx-auto mt-12 max-w-3xl space-y-4">
           {faqs.map((faq) => (
             <details
               key={faq.q}
-              className="glass group px-6 py-5 [&_summary::-webkit-details-marker]:hidden"
+              className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-fg">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.02em] text-fg">
                 {faq.q}
                 <Icon
                   name="plus"
-                  className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
+                  className="h-5 w-5 shrink-0 text-accent-ink transition group-open:rotate-45"
                 />
               </summary>
-              <p className="mt-4 text-sm leading-relaxed text-fg-muted">{faq.a}</p>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{faq.a}</p>
             </details>
           ))}
         </div>

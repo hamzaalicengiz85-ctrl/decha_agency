@@ -4,11 +4,13 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: { DEFAULT: '1.25rem', lg: '2.5rem' },
-      screens: { '2xl': '1240px' },
+      padding: { DEFAULT: '1rem', lg: '2rem' },
+      screens: { '2xl': '1280px' },
     },
     extend: {
-      // Renkler CSS değişkenlerinden okunur; palet <html data-palette> ile değişir.
+      // Renkler CSS değişkenlerinden okunur. Sayfa ve CRT ekranı farklı
+      // token setleri taşır; .screen-phosphor içindeki her bileşen
+      // otomatik olarak koyu ekran renklerine geçer.
       colors: {
         bg: 'rgb(var(--c-bg) / <alpha-value>)',
         'bg-soft': 'rgb(var(--c-bg-soft) / <alpha-value>)',
@@ -17,40 +19,55 @@ export default {
         'fg-muted': 'rgb(var(--c-fg-muted) / <alpha-value>)',
         'fg-subtle': 'rgb(var(--c-fg-subtle) / <alpha-value>)',
         line: 'rgb(var(--c-line) / <alpha-value>)',
+        // accent = dolgu (ham TVA turuncusu), accent-ink = metin için güvenli türev
         accent: 'rgb(var(--c-accent) / <alpha-value>)',
+        'accent-ink': 'rgb(var(--c-accent-ink) / <alpha-value>)',
         'accent-fg': 'rgb(var(--c-accent-fg) / <alpha-value>)',
+        highlight: 'rgb(var(--c-highlight) / <alpha-value>)',
+        'highlight-fg': 'rgb(var(--c-highlight-fg) / <alpha-value>)',
+        danger: 'rgb(var(--c-danger) / <alpha-value>)',
+        'danger-fg': 'rgb(var(--c-danger-fg) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        display: ['"Instrument Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        sans: ['Archivo', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        display: ['"Chakra Petch"', 'Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       fontSize: {
-        // Görsel hiyerarşi için sıkı başlık ölçeği
-        display: ['clamp(2.4rem, 4.6vw, 3.75rem)', { lineHeight: '1.06', letterSpacing: '-0.032em' }],
-        headline: ['clamp(1.75rem, 2.9vw, 2.5rem)', { lineHeight: '1.12', letterSpacing: '-0.026em' }],
+        display: ['clamp(2.2rem, 4.4vw, 3.6rem)', { lineHeight: '1.04', letterSpacing: '0.005em' }],
+        headline: ['clamp(1.6rem, 2.7vw, 2.3rem)', { lineHeight: '1.12', letterSpacing: '0.005em' }],
       },
       borderRadius: {
-        '2xl': '18px',
-        '3xl': '26px',
+        // Retro donanım: yumuşak yuvarlaklar yerine sert, küçük kavisler
+        DEFAULT: '3px',
+        md: '4px',
+        lg: '5px',
+        xl: '6px',
+        '2xl': '8px',
+        '3xl': '12px',
       },
       transitionTimingFunction: {
-        // Apple'ın tercih ettiği yumuşak çıkış eğrisi
-        smooth: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        // Mekanik his: sürekli eğri yerine kademeli hareket
+        step: 'steps(3, end)',
       },
       keyframes: {
         'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(14px)' },
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         marquee: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        blink: {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0.15' },
+        },
       },
       animation: {
-        'fade-up': 'fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
-        marquee: 'marquee 40s linear infinite',
+        'fade-up': 'fade-up 0.5s steps(6, end) both',
+        marquee: 'marquee 42s linear infinite',
+        blink: 'blink 1.4s steps(1, end) infinite',
       },
     },
   },

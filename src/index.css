@@ -5,123 +5,109 @@
 @tailwind utilities;
 
 /* ============================================================
-   PALETLER
-   Aktif palet <html data-palette="..."> ile seçilir (index.html).
-   Renkler RGB kanalı olarak tutulur; Tailwind'in /opacity
-   modifikatörleri (örn. text-fg/60) bu sayede çalışır.
+   DECHA · RETRO BÜRO PALETİ
+   Marka renkleri (ham):
+     TVA Turuncusu       rgb(255 107   0)
+     Hardal Sarısı       rgb(229 169  60)
+     Kritik Kırmızı      rgb(195  32  38)
+     Memur Beji          rgb(217 195 165)
+     Endüstriyel Kahve   rgb( 74  50  37)
+     Arduvaz Grisi       rgb( 92 100 102)
+
+   Ham renkler her yerde doğrudan kullanılamaz: turuncu ve hardal
+   açık zeminde küçük metin için kontrast eşiğini geçmez (1.67 ve 1.22).
+   Bu yüzden her renk role ayrılmıştır — dolgu renkleri ham kalır,
+   metin renkleri ölçülmüş türevlerdir.
    ============================================================ */
 
 @layer base {
-  /* ---------- A · TITANYUM ---------- */
-  /* Sıcak grafit taban, şampanya-titanyum vurgu. Neredeyse monokrom. */
-  [data-palette='titanium'] {
-    color-scheme: dark;
-
-    --c-bg: 15 15 17;
-    --c-bg-soft: 21 21 24;
-    --c-bg-elev: 28 28 32;
-    --c-fg: 244 243 241;
-    --c-fg-muted: 162 161 158;
-    --c-fg-subtle: 126 126 129;
-    --c-line: 255 255 255;
-    --c-accent: 214 204 186;
-    --c-accent-fg: 20 19 17;
-    --c-accent-soft: 214 204 186;
-
-    --line-op: 0.1;
-    --line-op-strong: 0.16;
-
-    --glass-fill: linear-gradient(
-      168deg,
-      rgb(255 255 255 / 0.075) 0%,
-      rgb(255 255 255 / 0.035) 42%,
-      rgb(255 255 255 / 0.02) 100%
-    );
-    --glass-border: rgb(255 255 255 / 0.11);
-    --glass-highlight: rgb(255 255 255 / 0.14);
-    --glass-shadow: 0 32px 64px -40px rgb(0 0 0 / 0.9);
-    --glass-blur: 22px;
-
-    --ambient-1: 214 204 186;
-    --ambient-2: 120 128 140;
-    --ambient-op: 0.075;
-    --grain-op: 0.035;
-    --map-filter: invert(92%) hue-rotate(180deg) brightness(0.95) contrast(0.9);
-  }
-
-  /* ---------- B · ABYSS ---------- */
-  /* Derin petrol mürekkep, aurora mint vurgu. Teknik ve fütüristik. */
-  [data-palette='abyss'] {
-    color-scheme: dark;
-
-    --c-bg: 7 17 20;
-    --c-bg-soft: 10 24 28;
-    --c-bg-elev: 14 33 38;
-    --c-fg: 232 244 242;
-    --c-fg-muted: 143 168 168;
-    --c-fg-subtle: 108 132 134;
-    --c-line: 180 240 230;
-    --c-accent: 94 226 192;
-    --c-accent-fg: 4 26 23;
-    --c-accent-soft: 94 226 192;
-
-    --line-op: 0.11;
-    --line-op-strong: 0.18;
-
-    --glass-fill: linear-gradient(
-      168deg,
-      rgb(160 245 226 / 0.08) 0%,
-      rgb(160 245 226 / 0.032) 45%,
-      rgb(255 255 255 / 0.015) 100%
-    );
-    --glass-border: rgb(170 240 226 / 0.13);
-    --glass-highlight: rgb(190 255 240 / 0.16);
-    --glass-shadow: 0 32px 64px -40px rgb(0 12 14 / 0.95);
-    --glass-blur: 22px;
-
-    --ambient-1: 94 226 192;
-    --ambient-2: 60 140 170;
-    --ambient-op: 0.085;
-    --grain-op: 0.03;
-    --map-filter: invert(93%) hue-rotate(175deg) saturate(0.8) brightness(0.92);
-  }
-
-  /* ---------- C · SEDEF (açık) — VARSAYILAN ---------- */
-  /* Kırık beyaz kağıt, mürekkep siyahı, sinyal turuncusu. Editoryal. */
+  /* ---------- SAYFA: bürokrasi kağıdı (varsayılan) ---------- */
   :root,
-  [data-palette='pearl'] {
+  [data-palette='bureau'] {
     color-scheme: light;
 
-    --c-bg: 240 239 235;
-    --c-bg-soft: 246 245 242;
-    --c-bg-elev: 255 255 255;
-    --c-fg: 20 21 26;
-    --c-fg-muted: 92 94 102;
-    --c-fg-subtle: 104 106 114;
-    --c-line: 20 21 26;
-    --c-accent: 186 58 26;
-    --c-accent-fg: 255 252 250;
-    --c-accent-soft: 186 58 26;
+    /* Ham marka renkleri — referans ve dolgu için */
+    --brand-orange: 255 107 0;
+    --brand-mustard: 229 169 60;
+    --brand-red: 195 32 38;
+    --brand-beige: 217 195 165;
+    --brand-brown: 74 50 37;
+    --brand-slate: 92 100 102;
 
-    --line-op: 0.12;
-    --line-op-strong: 0.2;
+    /* Yüzeyler: bej → kağıt tonuna açılmış */
+    --c-bg: 238 228 214;
+    --c-bg-soft: 231 219 202;
+    --c-bg-elev: 246 240 231;
 
-    --glass-fill: linear-gradient(
-      168deg,
-      rgb(255 255 255 / 0.78) 0%,
-      rgb(255 255 255 / 0.55) 55%,
-      rgb(255 255 255 / 0.42) 100%
-    );
-    --glass-border: rgb(20 21 26 / 0.1);
-    --glass-highlight: rgb(255 255 255 / 0.9);
-    --glass-shadow: 0 28px 60px -38px rgb(28 26 22 / 0.42);
-    --glass-blur: 20px;
+    /* Metin — ölçülen kontrast: 9.42 / 5.60 / 4.81 */
+    --c-fg: 74 50 37;
+    --c-fg-muted: 83 90 92;
+    --c-fg-subtle: 92 100 102;
 
-    --ambient-1: 168 158 146;
-    --ambient-2: 186 58 26;
-    --ambient-op: 0.16;
-    --grain-op: 0.028;
-    --map-filter: saturate(0.75) contrast(1.02);
+    /* Vurgu: dolgu ham turuncu, metin koyultulmuş turuncu (4.54) */
+    --c-accent: 255 107 0;
+    --c-accent-ink: 164 78 18;
+    --c-accent-fg: 28 18 12;
+
+    /* İkincil vurgu: hardal (üzerine kahve metin 5.68) */
+    --c-highlight: 229 169 60;
+    --c-highlight-fg: 74 50 37;
+
+    /* Uyarı: kritik kırmızı (zeminde 4.70) */
+    --c-danger: 195 32 38;
+    --c-danger-fg: 255 250 248;
+
+    --c-line: 74 50 37;
+    --line-op: 0.16;
+    --line-op-strong: 0.3;
+
+    /* CRT gövdesi: endüstriyel kahve döküm */
+    --bezel-1: 96 68 51;
+    --bezel-2: 68 46 34;
+    --bezel-3: 48 32 24;
+    --bezel-screw: 44 30 22;
+
+    --panel-fill: linear-gradient(168deg, rgb(255 253 249 / 0.9), rgb(246 238 226 / 0.72));
+    --panel-border: rgb(74 50 37 / 0.22);
+    --panel-shadow: 3px 3px 0 rgb(74 50 37 / 0.14);
+
+    --grain-op: 0.05;
+    --map-filter: saturate(0.62) sepia(0.24) contrast(1.03);
+  }
+
+  /* ---------- EKRAN: fosfor tüpü ----------
+     Bir CRT ekranının içine giren her bileşen bu token'ları devralır,
+     böylece kartlar/formlar ayrı bir varyanta ihtiyaç duymadan koyu görünür. */
+  .screen-phosphor {
+    color-scheme: dark;
+
+    --c-bg: 22 17 13;
+    --c-bg-soft: 29 22 17;
+    --c-bg-elev: 40 30 23;
+
+    /* Fosfor beji 10.75 · ikincil 6.90 · üçüncül 4.86 */
+    --c-fg: 217 195 165;
+    --c-fg-muted: 168 158 143;
+    --c-fg-subtle: 138 132 122;
+
+    /* Koyu zeminde ham turuncu metin için de yeterli (6.43) */
+    --c-accent: 255 107 0;
+    --c-accent-ink: 255 107 0;
+    --c-accent-fg: 26 19 15;
+
+    --c-highlight: 229 169 60;
+    --c-highlight-fg: 26 19 15;
+
+    --c-danger: 213 99 103;
+    --c-danger-fg: 26 19 15;
+
+    --c-line: 217 195 165;
+    --line-op: 0.16;
+    --line-op-strong: 0.3;
+
+    --panel-fill: linear-gradient(168deg, rgb(217 195 165 / 0.1), rgb(217 195 165 / 0.04));
+    --panel-border: rgb(217 195 165 / 0.2);
+    --panel-shadow: 3px 3px 0 rgb(0 0 0 / 0.35);
   }
 }
 
@@ -134,17 +120,16 @@
   body {
     @apply bg-bg font-sans text-fg-muted antialiased;
     min-height: 100vh;
-    /* Düz tek renk yerine dikey ton geçişi: yüzey "yassı" görünmüyor. */
-    background-image: linear-gradient(
-      180deg,
-      rgb(var(--c-bg-soft)) 0%,
-      rgb(var(--c-bg)) 42%,
-      rgb(var(--c-bg)) 100%
-    );
+    /* Milimetrik kağıt: bürokratik form zemini */
+    background-image:
+      linear-gradient(rgb(var(--c-line) / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-line) / 0.05) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 30%);
+    background-size: 26px 26px, 26px 26px, 100% 100%;
     background-attachment: fixed;
   }
 
-  /* İnce film grenli doku — dijital "yapay" düzlüğü kırar. */
+  /* Kağıt dokusu */
   body::before {
     content: '';
     position: fixed;
@@ -152,7 +137,7 @@
     z-index: 0;
     pointer-events: none;
     opacity: var(--grain-op);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   h1,
@@ -161,18 +146,17 @@
   h4 {
     @apply font-display text-fg;
     text-wrap: balance;
-    letter-spacing: -0.022em;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
-    background: rgb(var(--c-accent) / 0.28);
+    background: rgb(var(--c-accent) / 0.35);
     color: rgb(var(--c-fg));
   }
 
   :focus-visible {
     outline: 2px solid rgb(var(--c-accent));
     outline-offset: 2px;
-    border-radius: 6px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -190,62 +174,309 @@
 }
 
 @layer components {
-  /* ---------- Apple tarzı cam panel ----------
-     Katmanlar: yarı saydam dolgu + arka plan bulanıklığı + doygunluk
-     artışı + üst kenar ışık çizgisi + yumuşak ortam gölgesi. */
-  .glass {
+  /* ============================================================
+     CRT · TÜPLÜ TELEVİZYON
+     Katmanlar: döküm gövde → iç çerçeve gölgesi → tüp camı →
+     tarama çizgileri → köşe karartması → cam yansıması
+     ============================================================ */
+
+  .crt {
     position: relative;
-    background-image: var(--glass-fill);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    @apply rounded-2xl;
+    border-radius: 26px;
+    padding: 16px;
+    background:
+      linear-gradient(
+        168deg,
+        rgb(var(--bezel-1)) 0%,
+        rgb(var(--bezel-2)) 46%,
+        rgb(var(--bezel-3)) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.16),
+      inset 0 -2px 6px rgb(0 0 0 / 0.4),
+      0 18px 40px -24px rgb(28 18 12 / 0.8);
   }
 
-  /* Üst kenardaki 1px ışık — camın kalınlık hissi buradan gelir. */
-  .glass::before {
+  @media (min-width: 640px) {
+    .crt {
+      border-radius: 32px;
+      padding: 22px;
+    }
+  }
+
+  /* Gövde üzerindeki döküm dokusu */
+  .crt::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding-top: 1px;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23b)'/%3E%3C/svg%3E");
+  }
+
+  /* Tüp camı */
+  .crt-screen {
+    position: relative;
+    overflow: hidden;
+    /* Tüpün köşe kavisi: dikdörtgenden çok "yastık" biçimi */
+    border-radius: 14px / 20px;
+    background-color: rgb(var(--c-bg));
+    box-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.5),
+      inset 0 0 26px rgb(0 0 0 / 0.55);
+  }
+
+  @media (min-width: 640px) {
+    .crt-screen {
+      border-radius: 20px / 30px;
+    }
+  }
+
+  /* Tarama çizgileri + köşe karartması + cam yansıması */
+  .crt-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgb(0 0 0 / 0.16) 0px,
+        rgb(0 0 0 / 0.16) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        ellipse 78% 74% at 50% 46%,
+        transparent 52%,
+        rgb(0 0 0 / 0.42) 100%
+      );
+  }
+
+  .crt-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
     background: linear-gradient(
-      to bottom,
-      var(--glass-highlight),
+      104deg,
+      rgb(255 255 255 / 0.09) 0%,
+      rgb(255 255 255 / 0.03) 22%,
       transparent 42%
     );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
+  }
+
+  /* Kağıt ekranda tarama çizgileri daha yumuşak olmalı */
+  .crt-screen.screen-paper::before {
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgb(74 50 37 / 0.05) 0px,
+        rgb(74 50 37 / 0.05) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        ellipse 80% 76% at 50% 46%,
+        transparent 56%,
+        rgb(74 50 37 / 0.16) 100%
+      );
+  }
+
+  .crt-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Fosfor parıltısı — yalnızca koyu ekranlarda */
+  .screen-phosphor .phosphor {
+    text-shadow: 0 0 14px rgb(var(--c-accent) / 0.32);
+  }
+
+  /* Yayın taraması: ekranda aşağı inen ince ışık bandı */
+  .crt-sweep {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    z-index: 3;
+    height: 28%;
     pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.05), transparent);
+    animation: crt-sweep 7s linear infinite;
   }
 
-  .glass-hover {
+  @keyframes crt-sweep {
+    0% {
+      transform: translateY(-120%);
+    }
+    100% {
+      transform: translateY(460%);
+    }
+  }
+
+  /* ---------- Gövde üzerindeki donanım parçaları ---------- */
+
+  /* Vida başı */
+  .screw {
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 32% 30%, rgb(150 130 116), rgb(var(--bezel-screw)));
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 0.28),
+      0 1px 2px rgb(0 0 0 / 0.5);
+    position: relative;
+  }
+
+  .screw::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 6px;
+    height: 1.5px;
+    background: rgb(0 0 0 / 0.55);
+    transform: rotate(38deg);
+  }
+
+  /* Künye plakası: gövdeye vidalanmış pirinç etiket */
+  .plate {
+    background: linear-gradient(180deg, rgb(212 196 176), rgb(176 158 136));
+    color: rgb(46 32 24);
+    border-radius: 3px;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      inset 0 -1px 0 rgb(0 0 0 / 0.25),
+      0 1px 2px rgb(0 0 0 / 0.4);
+  }
+
+  /* Havalandırma ızgarası */
+  .vents {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.4) 0 2px,
+      transparent 2px 6px
+    );
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  /* Güç ledi */
+  .led {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgb(var(--c-accent));
+    box-shadow:
+      0 0 8px rgb(var(--c-accent) / 0.9),
+      inset 0 -1px 1px rgb(0 0 0 / 0.4);
+  }
+
+  /* ---------- Bürokrasi ---------- */
+
+  /* Dosya kartı: kağıt yüzey, sert ofset gölge */
+  .panel {
+    position: relative;
+    background-image: var(--panel-fill);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--panel-shadow);
+    border-radius: 4px;
+  }
+
+  .panel-hover {
     transition:
-      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.45s ease,
-      box-shadow 0.45s ease;
+      transform 0.18s steps(2, end),
+      box-shadow 0.18s steps(2, end),
+      border-color 0.2s ease;
   }
 
-  .glass-hover:hover {
-    transform: translateY(-3px);
-    border-color: rgb(var(--c-accent) / 0.4);
+  .panel-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgb(var(--c-line) / 0.2);
+    border-color: rgb(var(--c-accent) / 0.55);
   }
 
-  /* Hairline: 1px ayraç, palete göre otomatik uyum sağlar. */
-  .hairline {
-    border-color: rgb(var(--c-line) / var(--line-op));
+  /* Kauçuk damga */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    border: 2px solid rgb(var(--c-danger) / 0.75);
+    border-radius: 3px;
+    color: rgb(var(--c-danger));
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transform: rotate(-3.5deg);
+    opacity: 0.9;
   }
 
+  .stamp-approved {
+    border-color: rgb(var(--c-accent-ink) / 0.7);
+    color: rgb(var(--c-accent-ink));
+  }
+
+  /* Delikli kenar: dosya klasörü delgisi */
+  .punch-holes {
+    background-image: radial-gradient(
+      circle at 50% 50%,
+      rgb(var(--c-line) / 0.22) 0 3.5px,
+      transparent 3.5px
+    );
+    background-size: 100% 46px;
+  }
+
+  /* Form etiketi / üst başlık */
   .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-fg-subtle;
+    @apply font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-fg-subtle;
   }
 
   .num {
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.03em;
+    letter-spacing: 0.01em;
+  }
+
+  /* Fiziksel buton: kabartma kenar, basınca çöker */
+  .key {
+    position: relative;
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      inset 0 -2px 0 rgb(0 0 0 / 0.22),
+      3px 3px 0 rgb(var(--c-line) / 0.25);
+    transition:
+      transform 0.12s steps(2, end),
+      box-shadow 0.12s steps(2, end);
+  }
+
+  .key:hover {
+    transform: translate(-1px, -1px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      inset 0 -2px 0 rgb(0 0 0 / 0.22),
+      5px 5px 0 rgb(var(--c-line) / 0.25);
+  }
+
+  .key:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+      inset 0 2px 3px rgb(0 0 0 / 0.3),
+      1px 1px 0 rgb(var(--c-line) / 0.25);
+  }
+
+  /* Noktalı bürokratik ayraç */
+  .dotted-rule {
+    background-image: linear-gradient(
+      90deg,
+      rgb(var(--c-line) / 0.4) 0 4px,
+      transparent 4px 9px
+    );
+    height: 1px;
   }
 
   .link-underline {

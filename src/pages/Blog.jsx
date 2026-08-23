@@ -20,20 +20,21 @@ export default function Blog() {
   return (
     <Section spacing="bottom-none">
       <SectionHeading
-        eyebrow="Blog"
+        code="04"
+        eyebrow="Kayıt defteri"
         title="Öğrendiklerimizi paylaşıyoruz"
-          as="h1"
+        as="h1"
         description="Tasarım, performans ve büyüme üzerine deneyimlerimizden notlar."
         align="center"
       />
 
-      <div className="mt-14">
+      <div className="mt-12">
         {loading ? (
           <CardSkeleton count={3} />
         ) : postList.length === 0 ? (
-          <EmptyState title="Henüz yazı yok" description="Çok yakında ilk yazımızı paylaşacağız." />
+          <EmptyState title="Henüz kayıt yok" description="Çok yakında ilk notumuzu paylaşacağız." />
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {postList.map((post) => (
               <PostCard key={post.id ?? post.slug} post={post} />
             ))}

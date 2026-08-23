@@ -60,20 +60,20 @@ export default function BlogPost() {
           </Link>
 
           <div className="mt-8 flex items-center gap-3 text-xs text-fg-subtle">
-            <span className="rounded-full bg-accent/10 px-3 py-1 font-medium text-accent">
+            <span className="rounded-full bg-accent/10 px-3 py-1 font-medium text-accent-ink">
               {post.category}
             </span>
             <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
             {post.author ? <span>· {post.author}</span> : null}
           </div>
 
-          <h1 className="mt-5 text-3xl font-semibold leading-tight sm:text-4xl">{post.title}</h1>
+          <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl">{post.title}</h1>
           <p className="mt-5 text-lg text-fg-muted">{post.excerpt}</p>
         </div>
       </Section>
 
       <div className="container">
-        <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border hairline">
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-none border border-line/20">
           <img
             src={post.cover_url}
             alt={post.title}
@@ -93,13 +93,13 @@ export default function BlogPost() {
         </article>
 
         {others.length > 0 ? (
-          <div className="mx-auto mt-16 max-w-3xl border-t hairline pt-10">
+          <div className="mx-auto mt-16 max-w-3xl border-t border-line/20 pt-10">
             <h2 className="text-xl font-bold">Bunlar da ilginizi çekebilir</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
-                <Link key={item.slug} to={`/blog/${item.slug}`} className="glass glass-hover p-5">
-                  <p className="text-xs text-accent">{item.category}</p>
-                  <p className="mt-2 font-semibold leading-snug text-fg">{item.title}</p>
+                <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">
+                  <p className="text-xs text-accent-ink">{item.category}</p>
+                  <p className="mt-2 font-bold leading-snug text-fg">{item.title}</p>
                 </Link>
               ))}
             </div>
