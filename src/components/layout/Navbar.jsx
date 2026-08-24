@@ -29,10 +29,10 @@ export default function Navbar() {
   }, [open])
 
   return (
-    <header className="fixed left-[var(--bz-x)] right-[var(--bz-x)] top-[var(--bz-t)] z-50">
+    <header className="fixed inset-x-0 top-0 z-50 pl-[var(--rail-w)]">
       {/* Kontrol paneli */}
       <nav
-        className="border border-accent/45 bg-bg/95 backdrop-blur-sm"
+        className="border-b border-accent/45 bg-bg/95 backdrop-blur-sm"
         aria-label="Ana menü"
       >
         <div className="container flex h-14 items-center justify-between gap-4 sm:h-16">
@@ -87,7 +87,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         className={classNames(
-          'overflow-hidden border-x border-b border-accent/45 bg-bg transition-[max-height] duration-300 lg:hidden',
+          'overflow-hidden border-b border-accent/45 bg-bg transition-[max-height] duration-300 lg:hidden',
           open ? 'max-h-[75vh]' : 'invisible max-h-0',
         )}
         aria-hidden={!open}

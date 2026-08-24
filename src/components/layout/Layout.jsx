@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import ScrollToTop from './ScrollToTop'
-import TvShell from './TvShell'
+import ScreenFx from './ScreenFx'
 import Rail from './Rail'
 import Hud from './Hud'
 import { Spinner } from '../ui/Loader'
@@ -11,16 +11,15 @@ import { Spinner } from '../ui/Loader'
 export default function Layout() {
   return (
     <>
-      <TvShell />
+      <ScreenFx />
       <Rail />
       <Hud />
       <ScrollToTop />
 
-      {/* Ekranın içi: sayfa burada akar */}
-      <div className="relative z-10 flex min-h-screen flex-col pl-[calc(var(--bz-x)+var(--rail-w))] pr-[var(--bz-x)] pt-[var(--bz-t)] pb-[calc(var(--bz-b)+24px)]">
+      <div className="relative z-10 flex min-h-screen flex-col pl-[var(--rail-w)] pb-[calc(var(--hud-h)+8px)]">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-8 focus:top-8 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-medium focus:uppercase focus:text-accent-fg"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-medium focus:uppercase focus:text-accent-fg"
         >
           İçeriğe geç
         </a>

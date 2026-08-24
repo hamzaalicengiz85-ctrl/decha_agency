@@ -49,7 +49,7 @@ export default function Rail() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed bottom-[calc(var(--bz-b)+26px)] left-[var(--bz-x)] top-[calc(var(--bz-t)+56px)] z-30 hidden w-[var(--rail-w)] flex-col items-center gap-4 border-r border-accent/30 pt-4 md:flex"
+      className="pointer-events-none fixed bottom-[calc(var(--hud-h)+12px)] left-0 top-16 z-30 hidden w-[var(--rail-w)] flex-col items-center gap-4 border-r border-accent/30 pt-5 md:flex"
     >
       {GLYPHS.map((glyph, index) => (
         <svg

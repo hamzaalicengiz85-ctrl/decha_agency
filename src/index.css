@@ -67,37 +67,22 @@
     --line-op: 0.42;
     --line-op-strong: 0.85;
 
-    /* Kasa: endüstriyel kahve döküm */
-    --bezel-1: 96 68 51;
-    --bezel-2: 68 46 34;
-    --bezel-3: 44 29 21;
-    --bezel-screw: 40 27 20;
-
     --panel-fill: linear-gradient(168deg, rgb(255 107 0 / 0.05), rgb(255 107 0 / 0.015));
     --panel-border: rgb(255 107 0 / 0.5);
     --panel-shadow: none;
 
     --grain-op: 0.06;
 
-    /* Televizyon kasası ölçüleri */
-    --bz-t: 13px;
-    --bz-x: 13px;
-    --bz-b: 34px;
-    --tv-outer-radius: 22px;
-    --tv-inner-radius: 10px;
+    /* Sabit arayüz parçalarının ölçüleri */
     --rail-w: 0px;
+    --hud-h: 24px;
     --map-filter: none;
   }
 }
 
 @media (min-width: 768px) {
   :root {
-    --bz-t: 22px;
-    --bz-x: 24px;
-    --bz-b: 54px;
-    --tv-outer-radius: 40px;
-    --tv-inner-radius: 18px;
-    /* Sol ikon rayı ekranın içinde, referanstaki gibi */
+    /* Sol ikon rayı */
     --rail-w: 52px;
   }
 }
@@ -108,15 +93,15 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  html {
-    /* Ekran dışında kalan her yer kasa rengi (aşırı kaydırmada da doğru görünür) */
-    background-color: rgb(var(--bezel-3));
-  }
-
   body {
-    @apply font-sans text-fg-muted antialiased;
+    @apply bg-bg font-sans text-fg-muted antialiased;
     min-height: 100vh;
-    background: transparent;
+    background-image:
+      linear-gradient(rgb(var(--c-line) / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-line) / 0.055) 1px, transparent 1px),
+      radial-gradient(ellipse 120% 80% at 50% 0%, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 60%);
+    background-size: 28px 28px, 28px 28px, 100% 100%;
+    background-attachment: fixed;
   }
 
   /* Başlıklar turuncu: referanstaki tek renk arayüz dili.
@@ -155,63 +140,6 @@
 }
 
 @layer components {
-  /* ---------- Gövde üzerindeki donanım parçaları ---------- */
-
-  /* Vida başı */
-  .screw {
-    width: 11px;
-    height: 11px;
-    border-radius: 999px;
-    background: radial-gradient(circle at 32% 30%, rgb(150 130 116), rgb(var(--bezel-screw)));
-    box-shadow:
-      inset 0 1px 1px rgb(255 255 255 / 0.28),
-      0 1px 2px rgb(0 0 0 / 0.5);
-    position: relative;
-  }
-
-  .screw::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 6px;
-    height: 1.5px;
-    background: rgb(0 0 0 / 0.55);
-    transform: rotate(38deg);
-  }
-
-  /* Künye plakası: gövdeye vidalanmış pirinç etiket */
-  .plate {
-    background: linear-gradient(180deg, rgb(212 196 176), rgb(176 158 136));
-    color: rgb(46 32 24);
-    border-radius: 3px;
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.55),
-      inset 0 -1px 0 rgb(0 0 0 / 0.25),
-      0 1px 2px rgb(0 0 0 / 0.4);
-  }
-
-  /* Havalandırma ızgarası */
-  .vents {
-    background-image: repeating-linear-gradient(
-      90deg,
-      rgb(0 0 0 / 0.4) 0 2px,
-      transparent 2px 6px
-    );
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
-  }
-
-  /* Güç ledi */
-  .led {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: rgb(var(--c-accent));
-    box-shadow:
-      0 0 8px rgb(var(--c-accent) / 0.9),
-      inset 0 -1px 1px rgb(0 0 0 / 0.4);
-  }
-
   /* ============================================================
      TERMİNAL ARAYÜZÜ
      Tek renk turuncu çizgi dili: ince çift çerçeve, köşe braketleri,
@@ -424,32 +352,15 @@
 
 @layer components {
   /* ============================================================
-     TELEVİZYON KASASI · tüm siteyi çevreler
-     Sayfa, kasanın içindeki tüp camında akar. Kasa, tarama
-     çizgileri ve cam yansıması sabittir; içerik altlarında kayar.
+     EKRAN EFEKTLERİ
+     Tarama çizgileri, köşe karartması ve cam yansıması — sabit
+     katmanlar, içerik altlarında kayar. pointer-events: none.
      ============================================================ */
 
-  /* Tüp camı: kağıt yüzey, milimetrik ızgara ve kağıt dokusu burada */
-  .tv-glass {
-    position: fixed;
-    inset: var(--bz-t) var(--bz-x) var(--bz-b);
-    z-index: 0;
-    border-radius: var(--tv-inner-radius);
-    pointer-events: none;
-    background-color: rgb(var(--c-bg));
-    background-image:
-      linear-gradient(rgb(var(--c-line) / 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-line) / 0.055) 1px, transparent 1px),
-      radial-gradient(ellipse 120% 80% at 50% 0%, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 60%);
-    background-size: 28px 28px, 28px 28px, 100% 100%;
-  }
-
-  /* Kağıt dokusu + tarama çizgileri + köşe karartması + cam yansıması */
   .tv-overlay {
     position: fixed;
-    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    inset: 0;
     z-index: 40;
-    border-radius: var(--tv-inner-radius);
     pointer-events: none;
     background-image:
       /* cam yansıması */
@@ -475,80 +386,13 @@
       );
   }
 
-  /* Kasa: viewport'un tamamını kaplar, ortası maskeyle oyulur */
-  .tv-bezel {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    padding: var(--bz-t) var(--bz-x) var(--bz-b);
-    border-radius: var(--tv-outer-radius);
-    background:
-      linear-gradient(
-        158deg,
-        rgb(var(--bezel-1)) 0%,
-        rgb(var(--bezel-2)) 44%,
-        rgb(var(--bezel-3)) 100%
-      );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-  }
-
-  /* Döküm dokusu ve tüp ağzındaki iç gölge */
-  .tv-bezel-texture {
-    position: fixed;
-    inset: 0;
-    z-index: 61;
-    pointer-events: none;
-    opacity: 0.14;
-    padding: var(--bz-t) var(--bz-x) var(--bz-b);
-    border-radius: var(--tv-outer-radius);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23b)'/%3E%3C/svg%3E");
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-  }
-
-  /* Tüp ağzı: cam ile kasa arasındaki gölgeli geçiş */
-  .tv-lip {
-    position: fixed;
-    inset: var(--bz-t) var(--bz-x) var(--bz-b);
-    z-index: 62;
-    pointer-events: none;
-    border-radius: var(--tv-inner-radius);
-    box-shadow:
-      inset 0 0 0 1px rgb(28 18 12 / 0.55),
-      inset 0 2px 10px rgb(28 18 12 / 0.3),
-      0 0 0 1px rgb(255 255 255 / 0.06);
-  }
-
-  /* Kasa üzerindeki donanım: vidalar, havalandırma, kadranlar, led */
-  .tv-hardware {
-    position: fixed;
-    inset: 0;
-    z-index: 63;
-    pointer-events: none;
-  }
-
   /* Yayın taraması */
   .tv-sweep {
     position: fixed;
-    inset: var(--bz-t) var(--bz-x) var(--bz-b);
+    inset: 0;
     z-index: 41;
     pointer-events: none;
     overflow: hidden;
-    border-radius: var(--tv-inner-radius);
   }
 
   .tv-sweep::before {
@@ -569,40 +413,7 @@
     }
   }
 
-  /* Açılış: tüpün ısınması */
-  .tv-boot {
-    position: fixed;
-    inset: var(--bz-t) var(--bz-x) var(--bz-b);
-    z-index: 70;
-    pointer-events: none;
-    border-radius: var(--tv-inner-radius);
-    background: rgb(var(--bezel-3));
-    animation: tv-boot 1s ease-out forwards;
-  }
-
-  @keyframes tv-boot {
-    0% {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
-    }
-    45% {
-      opacity: 1;
-      clip-path: inset(49% 0 49% 0);
-    }
-    75% {
-      opacity: 0.55;
-      clip-path: inset(50% 0 50% 0);
-    }
-    100% {
-      opacity: 0;
-      clip-path: inset(50% 0 50% 0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .tv-boot {
-      display: none;
-    }
     .tv-sweep {
       display: none;
     }
