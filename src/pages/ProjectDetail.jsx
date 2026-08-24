@@ -85,16 +85,8 @@ export default function ProjectDetail() {
 
       {/* Künye şeridi: fotoğraf yerine dosya kimliği */}
       <div className="container">
-        <div className="panel relative flex items-center justify-between gap-6 overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
-          <span
-            className="absolute inset-0 opacity-60"
-            aria-hidden="true"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(135deg, rgb(var(--c-line) / 0.05) 0 1px, transparent 1px 8px)',
-            }}
-          />
-          <span className="relative font-display text-[3.4rem] font-bold leading-none text-fg/85 sm:text-[5rem]">
+        <div className="panel brackets grid-field relative flex items-center justify-between gap-6 overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
+          <span className="phosphor relative font-display text-[3.4rem] font-bold leading-none text-accent sm:text-[5rem]">
             {initials(project.client || project.title)}
           </span>
           <div className="relative text-right">
@@ -164,13 +156,13 @@ export default function ProjectDetail() {
                 className="panel panel-hover flex items-center gap-4 p-5"
               >
                 <span
-                  className="grid h-14 w-14 shrink-0 place-items-center border border-accent/35 font-display text-[15px] font-bold text-fg"
+                  className="grid h-14 w-14 shrink-0 place-items-center border border-accent/45 font-display text-[15px] font-bold text-accent"
                   aria-hidden="true"
                 >
                   {initials(item.client || item.title)}
                 </span>
                 <div>
-                  <p className="font-bold text-fg">{item.title}</p>
+                  <p className="font-display text-[13px] font-bold uppercase text-accent">{item.title}</p>
                   <p className="mt-1 text-xs text-fg-subtle">{item.category}</p>
                 </div>
               </Link>

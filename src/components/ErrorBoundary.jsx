@@ -21,7 +21,7 @@ export default class ErrorBoundary extends Component {
     return (
       <div className="flex min-h-screen items-center justify-center px-6">
         <div className="panel max-w-lg p-10 text-center">
-          <h1 className="text-2xl font-bold text-fg">Bir şeyler ters gitti</h1>
+          <h1 className="font-display text-[20px] font-bold uppercase text-accent">Bir şeyler ters gitti</h1>
           <p className="mt-3 text-sm text-fg-muted">
             Beklenmeyen bir hata oluştu. Sayfayı yenilemeyi deneyebilirsiniz.
           </p>

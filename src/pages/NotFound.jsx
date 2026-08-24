@@ -12,7 +12,7 @@ export default function NotFound() {
           <p className="phosphor num mt-8 font-display text-6xl font-bold text-accent sm:text-7xl">
             404
           </p>
-          <h1 className="mt-5 font-display text-headline font-bold uppercase">
+          <h1 className="mt-5 font-display text-headline font-bold uppercase text-accent">
             Aradığınız kayıt bulunamadı
           </h1>
           <p className="mt-4 max-w-md font-mono text-[13px] leading-relaxed text-fg-muted">

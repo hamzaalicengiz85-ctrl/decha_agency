@@ -58,18 +58,10 @@ export default function About() {
 
       <Section spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="panel relative overflow-hidden p-8 sm:p-10">
-            <span
-              className="absolute inset-0 opacity-60"
-              aria-hidden="true"
-              style={{
-                backgroundImage:
-                  'repeating-linear-gradient(135deg, rgb(var(--c-line) / 0.05) 0 1px, transparent 1px 8px)',
-              }}
-            />
+          <div className="panel brackets grid-field relative overflow-hidden p-8 sm:p-10">
             <div className="relative">
               <p className="eyebrow">Kuruluş kaydı</p>
-              <p className="num mt-4 font-display text-[4rem] font-bold leading-none text-fg sm:text-[5.5rem]">
+              <p className="num phosphor mt-4 font-display text-[4rem] font-bold leading-none text-accent sm:text-[5.5rem]">
                 2018
               </p>
               <div className="mt-8 grid gap-px border border-accent/35 bg-accent/25 sm:grid-cols-2">
@@ -144,7 +136,7 @@ export default function About() {
                 </span>
               </div>
               <div className="p-5">
-                <p className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-fg">{member.name}</p>
+                <p className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-accent">{member.name}</p>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle">{member.role}</p>
               </div>
             </div>

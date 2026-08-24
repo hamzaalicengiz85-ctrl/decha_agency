@@ -119,11 +119,13 @@
     background: transparent;
   }
 
+  /* Başlıklar turuncu: referanstaki tek renk arayüz dili.
+     Gövde metni beje kalır — uzun paragraflar turuncu üzerinde yorucu olur. */
   h1,
   h2,
   h3,
   h4 {
-    @apply font-display text-fg;
+    @apply font-display text-accent;
     text-wrap: balance;
     letter-spacing: -0.01em;
   }
@@ -396,14 +398,18 @@
     transform: translateY(1px);
   }
 
-  /* Noktalı ayraç */
+  /* Noktalı ayraç.
+     background-size verilmezse degrade elemanın tamamına yayılır ve desen
+     tekrarlamaz — tek bir tire kalır. Boyut açıkça verilmeli. */
   .dotted-rule {
+    height: 1px;
     background-image: linear-gradient(
       90deg,
-      rgb(var(--c-accent) / 0.55) 0 3px,
+      rgb(var(--c-accent) / 0.6) 0 3px,
       transparent 3px 8px
     );
-    height: 1px;
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
   }
 
   /* Fosfor parıltısı: turuncu metinlerde tüpün ışıması */

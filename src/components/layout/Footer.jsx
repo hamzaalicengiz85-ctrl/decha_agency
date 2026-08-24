@@ -78,7 +78,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-3 text-[13px] text-fg-muted">
               <li className="flex items-start gap-2.5">
                 <Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href={`mailto:${SITE.email}`} className="transition hover:text-fg">
+                <a href={`mailto:${SITE.email}`} className="transition hover:text-accent">
                   {SITE.email}
                 </a>
               </li>
@@ -86,7 +86,7 @@ export default function Footer() {
                 <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 <a
                   href={`tel:${SITE.phone.replace(/\s|\(|\)/g, '')}`}
-                  className="num transition hover:text-fg"
+                  className="num transition hover:text-accent"
                 >
                   {SITE.phone}
                 </a>

@@ -72,7 +72,9 @@ export default function BlogPost() {
       </Section>
 
       <div className="container">
-        <div className="dotted-rule mx-auto max-w-3xl" aria-hidden="true" />
+        <div className="mx-auto max-w-3xl">
+          <div className="dotted-rule" aria-hidden="true" />
+        </div>
       </div>
 
       <Section>
