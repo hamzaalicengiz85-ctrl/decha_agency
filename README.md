@@ -102,8 +102,34 @@ görüntüleyebilirsiniz.
    - (opsiyonel) `VITE_SITE_URL`, `VITE_CONTACT_EMAIL`
 4. **Deploy** deyin.
 
+5. **Site settings → Build & deploy → Branches** bölümünden hangi dalın yayınlanacağını
+   seçin. Netlify varsayılan olarak deponun varsayılan dalını derler.
+
 > Ortam değişkenleri derleme anında paketlenir. Değişken eklendikten/değiştirildikten sonra
 > **yeniden deploy** almanız gerekir.
+
+> Değişkenler tanımlanmasa bile site açılır: Supabase yapılandırılmamışsa yerel demo
+> içerik gösterilir, yalnızca iletişim formu kayıt oluşturamaz.
+
+#### Dikkat: `NODE_ENV` ayarlamayın
+
+Netlify ortam değişkenlerinde veya `netlify.toml` içinde `NODE_ENV = "production"`
+**tanımlamayın**. npm bu durumda `devDependencies`'i hiç kurmaz; `vite`, `tailwindcss`
+ve `postcss` bu grupta olduğu için derleme şu hatayla düşer:
+
+```
+sh: 1: vite: not found
+```
+
+`vite build` zaten üretim modunda çalışır, ayrıca bir ayara gerek yoktur.
+
+Yerelde Netlify derlemesini birebir denemek için:
+
+```bash
+rm -rf node_modules dist
+npm install --no-audit --no-fund
+npm run build
+```
 
 ### 2. CLI ile
 
@@ -141,7 +167,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     ├── index.css             # Token'lar (kağıt + fosfor) + CRT/damga/plaka malzemeleri
     ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
-    │   ├── layout/           # TvShell, Navbar, Footer, Layout, ScrollToTop
+    │   ├── layout/           # Layout, Navbar, Footer, Rail, Hud, ScreenFx, ScrollToTop
     │   ├── ui/               # Button, Stamp, Logo, Section, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
@@ -163,10 +189,10 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 
 ## Tasarım sistemi
 
-Görsel dil: **retro bürokratik terminal** — 60–70'ler kurum estetiği, tüplü
-televizyon kasası ve tek renk turuncu bir kontrol arayüzü. Referans, Loki
-dizisindeki TVA kurumunun TemPad arayüzüdür; markalı varlıklar kopyalanmaz,
-yalnızca renk ve arayüz dili yorumlanır.
+Görsel dil: **retro bürokratik terminal** — sıcak siyah bir ekran üzerinde tek
+renk turuncu kontrol arayüzü. Referans, Loki dizisindeki TVA kurumunun TemPad
+ekranlarıdır; markalı varlıklar kopyalanmaz, yalnızca renk ve arayüz dili
+yorumlanır.
 
 ### Marka renkleri ve rolleri
 
@@ -183,7 +209,7 @@ türevlerdir.
 | Hardal Sarısı | `rgb(229 169 60)` | `--c-highlight` · ikincil dolgu | 9.46 |
 | Kritik Kırmızı | `rgb(195 32 38)` | `--c-danger-fill` · uyarı bantları (dolgu) | üzerine metin 5.47 |
 | — türevi | `rgb(232 112 108)` | `--c-danger` · hata metni | 6.54 |
-| Endüstriyel Kahve | `rgb(74 50 37)` | Televizyon kasasının döküm rengi (ekran içinde metin olarak kullanılmaz) | — |
+| Endüstriyel Kahve | `rgb(74 50 37)` | Kontrast 1.67; bu zeminde metin olarak kullanılmaz. Palette kalır, koyu dolgu gerektiren yerler için ayrılmıştır | — |
 
 ### Terminal arayüz dili
 
@@ -208,29 +234,32 @@ Referanstan alınan öğeler, hepsi yeniden kullanılabilir sınıflar:
 - **Alt durum şeridi** (`Hud`) — sabit sayı yığını yerine gerçek durumu gösterir:
   aktif bölüm kodu, canlı saat, sayfa konumu yüzdesi.
 
-### Televizyon kasası
+### Ekran efektleri
 
-Site bölüm bölüm pencerelere değil, **tek bir televizyonun içine** yerleşir.
-`TvShell` viewport'u çevreleyen sabit katmanları çizer; sayfa bu kasanın
-içindeki tüp camında akar:
+Dış televizyon kasası kaldırıldı; içerik viewport'un tamamını kullanır.
+Ekranın CRT karakterini veren katmanlar `ScreenFx` içinde kalır:
 
 | Katman | İş |
 | ------ | -- |
-| `tv-glass` | Tüp camı: fosfor zemin, turuncu grafik ızgarası |
-| `tv-sweep` | Ekranda inen yayın taraması bandı |
 | `tv-overlay` | Cam yansıması + tarama çizgileri + köşe karartması |
-| `tv-bezel` | Döküm kasa — ortası CSS maskesiyle oyulur |
-| `tv-lip` | Cam ile kasa arasındaki gölgeli geçiş |
-| `tv-hardware` | Vidalar, havalandırma ızgarası, kadranlar, güç ledi |
-| `tv-boot` | Açılışta tüpün ısınma animasyonu |
+| `tv-sweep` | Aşağı inen yayın taraması bandı |
 
-Hepsi `pointer-events: none` — tıklama ve kaydırma içeriğe geçer. Kasa
-kalınlığı `--bz-t / --bz-x / --bz-b` değişkenlerinden gelir ve mobilde incelir;
-içerik ile menü bu değişkenlere göre konumlanır.
+İkisi de `position: fixed` + `pointer-events: none` — içerik altlarında kayar,
+tıklama ve kaydırmayı engellemez. `prefers-reduced-motion` altında yayın bandı
+durur.
 
-Kasa maskesi `padding` + `mask-composite: exclude` ile kurulur: eleman viewport'u
-kaplar, `content-box` maskesi ortayı keser, geriye yalnızca çerçeve halkası kalır.
-İç köşe yarıçapı dış yarıçaptan otomatik türer.
+Ekran zemini (turuncu grafik ızgarası + üstten aşağı ton geçişi) doğrudan
+`body` üzerindedir, `background-attachment: fixed` ile sabit durur.
+
+### Sabit düzen ölçüleri
+
+İki CSS değişkeni sabit arayüz parçalarının yerini belirler; içerik ve menü
+bunlara göre boşluk alır:
+
+| Değişken | Değer | Ne için |
+| -------- | ----- | ------- |
+| `--rail-w` | 0 (mobil) / 52px (≥768px) | Sol ikon rayının genişliği |
+| `--hud-h` | 24px | Alt durum şeridinin yüksekliği |
 
 ### Görsel kullanılmaz
 
@@ -258,8 +287,8 @@ Kontrast iki katmanda doğrulanmıştır:
 2. **Gerçek piksel düzeyi** — CRT kaplamaları (tarama çizgileri + köşe karartması)
    metnin üzerinde durduğu için ekran görüntüsünden piksel örneklenerek ölçüldü.
 
-Butonlar 44px dokunma hedefini korur; `prefers-reduced-motion` altında açılış
-animasyonu, tarama bandı, yanıp sönen ledler ve tüm geçişler durur.
+Butonlar 44px dokunma hedefini korur; `prefers-reduced-motion` altında yayın
+bandı, yanıp sönen göstergeler ve tüm geçişler durur.
 
 ### Boşluk ölçeği
 

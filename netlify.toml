@@ -6,6 +6,11 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--no-audit --no-fund"
 
+# NODE_ENV burada "production" yapılmamalı: npm bu durumda devDependencies'i
+# hiç kurmuyor, vite / tailwind / postcss gelmediği için build
+# "vite: not found" ile düşüyor. Vite zaten `vite build` ile üretim modunda
+# çalışır, ayrıca ayarlamaya gerek yok.
+
 # SPA fallback: tüm rotalar index.html'e yönlenir (React Router client-side routing)
 [[redirects]]
   from = "/*"
@@ -24,6 +29,3 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-[context.production.environment]
-  NODE_ENV = "production"
