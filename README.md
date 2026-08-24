@@ -102,8 +102,34 @@ görüntüleyebilirsiniz.
    - (opsiyonel) `VITE_SITE_URL`, `VITE_CONTACT_EMAIL`
 4. **Deploy** deyin.
 
+5. **Site settings → Build & deploy → Branches** bölümünden hangi dalın yayınlanacağını
+   seçin. Netlify varsayılan olarak deponun varsayılan dalını derler.
+
 > Ortam değişkenleri derleme anında paketlenir. Değişken eklendikten/değiştirildikten sonra
 > **yeniden deploy** almanız gerekir.
+
+> Değişkenler tanımlanmasa bile site açılır: Supabase yapılandırılmamışsa yerel demo
+> içerik gösterilir, yalnızca iletişim formu kayıt oluşturamaz.
+
+#### Dikkat: `NODE_ENV` ayarlamayın
+
+Netlify ortam değişkenlerinde veya `netlify.toml` içinde `NODE_ENV = "production"`
+**tanımlamayın**. npm bu durumda `devDependencies`'i hiç kurmaz; `vite`, `tailwindcss`
+ve `postcss` bu grupta olduğu için derleme şu hatayla düşer:
+
+```
+sh: 1: vite: not found
+```
+
+`vite build` zaten üretim modunda çalışır, ayrıca bir ayara gerek yoktur.
+
+Yerelde Netlify derlemesini birebir denemek için:
+
+```bash
+rm -rf node_modules dist
+npm install --no-audit --no-fund
+npm run build
+```
 
 ### 2. CLI ile
 
