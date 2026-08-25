@@ -304,17 +304,6 @@ export const processSteps = [
   },
 ]
 
-export const clients = [
-  'Nova Bank',
-  'Atlas Turizm',
-  'Verde',
-  'Pulse',
-  'Kite',
-  'Orbit',
-  'Lumen',
-  'Vertex',
-]
-
 export const faqs = [
   {
     q: 'Bir proje ne kadar sürede tamamlanır?',

@@ -81,9 +81,10 @@ VITE_SUPABASE_ANON_KEY=<anon-public-key>
 | `testimonials`      | Müşteri referansları    | herkese açık | yalnızca oturum açmış |
 | `posts`             | Blog yazıları           | herkese açık | yalnızca oturum açmış |
 | `contact_messages`  | İletişim formu kayıtları| **kapalı**   | herkes INSERT edebilir|
+| `meeting_requests`  | Toplantı planlama talepleri | **kapalı** | herkes INSERT edebilir|
 
-`contact_messages` tablosu bilinçli olarak **okunamaz**: ziyaretçi mesaj gönderebilir ama
-gelen mesajları listeleyemez. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
+`contact_messages` ve `meeting_requests` tabloları bilinçli olarak **okunamaz**: ziyaretçi
+kayıt oluşturabilir ama mevcut kayıtları listeleyemez. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
 görüntüleyebilirsiniz.
 
 ---
@@ -171,6 +172,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     │   ├── ui/               # Button, Stamp, Logo, Section, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
+    │   ├── MeetingModal.jsx  # Üst menüdeki "Toplantı Planla" penceresi
     │   ├── ProjectCard.jsx / PostCard.jsx / ServiceCard.jsx / TestimonialCard.jsx
     │   └── ErrorBoundary.jsx
     ├── data/content.js       # Supabase erişilemezse kullanılan yedek içerik
@@ -224,6 +226,7 @@ Referanstan alınan öğeler, hepsi yeniden kullanılabilir sınıflar:
 | `.list-row` | Liste satırı; seçili olan dolu turuncu, üzerine ekran siyahı |
 | `.key` | Terminal butonu; keskin köşe, çift çerçeve |
 | `.stamp` | Kauçuk damga |
+| `Modal` | Portal ile açılan pencere; Escape, odak döngüsü ve kaydırma kilidi dahil |
 | `.phosphor` | Turuncu metinlerde tüp ışıması |
 
 İki sabit arayüz parçası referansın imzasıdır ve gerçek işlev taşır:

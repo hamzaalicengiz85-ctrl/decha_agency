@@ -144,3 +144,28 @@ create policy "contact_messages_public_insert" on public.contact_messages
 drop policy if exists "contact_messages_admin_read" on public.contact_messages;
 create policy "contact_messages_admin_read" on public.contact_messages
   for select to authenticated using (true);
+
+-- -------------------------------------------------------------
+-- Toplantı talepleri (üst menüdeki "Toplantı Planla" penceresi)
+-- -------------------------------------------------------------
+create table if not exists public.meeting_requests (
+  id            uuid primary key default gen_random_uuid(),
+  meeting_date  date not null,
+  meeting_time  time not null,
+  location      text not null check (char_length(trim(location)) between 2 and 200),
+  status        text not null default 'new' check (status in ('new', 'confirmed', 'done', 'cancelled')),
+  created_at    timestamptz not null default now()
+);
+
+create index if not exists meeting_requests_date_idx on public.meeting_requests (meeting_date, meeting_time);
+
+alter table public.meeting_requests enable row level security;
+
+-- Ziyaretçi talep oluşturabilir ama kayıtları listeleyemez.
+drop policy if exists "meeting_requests_public_insert" on public.meeting_requests;
+create policy "meeting_requests_public_insert" on public.meeting_requests
+  for insert to anon, authenticated with check (true);
+
+drop policy if exists "meeting_requests_admin_read" on public.meeting_requests;
+create policy "meeting_requests_admin_read" on public.meeting_requests
+  for select to authenticated using (true);
