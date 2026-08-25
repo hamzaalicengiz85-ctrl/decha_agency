@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
+import MeetingModal from '../MeetingModal'
 import { classNames } from '../../lib/format'
 
 const links = [
@@ -15,6 +16,7 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [meetingOpen, setMeetingOpen] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
@@ -66,8 +68,8 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden lg:block">
-            <Button to="/iletisim" size="sm">
-              Başvuru Aç
+            <Button type="button" size="sm" onClick={() => setMeetingOpen(true)}>
+              Toplantı Planla
             </Button>
           </div>
 
@@ -112,12 +114,14 @@ export default function Navbar() {
             </li>
           ))}
           <li className="py-3">
-            <Button to="/iletisim" className="w-full">
-              Başvuru Aç
+            <Button type="button" className="w-full" onClick={() => setMeetingOpen(true)}>
+              Toplantı Planla
             </Button>
           </li>
         </ul>
       </div>
+
+      <MeetingModal open={meetingOpen} onClose={() => setMeetingOpen(false)} />
     </header>
   )
 }

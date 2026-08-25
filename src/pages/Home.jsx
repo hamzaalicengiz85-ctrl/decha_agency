@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import Hero from '../components/home/Hero'
-import ClientMarquee from '../components/home/ClientMarquee'
 import Process from '../components/home/Process'
 import CTA from '../components/home/CTA'
 import Section from '../components/ui/Section'
@@ -44,7 +43,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ClientMarquee />
 
       <Section id="hizmetler">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
