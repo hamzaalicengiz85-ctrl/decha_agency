@@ -84,7 +84,12 @@ VITE_SUPABASE_ANON_KEY=<anon-public-key>
 | `meeting_requests`  | Toplantı planlama talepleri | **kapalı** | herkes INSERT edebilir|
 
 `contact_messages` ve `meeting_requests` tabloları bilinçli olarak **okunamaz**: ziyaretçi
-kayıt oluşturabilir ama mevcut kayıtları listeleyemez. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
+kayıt oluşturabilir ama mevcut kayıtları listeleyemez.
+
+`meeting_requests` alanları: ad, e-posta, tarih, saat ve yer **zorunlu**; açıklama
+opsiyoneldir. `location` kolonu üç sabit değerden birini alır — `online`,
+`client_site`, `our_office`. Bu değerler `src/data/meeting.js` ile birebir aynı
+olmalıdır; görünen Türkçe etiketler orada tutulur, veritabanına anahtar yazılır. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
 görüntüleyebilirsiniz.
 
 ---
@@ -176,6 +181,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     │   ├── ProjectCard.jsx / PostCard.jsx / ServiceCard.jsx / TestimonialCard.jsx
     │   └── ErrorBoundary.jsx
     ├── data/content.js       # Supabase erişilemezse kullanılan yedek içerik
+    ├── data/meeting.js       # Toplantı yeri seçenekleri (DB CHECK kısıtıyla eşleşir)
     ├── hooks/
     │   ├── useSupabaseData.js  # Veri çekme + otomatik fallback
     │   └── useScrollReveal.js
