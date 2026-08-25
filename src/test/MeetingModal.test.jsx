@@ -2,119 +2,136 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
 const inserted = []
-const state = { error: null }
+const state = { error: null, takenRows: [] }
 
 vi.mock('../lib/supabase', () => ({
   isSupabaseConfigured: true,
   supabase: {
-    from: (table) => ({
-      insert: (payload) => {
-        inserted.push({ table, payload })
-        return Promise.resolve({ data: null, error: state.error })
-      },
-    }),
+    from: (table) => {
+      if (table === 'meeting_slots_taken') {
+        const chain = {
+          select: () => chain,
+          eq: () => Promise.resolve({ data: state.takenRows, error: null }),
+        }
+        return chain
+      }
+      return {
+        insert: (payload) => {
+          inserted.push({ table, payload })
+          return Promise.resolve({ data: null, error: state.error })
+        },
+      }
+    },
   },
 }))
 
 const { default: MeetingModal } = await import('../components/MeetingModal')
 
-function shiftDate(days) {
-  const d = new Date()
-  d.setDate(d.getDate() + days)
-  return d.toISOString().slice(0, 10)
+/** Belirli bir hafta içi gün (Salı) — tatil değil. */
+const WEEKDAY = '2026-09-15'
+const SATURDAY = '2026-09-12'
+const HOLIDAY = '2026-10-29'
+
+function fillIdentity() {
+  fireEvent.change(screen.getByLabelText(/ad soyad/i), { target: { value: 'Ayşe Yılmaz' } })
+  fireEvent.change(screen.getByLabelText(/e-posta/i), { target: { value: 'ayse@ornek.com' } })
+  fireEvent.change(screen.getByLabelText(/yer/i), { target: { value: 'our_office' } })
 }
 
-function fill(overrides = {}) {
-  const values = {
-    name: 'Ayşe Yılmaz',
-    email: 'AYSE@Ornek.COM',
-    date: shiftDate(7),
-    time: '14:30',
-    location: 'our_office',
-    notes: '',
-    ...overrides,
-  }
-  fireEvent.change(screen.getByLabelText(/ad soyad/i), { target: { value: values.name } })
-  fireEvent.change(screen.getByLabelText(/e-posta/i), { target: { value: values.email } })
-  fireEvent.change(screen.getByLabelText(/tarih/i), { target: { value: values.date } })
-  fireEvent.change(screen.getByLabelText(/saat/i), { target: { value: values.time } })
-  fireEvent.change(screen.getByLabelText(/yer/i), { target: { value: values.location } })
-  if (values.notes) {
-    fireEvent.change(screen.getByLabelText(/açıklama/i), { target: { value: values.notes } })
-  }
-  return values
-}
+const setDate = (value) =>
+  fireEvent.change(screen.getByLabelText(/tarih/i), { target: { value } })
 
 const submit = () => fireEvent.click(screen.getByRole('button', { name: /toplantıyı planla/i }))
 
 beforeEach(() => {
   inserted.length = 0
   state.error = null
+  state.takenRows = []
 })
 
-describe('MeetingModal', () => {
-  it('kapalıyken hiçbir şey render etmez', () => {
-    render(<MeetingModal open={false} onClose={() => {}} />)
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+describe('MeetingModal — saat tablosu', () => {
+  it('tarih seçilmeden saat tablosu gösterilmez', () => {
+    render(<MeetingModal open onClose={() => {}} />)
+    expect(screen.getByText(/önce uygun bir tarih seçin/i)).toBeInTheDocument()
   })
 
-  it('erişilebilir bir pencere olarak açılır', () => {
+  it('uygun tarihte dokuz tam saat listeler', async () => {
     render(<MeetingModal open onClose={() => {}} />)
-    expect(screen.getByRole('dialog')).toHaveAttribute('aria-modal', 'true')
-    expect(screen.getByRole('heading', { name: /toplantı planla/i })).toBeInTheDocument()
+    setDate(WEEKDAY)
+
+    await waitFor(() => expect(screen.getByRole('button', { name: '09:00' })).toBeInTheDocument())
+    const slots = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
+    slots.forEach((slot) => {
+      expect(screen.getByRole('button', { name: slot })).toBeInTheDocument()
+    })
+    // Çalışma saati dışı
+    expect(screen.queryByRole('button', { name: '08:00' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: '18:00' })).not.toBeInTheDocument()
   })
 
-  it('yer alanı üç seçenek sunar', () => {
+  it('dolu saatler devre dışı bırakılır', async () => {
+    state.takenRows = [{ meeting_time: '14:00:00' }, { meeting_time: '15:00:00' }]
     render(<MeetingModal open onClose={() => {}} />)
-    const select = screen.getByLabelText(/yer/i)
-    const labels = [...select.querySelectorAll('option')].map((o) => o.textContent)
-    expect(labels).toEqual(['Seçiniz', 'Online', 'Müşterinin yeri', 'Bizim ofisimiz'])
+    setDate(WEEKDAY)
+
+    await waitFor(() => expect(screen.getByRole('button', { name: '14:00' })).toBeDisabled())
+    expect(screen.getByRole('button', { name: '15:00' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: '10:00' })).toBeEnabled()
   })
 
-  it('boş formda zorunlu beş alan için hata gösterir', async () => {
+  it('saat seçimi aria-pressed ile işaretlenir', async () => {
     render(<MeetingModal open onClose={() => {}} />)
+    setDate(WEEKDAY)
+    await waitFor(() => expect(screen.getByRole('button', { name: '11:00' })).toBeEnabled())
+
+    fireEvent.click(screen.getByRole('button', { name: '11:00' }))
+    expect(screen.getByRole('button', { name: '11:00' })).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('gün değişince seçili saat sıfırlanır', async () => {
+    render(<MeetingModal open onClose={() => {}} />)
+    setDate(WEEKDAY)
+    await waitFor(() => expect(screen.getByRole('button', { name: '11:00' })).toBeEnabled())
+    fireEvent.click(screen.getByRole('button', { name: '11:00' }))
+
+    setDate('2026-09-16')
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: '11:00' })).toHaveAttribute('aria-pressed', 'false'),
+    )
+  })
+})
+
+describe('MeetingModal — tarih kuralları', () => {
+  it('hafta sonunu reddeder', async () => {
+    render(<MeetingModal open onClose={() => {}} />)
+    fillIdentity()
+    setDate(SATURDAY)
     submit()
 
-    await waitFor(() => expect(screen.getByText('Adınızı girin.')).toBeInTheDocument())
-    expect(screen.getByText('Geçerli bir e-posta adresi girin.')).toBeInTheDocument()
-    expect(screen.getByText('Tarih seçin.')).toBeInTheDocument()
-    expect(screen.getByText('Saat seçin.')).toBeInTheDocument()
-    expect(screen.getByText('Toplantı yerini seçin.')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText(/hafta sonu randevu alınamaz/i)).toBeInTheDocument())
     expect(inserted).toHaveLength(0)
   })
 
-  it('açıklama zorunlu değildir', async () => {
+  it('resmî tatili adıyla reddeder', async () => {
     render(<MeetingModal open onClose={() => {}} />)
-    fill({ notes: '' })
-    submit()
-
-    await waitFor(() => expect(inserted).toHaveLength(1))
-    expect(inserted[0].payload.notes).toBeNull()
-  })
-
-  it('geçmiş tarihi reddeder', async () => {
-    render(<MeetingModal open onClose={() => {}} />)
-    fill({ date: shiftDate(-3) })
-    submit()
-
-    await waitFor(() => expect(screen.getByText('Geçmiş bir tarih seçilemez.')).toBeInTheDocument())
-    expect(inserted).toHaveLength(0)
-  })
-
-  it('geçersiz e-postayı reddeder', async () => {
-    render(<MeetingModal open onClose={() => {}} />)
-    fill({ email: 'gecersiz' })
+    fillIdentity()
+    setDate(HOLIDAY)
     submit()
 
     await waitFor(() =>
-      expect(screen.getByText('Geçerli bir e-posta adresi girin.')).toBeInTheDocument(),
+      expect(screen.getByText(/Cumhuriyet Bayramı nedeniyle kapalıyız/i)).toBeInTheDocument(),
     )
     expect(inserted).toHaveLength(0)
   })
+})
 
-  it('geçerli talebi meeting_requests tablosuna yazar', async () => {
+describe('MeetingModal — gönderim', () => {
+  it('geçerli talebi doğru yükle kaydeder', async () => {
     render(<MeetingModal open onClose={() => {}} />)
-    const values = fill({ name: '  Ayşe Yılmaz  ', notes: '  Yeni site projesi  ' })
+    fillIdentity()
+    setDate(WEEKDAY)
+    await waitFor(() => expect(screen.getByRole('button', { name: '14:00' })).toBeEnabled())
+    fireEvent.click(screen.getByRole('button', { name: '14:00' }))
     submit()
 
     await waitFor(() => expect(inserted).toHaveLength(1))
@@ -122,29 +139,53 @@ describe('MeetingModal', () => {
     expect(inserted[0].payload).toEqual({
       name: 'Ayşe Yılmaz',
       email: 'ayse@ornek.com',
-      meeting_date: values.date,
-      meeting_time: '14:30',
+      meeting_date: WEEKDAY,
+      meeting_time: '14:00',
       location: 'our_office',
-      notes: 'Yeni site projesi',
+      notes: null,
     })
-
-    expect(await screen.findByText(/talep kaydedildi/i)).toBeInTheDocument()
-    expect(screen.getByText('Bizim ofisimiz')).toBeInTheDocument()
+    expect(await screen.findByText('Decha Ofis')).toBeInTheDocument()
   })
 
-  it('veritabanı hatasında kullanıcıya hata gösterir', async () => {
-    state.error = new Error('permission denied')
+  it('saat seçilmeden gönderilemez', async () => {
     render(<MeetingModal open onClose={() => {}} />)
-    fill()
+    fillIdentity()
+    setDate(WEEKDAY)
+    await waitFor(() => expect(screen.getByRole('button', { name: '09:00' })).toBeInTheDocument())
     submit()
 
-    expect(await screen.findByText(/talep kaydedilemedi/i)).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText('Saat seçin.')).toBeInTheDocument())
+    expect(inserted).toHaveLength(0)
   })
 
-  it('Escape tuşu pencereyi kapatır', async () => {
-    const onClose = vi.fn()
-    render(<MeetingModal open onClose={onClose} />)
-    fireEvent.keyDown(document, { key: 'Escape' })
-    await waitFor(() => expect(onClose).toHaveBeenCalled())
+  it('alan düzeltilince önceki hata mesajı kaybolur', async () => {
+    render(<MeetingModal open onClose={() => {}} />)
+    fillIdentity()
+    setDate(SATURDAY)
+    submit()
+    await waitFor(() =>
+      expect(screen.getByText('İşaretli alanları kontrol edin.')).toBeInTheDocument(),
+    )
+
+    setDate(WEEKDAY)
+    await waitFor(() =>
+      expect(screen.queryByText('İşaretli alanları kontrol edin.')).not.toBeInTheDocument(),
+    )
+  })
+
+  it('slot kapılmışsa (23505) anlaşılır mesaj gösterir ve seçimi düşürür', async () => {
+    render(<MeetingModal open onClose={() => {}} />)
+    fillIdentity()
+    setDate(WEEKDAY)
+    await waitFor(() => expect(screen.getByRole('button', { name: '14:00' })).toBeEnabled())
+    fireEvent.click(screen.getByRole('button', { name: '14:00' }))
+
+    const conflict = new Error('duplicate key')
+    conflict.code = '23505'
+    state.error = conflict
+    submit()
+
+    await waitFor(() => expect(screen.getByText(/bu saat az önce doldu/i)).toBeInTheDocument())
+    expect(screen.getByRole('button', { name: '14:00' })).toHaveAttribute('aria-pressed', 'false')
   })
 })

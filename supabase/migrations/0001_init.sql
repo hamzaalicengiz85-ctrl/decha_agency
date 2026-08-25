@@ -173,3 +173,21 @@ create policy "meeting_requests_public_insert" on public.meeting_requests
 drop policy if exists "meeting_requests_admin_read" on public.meeting_requests;
 create policy "meeting_requests_admin_read" on public.meeting_requests
   for select to authenticated using (true);
+
+-- Aynı gün ve saate ikinci bir toplantı alınamaz.
+-- Kısıt veritabanı seviyesinde: iki kişi aynı anda gönderse bile ikincisi
+-- reddedilir. İptal edilen kayıtlar slotu serbest bırakır.
+create unique index if not exists meeting_requests_slot_unique
+  on public.meeting_requests (meeting_date, meeting_time)
+  where status <> 'cancelled';
+
+-- Dolu saatleri ziyaretçiye göstermek için görünüm.
+-- meeting_requests tablosu anon'a kapalı (ad/e-posta sızmasın); bu görünüm
+-- yalnızca tarih ve saat kolonlarını açar. Görünüm tanımlayıcı haklarıyla
+-- çalıştığı için tablonun RLS'ini atlar, dışarı yalnız bu iki kolon çıkar.
+create or replace view public.meeting_slots_taken as
+  select meeting_date, meeting_time
+  from public.meeting_requests
+  where status <> 'cancelled';
+
+grant select on public.meeting_slots_taken to anon, authenticated;

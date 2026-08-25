@@ -1,41 +1,54 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Modal from './ui/Modal'
 import Button from './ui/Button'
 import Icon from './ui/Icon'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { SITE } from '../data/content'
 import { classNames } from '../lib/format'
-import { MEETING_LOCATIONS, meetingLocationLabel } from '../data/meeting'
+import {
+  MEETING_LOCATIONS,
+  TIME_SLOTS,
+  checkDate,
+  meetingLocationLabel,
+  today,
+} from '../data/meeting'
 
 const EMPTY = { name: '', email: '', date: '', time: '', location: '', notes: '' }
 
-/** Bugünün tarihi — geçmişe randevu verilmesini engellemek için. */
-function today() {
-  const now = new Date()
-  const offset = now.getTimezoneOffset() * 60000
-  return new Date(now.getTime() - offset).toISOString().slice(0, 10)
-}
-
 function validate(values) {
   const errors = {}
+
   if (!values.name.trim() || values.name.trim().length < 2) {
     errors.name = 'Adınızı girin.'
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email.trim())) {
     errors.email = 'Geçerli bir e-posta adresi girin.'
   }
+
   if (!values.date) {
     errors.date = 'Tarih seçin.'
   } else if (values.date < today()) {
     errors.date = 'Geçmiş bir tarih seçilemez.'
+  } else {
+    const check = checkDate(values.date)
+    if (!check.open) errors.date = check.reason
   }
-  if (!values.time) {
+
+  if (!TIME_SLOTS.includes(values.time)) {
     errors.time = 'Saat seçin.'
   }
   if (!MEETING_LOCATIONS.some((option) => option.value === values.location)) {
     errors.location = 'Toplantı yerini seçin.'
   }
+
   return errors
+}
+
+/** Bugün için geçmiş saatler seçilemesin. */
+function isPastSlot(isoDate, slot) {
+  if (isoDate !== today()) return false
+  const now = new Date()
+  return Number(slot.slice(0, 2)) <= now.getHours()
 }
 
 export default function MeetingModal({ open, onClose }) {
@@ -43,6 +56,49 @@ export default function MeetingModal({ open, onClose }) {
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | loading | success | error
   const [feedback, setFeedback] = useState('')
+  const [takenSlots, setTakenSlots] = useState([])
+  const [slotsLoading, setSlotsLoading] = useState(false)
+
+  const dateCheck = values.date ? checkDate(values.date) : { open: false }
+  const dateUsable = Boolean(values.date) && dateCheck.open && values.date >= today()
+
+  /** Seçili gün için dolu saatleri getirir. */
+  const loadTakenSlots = useCallback(async (isoDate) => {
+    if (!isoDate || !isSupabaseConfigured || !supabase) {
+      setTakenSlots([])
+      return
+    }
+
+    setSlotsLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('meeting_slots_taken')
+        .select('meeting_time')
+        .eq('meeting_date', isoDate)
+      if (error) throw error
+
+      // Postgres "14:00:00" döner; arayüzdeki "14:00" ile eşleşmesi için kırpılır.
+      setTakenSlots((data ?? []).map((row) => String(row.meeting_time).slice(0, 5)))
+    } catch (error) {
+      // Dolu saatler okunamazsa hepsi boş varsayılır; çakışmayı veritabanındaki
+      // benzersizlik kısıtı yine de engeller.
+      setTakenSlots([])
+      if (import.meta.env.DEV) {
+        console.warn('[MeetingModal] dolu saatler alınamadı:', error.message)
+      }
+    } finally {
+      setSlotsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!open) return
+    if (dateUsable) {
+      loadTakenSlots(values.date)
+    } else {
+      setTakenSlots([])
+    }
+  }, [open, dateUsable, values.date, loadTakenSlots])
 
   const close = () => {
     onClose()
@@ -50,12 +106,31 @@ export default function MeetingModal({ open, onClose }) {
     setErrors({})
     setStatus('idle')
     setFeedback('')
+    setTakenSlots([])
+  }
+
+  /** Kullanıcı bir alanı düzeltince önceki gönderim hatası ekranda kalmamalı. */
+  const clearSubmitError = () => {
+    setStatus((prev) => (prev === 'error' ? 'idle' : prev))
+    setFeedback((prev) => (prev ? '' : prev))
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target
-    setValues((prev) => ({ ...prev, [name]: value }))
-    setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev))
+    clearSubmitError()
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+      // Gün değişince seçili saat geçersiz olabilir; sıfırlanır.
+      ...(name === 'date' ? { time: '' } : null),
+    }))
+    setErrors((prev) => ({ ...prev, [name]: undefined, ...(name === 'date' ? { time: undefined } : null) }))
+  }
+
+  const selectSlot = (slot) => {
+    clearSubmitError()
+    setValues((prev) => ({ ...prev, time: slot }))
+    setErrors((prev) => (prev.time ? { ...prev, time: undefined } : prev))
   }
 
   const handleSubmit = async (event) => {
@@ -91,11 +166,18 @@ export default function MeetingModal({ open, onClose }) {
       setFeedback('Toplantı talebiniz kaydedildi. Onay için size e-posta ile döneceğiz.')
     } catch (error) {
       setStatus('error')
-      setFeedback(
-        error.message === 'SUPABASE_NOT_CONFIGURED'
-          ? `Kayıt altyapısı henüz bağlanmadı. ${SITE.email} adresinden yazabilirsiniz.`
-          : `Talep kaydedilemedi. Lütfen tekrar deneyin veya ${SITE.email} adresine yazın.`,
-      )
+
+      if (error.code === '23505') {
+        // Benzersizlik kısıtı: bu slot biz formu doldururken kapılmış.
+        setFeedback('Bu saat az önce doldu. Lütfen başka bir saat seçin.')
+        setValues((prev) => ({ ...prev, time: '' }))
+        loadTakenSlots(values.date)
+      } else if (error.message === 'SUPABASE_NOT_CONFIGURED') {
+        setFeedback(`Kayıt altyapısı henüz bağlanmadı. ${SITE.email} adresinden yazabilirsiniz.`)
+      } else {
+        setFeedback(`Talep kaydedilemedi. Lütfen tekrar deneyin veya ${SITE.email} adresine yazın.`)
+      }
+
       if (import.meta.env.DEV) {
         console.error('[MeetingModal]', error)
       }
@@ -118,8 +200,6 @@ export default function MeetingModal({ open, onClose }) {
       </p>
     ) : null
 
-  const locationLabel = meetingLocationLabel(values.location)
-
   return (
     <Modal open={open} onClose={close} title="Toplantı Planla" code="07">
       {status === 'success' ? (
@@ -137,7 +217,7 @@ export default function MeetingModal({ open, onClose }) {
               ['E-posta', values.email],
               ['Tarih', values.date],
               ['Saat', values.time],
-              ['Yer', locationLabel],
+              ['Yer', meetingLocationLabel(values.location)],
             ].map(([key, value]) => (
               <div key={key} className="flex items-baseline justify-between gap-3">
                 <dt className="shrink-0 text-fg-subtle">{key}</dt>
@@ -155,105 +235,155 @@ export default function MeetingModal({ open, onClose }) {
       ) : (
         <form onSubmit={handleSubmit} noValidate>
           <p className="border-b border-dashed border-accent/30 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle sm:px-6">
-            Form DA-07 · Yıldızlı alanlar zorunludur
+            Form DA-07 · Hafta içi 09:00 – 18:00 · Yıldızlı alanlar zorunlu
           </p>
 
-          <div className="grid max-h-[52vh] gap-4 overflow-y-auto px-5 py-5 sm:grid-cols-2 sm:px-6">
-            <div>
-              <label htmlFor="meeting-name" className={labelClass}>
-                Ad Soyad <span className="text-danger">*</span>
-              </label>
-              <input
-                id="meeting-name"
-                name="name"
-                type="text"
-                value={values.name}
-                onChange={handleChange}
-                placeholder="Adınız ve soyadınız"
-                className={fieldClass('name')}
-                aria-invalid={Boolean(errors.name)}
-                aria-describedby={errors.name ? 'meeting-name-error' : undefined}
-              />
-              {errorFor('name', 'meeting-name-error')}
+          <div className="max-h-[58vh] overflow-y-auto px-5 py-5 sm:px-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="meeting-name" className={labelClass}>
+                  Ad Soyad <span className="text-danger">*</span>
+                </label>
+                <input
+                  id="meeting-name"
+                  name="name"
+                  type="text"
+                  value={values.name}
+                  onChange={handleChange}
+                  placeholder="Adınız ve soyadınız"
+                  className={fieldClass('name')}
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? 'meeting-name-error' : undefined}
+                />
+                {errorFor('name', 'meeting-name-error')}
+              </div>
+
+              <div>
+                <label htmlFor="meeting-email" className={labelClass}>
+                  E-posta <span className="text-danger">*</span>
+                </label>
+                <input
+                  id="meeting-email"
+                  name="email"
+                  type="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  placeholder="ornek@sirket.com"
+                  className={fieldClass('email')}
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'meeting-email-error' : undefined}
+                />
+                {errorFor('email', 'meeting-email-error')}
+              </div>
+
+              <div>
+                <label htmlFor="meeting-date" className={labelClass}>
+                  Tarih <span className="text-danger">*</span>
+                </label>
+                <input
+                  id="meeting-date"
+                  name="date"
+                  type="date"
+                  min={today()}
+                  value={values.date}
+                  onChange={handleChange}
+                  className={fieldClass('date')}
+                  aria-invalid={Boolean(errors.date)}
+                  aria-describedby={errors.date ? 'meeting-date-error' : 'meeting-date-hint'}
+                />
+                {errors.date ? (
+                  errorFor('date', 'meeting-date-error')
+                ) : (
+                  <p id="meeting-date-hint" className="mt-1.5 font-mono text-[10px] text-fg-subtle">
+                    Hafta içi · resmî tatiller kapalı
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="meeting-location" className={labelClass}>
+                  Yer <span className="text-danger">*</span>
+                </label>
+                <select
+                  id="meeting-location"
+                  name="location"
+                  value={values.location}
+                  onChange={handleChange}
+                  className={fieldClass('location')}
+                  aria-invalid={Boolean(errors.location)}
+                  aria-describedby={errors.location ? 'meeting-location-error' : undefined}
+                >
+                  <option value="">Seçiniz</option>
+                  {MEETING_LOCATIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                {errorFor('location', 'meeting-location-error')}
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="meeting-email" className={labelClass}>
-                E-posta <span className="text-danger">*</span>
-              </label>
-              <input
-                id="meeting-email"
-                name="email"
-                type="email"
-                value={values.email}
-                onChange={handleChange}
-                placeholder="ornek@sirket.com"
-                className={fieldClass('email')}
-                aria-invalid={Boolean(errors.email)}
-                aria-describedby={errors.email ? 'meeting-email-error' : undefined}
-              />
-              {errorFor('email', 'meeting-email-error')}
-            </div>
-
-            <div>
-              <label htmlFor="meeting-date" className={labelClass}>
-                Tarih <span className="text-danger">*</span>
-              </label>
-              <input
-                id="meeting-date"
-                name="date"
-                type="date"
-                min={today()}
-                value={values.date}
-                onChange={handleChange}
-                className={fieldClass('date')}
-                aria-invalid={Boolean(errors.date)}
-                aria-describedby={errors.date ? 'meeting-date-error' : undefined}
-              />
-              {errorFor('date', 'meeting-date-error')}
-            </div>
-
-            <div>
-              <label htmlFor="meeting-time" className={labelClass}>
+            {/* Saat tablosu */}
+            <fieldset className="mt-5">
+              <legend className={labelClass}>
                 Saat <span className="text-danger">*</span>
-              </label>
-              <input
-                id="meeting-time"
-                name="time"
-                type="time"
-                value={values.time}
-                onChange={handleChange}
-                className={fieldClass('time')}
-                aria-invalid={Boolean(errors.time)}
-                aria-describedby={errors.time ? 'meeting-time-error' : undefined}
-              />
+              </legend>
+
+              {!dateUsable ? (
+                <p className="border border-dashed border-accent/30 px-3 py-4 text-center font-mono text-[11px] text-fg-subtle">
+                  Saatleri görmek için önce uygun bir tarih seçin.
+                </p>
+              ) : (
+                <>
+                  <div
+                    className="grid grid-cols-3 gap-1.5 sm:grid-cols-5"
+                    role="group"
+                    aria-describedby="meeting-time-hint"
+                  >
+                    {TIME_SLOTS.map((slot) => {
+                      const taken = takenSlots.includes(slot)
+                      const past = isPastSlot(values.date, slot)
+                      const disabled = taken || past
+                      const selected = values.time === slot
+
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          disabled={disabled}
+                          aria-pressed={selected}
+                          onClick={() => selectSlot(slot)}
+                          className={classNames(
+                            'num min-h-[38px] border px-2 py-2 font-mono text-[12px] transition-colors duration-150',
+                            selected
+                              ? 'border-accent bg-accent text-accent-fg'
+                              : disabled
+                                ? 'cursor-not-allowed border-accent/15 text-fg-subtle/50 line-through'
+                                : 'border-accent/40 text-accent hover:bg-accent hover:text-accent-fg',
+                          )}
+                        >
+                          {slot}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  <p
+                    id="meeting-time-hint"
+                    className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle"
+                  >
+                    {slotsLoading
+                      ? 'Dolu saatler kontrol ediliyor…'
+                      : 'Üstü çizili saatler dolu veya geçmiş'}
+                  </p>
+                </>
+              )}
+
               {errorFor('time', 'meeting-time-error')}
-            </div>
+            </fieldset>
 
-            <div className="sm:col-span-2">
-              <label htmlFor="meeting-location" className={labelClass}>
-                Yer <span className="text-danger">*</span>
-              </label>
-              <select
-                id="meeting-location"
-                name="location"
-                value={values.location}
-                onChange={handleChange}
-                className={fieldClass('location')}
-                aria-invalid={Boolean(errors.location)}
-                aria-describedby={errors.location ? 'meeting-location-error' : undefined}
-              >
-                <option value="">Seçiniz</option>
-                {MEETING_LOCATIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {errorFor('location', 'meeting-location-error')}
-            </div>
-
-            <div className="sm:col-span-2">
+            <div className="mt-5">
               <label htmlFor="meeting-notes" className={labelClass}>
                 Açıklama <span className="text-fg-subtle">(opsiyonel)</span>
               </label>

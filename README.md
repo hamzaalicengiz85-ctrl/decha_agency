@@ -89,7 +89,31 @@ kayıt oluşturabilir ama mevcut kayıtları listeleyemez.
 `meeting_requests` alanları: ad, e-posta, tarih, saat ve yer **zorunlu**; açıklama
 opsiyoneldir. `location` kolonu üç sabit değerden birini alır — `online`,
 `client_site`, `our_office`. Bu değerler `src/data/meeting.js` ile birebir aynı
-olmalıdır; görünen Türkçe etiketler orada tutulur, veritabanına anahtar yazılır. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
+olmalıdır; görünen Türkçe etiketler orada tutulur, veritabanına anahtar yazılır.
+
+### Randevu kuralları
+
+`src/data/meeting.js` tek kaynaktır:
+
+- **Saatler** yalnızca tam saat, çalışma saatleri içinde: 09:00 – 17:00 (son
+  randevu 17:00'de başlar, 18:00'de biter). Arayüzde saat girdisi değil,
+  seçilebilir bir saat tablosu gösterilir.
+- **Günler** yalnızca hafta içi. Cumartesi ve pazar kapalıdır.
+- **Resmî tatiller** kapalıdır. Sabit tarihli tatiller koddan hesaplanır;
+  dinî bayramlar ay takvimine göre kaydığı için yıl yıl listelenir ve
+  **her yıl resmî takvimle doğrulanmalıdır**.
+
+**Çift rezervasyon** iki katmanda engellenir:
+
+1. `meeting_requests` üzerinde kısmi benzersiz indeks — aynı gün ve saate ikinci
+   kayıt veritabanı seviyesinde reddedilir (iptal edilenler slotu serbest bırakır).
+   İki kişi aynı anda gönderse bile yalnızca biri geçer.
+2. `meeting_slots_taken` görünümü — dolu saatler arayüzde üstü çizili ve
+   tıklanamaz gösterilir. Görünüm yalnızca tarih ve saat kolonlarını açar;
+   ad ve e-posta dışarı çıkmaz.
+
+Kısıt ihlali (Postgres `23505`) formda "bu saat az önce doldu" mesajına çevrilir
+ve saat tablosu tazelenir. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
 görüntüleyebilirsiniz.
 
 ---
