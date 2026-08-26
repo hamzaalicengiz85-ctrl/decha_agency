@@ -112,6 +112,12 @@ olmalıdır; görünen Türkçe etiketler orada tutulur, veritabanına anahtar y
    tıklanamaz gösterilir. Görünüm yalnızca tarih ve saat kolonlarını açar;
    ad ve e-posta dışarı çıkmaz.
 
+Görünüm salt okunurdur: `select distinct` kullandığı için PostgreSQL onu
+otomatik güncellenebilir saymaz, ayrıca `anon` ve `authenticated` rollerinden
+tüm haklar geri alınıp yalnızca `SELECT` verilir. Aksi hâlde görünüm tanımlayıcı
+haklarıyla çalıştığından anon anahtarını taşıyan biri görünüm üzerinden tablonun
+RLS'ini atlayıp kayıtları silebilirdi.
+
 Kısıt ihlali (Postgres `23505`) formda "bu saat az önce doldu" mesajına çevrilir
 ve saat tablosu tazelenir. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
 görüntüleyebilirsiniz.

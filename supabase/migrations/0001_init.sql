@@ -185,9 +185,16 @@ create unique index if not exists meeting_requests_slot_unique
 -- meeting_requests tablosu anon'a kapalı (ad/e-posta sızmasın); bu görünüm
 -- yalnızca tarih ve saat kolonlarını açar. Görünüm tanımlayıcı haklarıyla
 -- çalıştığı için tablonun RLS'ini atlar, dışarı yalnız bu iki kolon çıkar.
+-- distinct: aynı saatte iptal edilmemiş birden fazla kayıt olamaz ama
+-- görünümü tekrarsız tutmak istemciyi savunmasız bırakmaz.
 create or replace view public.meeting_slots_taken as
-  select meeting_date, meeting_time
+  select distinct meeting_date, meeting_time
   from public.meeting_requests
   where status <> 'cancelled';
 
+-- Basit görünümler PostgreSQL'de otomatik güncellenebilir olur; tanımlayıcı
+-- haklarıyla çalıştığı için anon rolü bu görünüm üzerinden tablonun RLS'ini
+-- atlayıp kayıt silebilir/değiştirebilirdi. Önce tüm hakları geri alıp
+-- yalnızca SELECT veriyoruz.
+revoke all on public.meeting_slots_taken from anon, authenticated;
 grant select on public.meeting_slots_taken to anon, authenticated;
