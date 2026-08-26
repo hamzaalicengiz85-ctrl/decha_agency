@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
           <div>
             <Link to="/" className="glitch-hover inline-flex items-center">
-              <Logo className="text-[34px]" />
+              <Logo className="text-[20px]" />
             </Link>
             <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-fg-muted">
               {SITE.tagline}. Strateji, tasarım ve mühendislik tek dosyada.

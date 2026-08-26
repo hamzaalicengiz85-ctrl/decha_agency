@@ -43,7 +43,7 @@ export default function Navbar() {
             className="glitch-hover flex items-center"
             aria-label="Decha Agency ana sayfa"
           >
-            <Logo className="text-[30px] sm:text-[34px]" />
+            <Logo className="text-[17px] sm:text-[19px]" />
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">
