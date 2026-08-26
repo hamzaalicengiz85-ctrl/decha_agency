@@ -67,7 +67,12 @@
     --line-op: 0.42;
     --line-op-strong: 0.85;
 
-    --panel-fill: linear-gradient(168deg, rgb(255 107 0 / 0.05), rgb(255 107 0 / 0.015));
+    /* Panel zemini OPAK ve background-color olarak verilir.
+       background-image kullanılamaz: .brackets köşe işaretlerini
+       background-image ile çizdiği için panel dolgusunu eziyordu ve
+       paneller aslında saydam kalıp sayfa ızgarasını içeriden
+       gösteriyordu. Sayfa zemininden bir tık açık — çerçeve zaten ayırıyor. */
+    --panel-bg: 18 13 9;
     --panel-border: rgb(255 107 0 / 0.5);
     --panel-shadow: none;
 
@@ -149,7 +154,7 @@
   /* Panel: 1px turuncu çerçeve + dışında ikinci ince hat */
   .panel {
     position: relative;
-    background-image: var(--panel-fill);
+    background-color: rgb(var(--panel-bg));
     border: 1px solid var(--panel-border);
     box-shadow: 0 0 0 3px rgb(var(--c-bg)), 0 0 0 4px rgb(var(--c-accent) / 0.28);
     border-radius: 0;
@@ -164,7 +169,7 @@
 
   .panel-hover:hover {
     border-color: rgb(var(--c-accent));
-    background-color: rgb(var(--c-accent) / 0.07);
+    background-color: rgb(34 22 14);
     box-shadow: 0 0 0 3px rgb(var(--c-bg)), 0 0 0 4px rgb(var(--c-accent) / 0.7);
   }
 
@@ -195,37 +200,6 @@
       calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px);
   }
 
-  /* Grafik kağıdı ile birlikte kullanıldığında ikisi de görünsün */
-  .brackets.grid-field {
-    background-image:
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(var(--bracket), var(--bracket)),
-      linear-gradient(rgb(var(--c-accent) / 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-accent) / 0.12) 1px, transparent 1px);
-    background-size:
-      var(--bl) 1px, 1px var(--bl),
-      var(--bl) 1px, 1px var(--bl),
-      var(--bl) 1px, 1px var(--bl),
-      var(--bl) 1px, 1px var(--bl),
-      18px 18px, 18px 18px;
-    background-position:
-      4px 4px, 4px 4px,
-      calc(100% - 4px) 4px, calc(100% - 4px) 4px,
-      4px calc(100% - 4px), 4px calc(100% - 4px),
-      calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px),
-      0 0, 0 0;
-    background-repeat:
-      no-repeat, no-repeat, no-repeat, no-repeat,
-      no-repeat, no-repeat, no-repeat, no-repeat,
-      repeat, repeat;
-  }
-
   /* Tarama dokusu: başlık şeritlerindeki eğik tarama (referanstaki ////) */
   .hatch {
     background-image: repeating-linear-gradient(
@@ -233,14 +207,6 @@
       rgb(var(--c-accent) / 0.85) 0 1px,
       transparent 1px 5px
     );
-  }
-
-  /* Grafik kağıdı alanı: panel içi ölçüm zemini */
-  .grid-field {
-    background-image:
-      linear-gradient(rgb(var(--c-accent) / 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-accent) / 0.12) 1px, transparent 1px);
-    background-size: 18px 18px;
   }
 
   /* Liste satırı: seçili olan dolu turuncu, üzerine ekran siyahı */
@@ -324,6 +290,102 @@
 
   .key:active {
     transform: translateY(1px);
+  }
+
+  /* ============================================================
+     GLITCH MONOGRAM
+     Kanal ayrışması klasik camgöbeği/macenta yerine paletin kendi
+     renkleriyle yapılır: hardal ve kritik kırmızı. Efekt sürekli değil,
+     aralıklı tetiklenir — sürekli titreşen bir logo yorucu olur.
+     ============================================================ */
+  .glitch {
+    position: relative;
+    display: inline-block;
+    color: rgb(var(--c-accent));
+    font-family: 'Chakra Petch', Archivo, ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 16px rgb(var(--c-accent) / 0.4);
+  }
+
+  /* İki kopya: biri hardal, biri kırmızı; yatayda kayarak ayrışırlar. */
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    text-shadow: none;
+  }
+
+  .glitch::before {
+    color: rgb(var(--c-highlight));
+    animation: glitch-a 6s steps(1, end) infinite;
+  }
+
+  .glitch::after {
+    color: rgb(var(--c-danger-fill));
+    animation: glitch-b 6s steps(1, end) infinite;
+  }
+
+  /* Zamanın %90'ında gizli; kalan aralıkta dilimler kayar. */
+  @keyframes glitch-a {
+    0%, 88%, 100% {
+      opacity: 0;
+      transform: none;
+      clip-path: none;
+    }
+    89% {
+      opacity: 0.9;
+      transform: translate(-2px, -1px);
+      clip-path: inset(12% 0 58% 0);
+    }
+    91% {
+      opacity: 0.9;
+      transform: translate(2px, 1px);
+      clip-path: inset(62% 0 18% 0);
+    }
+    93% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes glitch-b {
+    0%, 88%, 100% {
+      opacity: 0;
+      transform: none;
+      clip-path: none;
+    }
+    90% {
+      opacity: 0.85;
+      transform: translate(2px, 1px);
+      clip-path: inset(38% 0 34% 0);
+    }
+    92% {
+      opacity: 0.85;
+      transform: translate(-3px, 0);
+      clip-path: inset(70% 0 8% 0);
+    }
+    94% {
+      opacity: 0;
+    }
+  }
+
+  /* Üzerine gelince efekt hızlanır */
+  .glitch-hover:hover .glitch::before {
+    animation-duration: 1.2s;
+  }
+
+  .glitch-hover:hover .glitch::after {
+    animation-duration: 1.2s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glitch::before,
+    .glitch::after {
+      display: none;
+    }
   }
 
   /* Noktalı ayraç.

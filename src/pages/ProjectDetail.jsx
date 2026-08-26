@@ -85,7 +85,7 @@ export default function ProjectDetail() {
 
       {/* Künye şeridi: fotoğraf yerine dosya kimliği */}
       <div className="container">
-        <div className="panel brackets grid-field relative flex items-center justify-between gap-6 overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
+        <div className="panel brackets relative flex items-center justify-between gap-6 overflow-hidden px-6 py-8 sm:px-10 sm:py-12">
           <span className="phosphor relative font-display text-[3.4rem] font-bold leading-none text-accent sm:text-[5rem]">
             {initials(project.client || project.title)}
           </span>

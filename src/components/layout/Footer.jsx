@@ -17,11 +17,8 @@ export default function Footer() {
       <div className="container py-14">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
           <div>
-            <Link to="/" className="flex items-center gap-2.5">
-              <Logo className="h-9 w-9" />
-              <span className="font-display text-[16px] font-bold uppercase tracking-[0.14em] text-accent">
-                Decha
-              </span>
+            <Link to="/" className="glitch-hover inline-flex items-center">
+              <Logo className="text-[34px]" />
             </Link>
             <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-fg-muted">
               {SITE.tagline}. Strateji, tasarım ve mühendislik tek dosyada.

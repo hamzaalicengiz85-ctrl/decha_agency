@@ -26,7 +26,7 @@ export default function ProjectCard({ project }) {
       </div>
 
       {/* Künye alanı: monogram + öne çıkan ölçüm */}
-      <div className="grid-field relative flex items-center justify-between gap-4 border-b border-accent/30 px-4 py-6">
+      <div className="relative flex items-center justify-between gap-4 border-b border-accent/30 px-4 py-6">
         <span className="phosphor relative font-display text-[2.4rem] font-bold leading-none tracking-[0.03em] text-accent">
           {initials(project.client || project.title)}
         </span>

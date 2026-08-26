@@ -37,7 +37,7 @@ export default function Hero() {
 
             {/* Ekran altı okuma satırı */}
             {/* Ölçüm paneli: grafik kağıdı zemin, turuncu ayraçlar */}
-            <div className="panel brackets grid-field mx-auto mt-14 grid max-w-3xl grid-cols-2 sm:grid-cols-4">
+            <div className="panel brackets mx-auto mt-14 grid max-w-3xl grid-cols-2 sm:grid-cols-4">
               {stats.map((item, index) => (
                 <div
                   key={item.label}

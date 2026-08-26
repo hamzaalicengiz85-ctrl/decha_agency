@@ -38,11 +38,12 @@ export default function Navbar() {
         aria-label="Ana menü"
       >
         <div className="container flex h-14 items-center justify-between gap-4 sm:h-16">
-          <Link to="/" className="flex items-center gap-2.5" aria-label="Decha Agency ana sayfa">
-            <Logo className="h-8 w-8" />
-            <span className="font-display text-[16px] font-bold uppercase tracking-[0.14em] text-accent">
-              Decha
-            </span>
+          <Link
+            to="/"
+            className="glitch-hover flex items-center"
+            aria-label="Decha Agency ana sayfa"
+          >
+            <Logo className="text-[30px] sm:text-[34px]" />
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">

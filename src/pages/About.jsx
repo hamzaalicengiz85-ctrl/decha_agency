@@ -58,7 +58,7 @@ export default function About() {
 
       <Section spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="panel brackets grid-field relative overflow-hidden p-8 sm:p-10">
+          <div className="panel brackets relative overflow-hidden p-8 sm:p-10">
             <div className="relative">
               <p className="eyebrow">Kuruluş kaydı</p>
               <p className="num phosphor mt-4 font-display text-[4rem] font-bold leading-none text-accent sm:text-[5.5rem]">
