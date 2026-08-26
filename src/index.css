@@ -306,7 +306,7 @@
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0.02em;
-    text-shadow: 0 0 16px rgb(var(--c-accent) / 0.4);
+    text-shadow: 0 0 22px rgb(var(--c-accent) / 0.55);
   }
 
   /* İki kopya: biri hardal, biri kırmızı; yatayda kayarak ayrışırlar. */
