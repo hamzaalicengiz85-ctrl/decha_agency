@@ -307,11 +307,14 @@ içinde modül seviyesinde sabittir.
 
 Dört ayrıntı bilinçli:
 
-- **Karışan kısım, hedef kelimenin kendi harflerinin karıştırılmışıdır.**
-  Rastgele bir alfabeyle karışma metni kelimeden 70 px'e kadar geniş
-  çizilebiliyordu (ölçüldü: dar `ı` 15.8 px, geniş `Ü` 39.7 px). Aynı harf
-  kümesi karıştırıldığında toplam genişlik tanım gereği sabit kalır — turuncu
-  kutunun kelimeye tam oturmasının dayanağı bu.
+- **Karışan karakterler hedef harfle yakın genişlikte seçilir.** Turuncu kutu
+  kelimeye tam oturduğu için karışma metninin de aynı genişlikte kalması
+  gerekir; serbest bir alfabede metin kelimeden 70 px'e kadar geniş
+  çizilebiliyordu (ölçüldü: dar `ı` 15.8 px, geniş `Ü` 39.7 px). Glif
+  genişlikleri canvas ile ölçülür, her karakter için en yakın beş aday
+  arasından rastgele seçim yapılır ve biriken sapma bir sonraki karakterde
+  telafi edilir. Canvas yoksa (jsdom) kelimenin kendi harfleri karıştırılır —
+  genişlik tanım gereği sabit kalır.
 - **Kutu her kelimede kendi genişliğine oturur.** Genişlik, akıştaki görünmez
   katmandan `ResizeObserver` ile ölçülür (yazı tipi geç yüklenirse ve pencere
   yeniden boyutlanırsa yeniden ölçer). Genişliğe CSS geçişi verilmez: karışma
@@ -330,8 +333,8 @@ Dört ayrıntı bilinçli:
   "Markanızı dijitalde büyüten tasarım ve yazılım" olur.
 
 Ölçülen sonuç — harf mürekkebiyle kutu kenarı arasındaki en dar boşluk, tüm
-kelimeler ve tüm karışma kareleri boyunca: üstte 4.9 px, altta 6.0 px, yanlarda
-6.2 px. Hiçbir karede taşma yok.
+kelimeler ve 93 farklı karışma karesi boyunca: üstte 4.9 px, altta 6.0 px,
+yanlarda 5.4 px. Hiçbir karede taşma yok.
 
 **Kaydırırken açılma** — `Section` görünür alana girdiğinde kapsayıcısına
 `is-in` sınıfını ekler (`useScrollReveal`, `IntersectionObserver`).

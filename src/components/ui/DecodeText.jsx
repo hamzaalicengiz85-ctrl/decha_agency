@@ -5,24 +5,31 @@ import { classNames } from '../../lib/format'
  * Şifre çözülür (decode) efektiyle kelime değiştiren metin.
  *
  * Her `interval` ms'de bir sıradaki kelimeye geçer; geçişte harfler soldan
- * sağa doğru çözülür, çözülmemiş kısım her karede yeniden karıştırılır.
- * Kademeli `setInterval` adımları sitenin geri kalanındaki `steps()`
- * zamanlamasıyla aynı mekanik hissi verir.
+ * sağa doğru çözülür, çözülmemiş kısım her karede rastgele karakterlerle
+ * yeniden yazılır. Kademeli `setInterval` adımları sitenin geri kalanındaki
+ * `steps()` zamanlamasıyla aynı mekanik hissi verir.
  *
- * Karışan kısım, hedef kelimenin KENDİ harflerinin karıştırılmışıdır. Rastgele
- * bir alfabe kullanıldığında karışma metni kelimeden 70 px'e kadar geniş
- * çizilebiliyordu (ölçüldü: dar "ı" 15.8 px, geniş "Ü" 39.7 px); aynı harf
- * kümesi karıştırıldığında toplam genişlik tanım gereği hiç değişmez, böylece
- * turuncu kutu kelimeye tam oturur ve karışma sırasında hiç oynamaz.
+ * Turuncu kutu her kelimede kendi genişliğine oturduğu için karışan metnin
+ * de aynı genişlikte kalması gerekir. Rastgele bir alfabede karışma metni
+ * kelimeden 70 px'e kadar geniş çizilebiliyordu (dar "ı" 15.8 px, geniş "Ü"
+ * 39.7 px). Çözüm: her karakterin yerine, o karakterle yakın genişlikte bir
+ * glif seçilir ve biriken sapma bir sonraki karakterde telafi edilir, böylece
+ * toplam genişlik hedef kelimeden birkaç pikselden fazla ayrılmaz.
  *
- * Erişilebilirlik: animasyonlu katman `aria-hidden`, ekran okuyucular sabit
+ * Erişilebilirlik: animasyonlu katmanlar `aria-hidden`, ekran okuyucular sabit
  * `words[0]` metnini okur — böylece başlığın erişilebilir adı değişmez.
  */
 
-const FRAME_MS = 55 // kare süresi — kademeli, mekanik akış
-const DECODE_MS = 720 // bir kelimenin tamamen çözülme süresi
+// Testler zamanlamayı buradan okur; sabitler değişince testler kaymaz.
+export const FRAME_MS = 55 // kare süresi — kademeli, mekanik akış
+export const DECODE_MS = 1100 // bir kelimenin tamamen çözülme süresi
+const NEAREST = 5 // aynı genişlik sınıfındaki kaç aday arasından seçilecek
 
-/** Fisher-Yates: diziyi yerinde karıştırır. */
+// Şifreli görünüm için yabancı karakterler: Latin büyük harfler, rakamlar ve
+// terminal sembolleri.
+const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÇĞİÖŞÜ0123456789#%&*+=<>[]{}/\\'
+
+/** Fisher-Yates karıştırma — glif ölçüsü alınamadığında yedek yol. */
 function shuffled(chars) {
   const list = [...chars]
   for (let i = list.length - 1; i > 0; i -= 1) {
@@ -32,12 +39,37 @@ function shuffled(chars) {
   return list.join('')
 }
 
+/**
+ * Gliflerin gerçek çizim genişliklerini ölçer. Canvas yoksa (jsdom) null döner
+ * ve karıştırma yedek yola düşer.
+ */
+function measureGlyphs(font) {
+  const context = document.createElement('canvas').getContext('2d')
+  if (!context || !font) return null
+  context.font = font
+  const table = GLYPHS.split('').map((glyph) => ({ glyph, width: context.measureText(glyph).width }))
+  return {
+    list: table.sort((a, b) => a.width - b.width),
+    of: (char) => context.measureText(char).width,
+  }
+}
+
+/** Hedef genişliğe en yakın birkaç aday arasından rastgele bir glif seçer. */
+function pickGlyph(list, wanted) {
+  const nearest = [...list]
+    .sort((a, b) => Math.abs(a.width - wanted) - Math.abs(b.width - wanted))
+    .slice(0, NEAREST)
+  return nearest[Math.floor(Math.random() * nearest.length)]
+}
+
 export default function DecodeText({ words, interval = 5000, className }) {
   const [index, setIndex] = useState(0)
   const [reduced, setReduced] = useState(false)
   const [text, setText] = useState(words[0])
   const [boxWidth, setBoxWidth] = useState(null)
   const sizerRef = useRef(null)
+  const textRef = useRef(null)
+  const glyphsRef = useRef(null)
 
   // Dizi her render'da yeniden oluşturulsa bile efektler yeniden kurulmasın
   // diye bağımlılıklarda diziyi değil, uzunluğu ve hedef kelimeyi kullanıyoruz.
@@ -66,6 +98,27 @@ export default function DecodeText({ words, interval = 5000, className }) {
     if (reduced) setIndex(0)
   }, [reduced])
 
+  // Kutu genişliği ve glif ölçüleri. Yazı tipi geç yüklendiğinde ya da pencere
+  // yeniden boyutlandığında (başlık boyutu clamp() ile değişir) ResizeObserver
+  // ikisini de tazeler.
+  useLayoutEffect(() => {
+    const node = sizerRef.current
+    if (!node) return
+
+    const remeasure = () => {
+      setBoxWidth(node.getBoundingClientRect().width)
+      if (textRef.current) {
+        glyphsRef.current = measureGlyphs(window.getComputedStyle(textRef.current).font)
+      }
+    }
+    remeasure()
+
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(remeasure)
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [target])
+
   // Çözülme animasyonu.
   // useLayoutEffect: kutu genişliği de boyama öncesi hesaplandığı için metin
   // ve kutu aynı karede değişir. useEffect ile metin bir kare geriden geliyor,
@@ -76,9 +129,24 @@ export default function DecodeText({ words, interval = 5000, className }) {
       return
     }
 
+    const scramble = (solved) => {
+      const glyphs = glyphsRef.current
+      if (!glyphs) return target.slice(0, solved) + shuffled(target.slice(solved))
+
+      let out = target.slice(0, solved)
+      let drift = 0 // birikmiş genişlik sapması
+      for (let i = solved; i < target.length; i += 1) {
+        const wanted = glyphs.of(target[i].toLocaleUpperCase('tr'))
+        const picked = pickGlyph(glyphs.list, wanted - drift)
+        drift += picked.width - wanted
+        out += picked.glyph
+      }
+      return out
+    }
+
     // İlk tiki beklemeden karıştır: aksi hâlde ilk 55 ms boyunca ekranda hâlâ
     // önceki kelime durur, kutu ise çoktan yeni genişliktedir.
-    setText(shuffled(target))
+    setText(scramble(0))
 
     const startedAt = Date.now()
     const id = setInterval(() => {
@@ -88,31 +156,11 @@ export default function DecodeText({ words, interval = 5000, className }) {
         clearInterval(id)
         return
       }
-      const solved = Math.floor(progress * target.length)
-      setText(target.slice(0, solved) + shuffled(target.slice(solved)))
+      setText(scramble(Math.floor(progress * target.length)))
     }, FRAME_MS)
 
     return () => clearInterval(id)
   }, [target, reduced, firstWord])
-
-  // Kutu genişliği: hedef kelimenin doğal genişliği; kelimeyle aynı anda
-  // değişir. Genişliğe CSS geçişi verilemiyor: karışma metni yeni kelimenin
-  // genişliğinde başladığı için kutu animasyonla yetişirken yazı 32 px'e kadar
-  // dışarı taşıyordu (ölçüldü). Yazı tipi geç yüklendiğinde ya da pencere
-  // yeniden boyutlandığında (başlık boyutu clamp() ile değişir) ResizeObserver
-  // yeniden ölçer.
-  useLayoutEffect(() => {
-    const node = sizerRef.current
-    if (!node) return
-
-    const measure = () => setBoxWidth(node.getBoundingClientRect().width)
-    measure()
-
-    if (typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(measure)
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [target])
 
   return (
     <span
@@ -128,8 +176,7 @@ export default function DecodeText({ words, interval = 5000, className }) {
       {/* Turuncu zemin. Dikeyde em cinsinden taşırılır: İ/Ö/Ü'nün noktaları
           taban çizgisinden 0.91em yukarı, Ş/Ç'nin çengeli 0.23em aşağı
           çıkıyor; satır kutusu bunları kapsamadığı için noktalar dışarıda,
-          çengel sınırda kalıyordu. Değerler ölçülerek dengelendi: her iki
-          uçta da ~6 px boşluk kalıyor. */}
+          çengel sınırda kalıyordu. Değerler ölçülerek dengelendi. */}
       <span
         className="absolute inset-x-0 -top-[0.14em] -bottom-[0.15em] block bg-accent"
         aria-hidden="true"
@@ -139,6 +186,7 @@ export default function DecodeText({ words, interval = 5000, className }) {
           çizgisi satırın geri kalanından kopardı. inset-0, akıştaki katmanla
           aynı kutuya oturur, taban çizgisi birebir denk gelir. */}
       <span
+        ref={textRef}
         className="absolute inset-0 block text-center text-accent-fg"
         aria-hidden="true"
       >

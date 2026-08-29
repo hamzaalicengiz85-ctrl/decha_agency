@@ -1,11 +1,9 @@
 import { render, act } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import DecodeText from '../components/ui/DecodeText'
+import DecodeText, { DECODE_MS, FRAME_MS } from '../components/ui/DecodeText'
 
 const WORDS = ['büyüten', 'yükselten', 'dönüştüren']
 const INTERVAL = 5000
-const DECODE_MS = 720 // bileşendeki çözülme süresi
-const FRAME_MS = 55 // bileşendeki kare süresi
 
 function mockReducedMotion(reduce) {
   window.matchMedia = vi.fn().mockImplementation((query) => ({
