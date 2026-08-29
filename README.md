@@ -305,17 +305,33 @@ ana başlıktaki vurgu kelimesini 5 saniyede bir değiştirir. Geçişte harfler
 soldan sağa doğru rastgele karakterlerden çözülür. Kelime listesi `Hero.jsx`
 içinde modül seviyesinde sabittir.
 
-Üç ayrıntı bilinçli:
+Dört ayrıntı bilinçli:
 
-- **Karışma alfabesi kelimelerin kendi harflerinden türetilir.** Rastgele bir
-  alfabe kullanıldığında karışma metni gerçek kelimelerden geniş çizilip
-  turuncu kutuyu zorluyordu.
-- **Kutu en uzun kelimeye göre rezerve edilir.** Görünen katman `absolute`
-  olduğu için kutunun ölçüsünü etkilemez; kelime değişse de satır zıplamaz
-  (ölçüldü: h1 genişliği ve kutunun x konumu tüm döngü boyunca Δ0.0 px).
-- **Erişilebilir ad sabit kalır.** Animasyonlu katman `aria-hidden`, ekran
+- **Karışan kısım, hedef kelimenin kendi harflerinin karıştırılmışıdır.**
+  Rastgele bir alfabeyle karışma metni kelimeden 70 px'e kadar geniş
+  çizilebiliyordu (ölçüldü: dar `ı` 15.8 px, geniş `Ü` 39.7 px). Aynı harf
+  kümesi karıştırıldığında toplam genişlik tanım gereği sabit kalır — turuncu
+  kutunun kelimeye tam oturmasının dayanağı bu.
+- **Kutu her kelimede kendi genişliğine oturur.** Genişlik, akıştaki görünmez
+  katmandan `ResizeObserver` ile ölçülür (yazı tipi geç yüklenirse ve pencere
+  yeniden boyutlanırsa yeniden ölçer). Genişliğe CSS geçişi verilmez: karışma
+  metni yeni kelimenin genişliğinde başladığı için kutu animasyonla yetişirken
+  yazı 32 px dışarı taşıyordu.
+- **Metin ve kutu aynı karede değişir.** Çözülme `useLayoutEffect` içinde
+  başlar ve ilk tiki beklemeden karıştırır; `useEffect` ile metin bir kare
+  geriden geldiği için kutu küçülürken eski kelime 54 px dışarı taşıyordu.
+- **Turuncu zemin dikeyde `em` cinsinden taşırılır.** `İ`/`Ö`/`Ü`'nün noktaları
+  taban çizgisinden 0.91em yukarı, `Ş`/`Ç`'nin çengeli 0.23em aşağı çıkıyor;
+  satır kutusu bunları kapsamadığı için noktalar dışarıda, çengel sınırda
+  kalıyordu. Zemin ve metin ayrı katmanlarda: zeminle birlikte kaydırılsaydı
+  metnin taban çizgisi satırın geri kalanından kopardı.
+- **Erişilebilir ad sabit kalır.** Animasyonlu katmanlar `aria-hidden`, ekran
   okuyucular `sr-only` içindeki ilk kelimeyi okur; başlığın adı her zaman
   "Markanızı dijitalde büyüten tasarım ve yazılım" olur.
+
+Ölçülen sonuç — harf mürekkebiyle kutu kenarı arasındaki en dar boşluk, tüm
+kelimeler ve tüm karışma kareleri boyunca: üstte 4.9 px, altta 6.0 px, yanlarda
+6.2 px. Hiçbir karede taşma yok.
 
 **Kaydırırken açılma** — `Section` görünür alana girdiğinde kapsayıcısına
 `is-in` sınıfını ekler (`useScrollReveal`, `IntersectionObserver`).
