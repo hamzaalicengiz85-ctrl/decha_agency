@@ -481,3 +481,80 @@
     }
   }
 }
+
+@layer components {
+  /* --------------------------------------------------------------------
+     Kaydırırken içerik açılması
+     --------------------------------------------------------------------
+     Bölüm görünür alana girdiğinde kapsayıcı `.is-in` sınıfını kazanır.
+     `.reveal` bloğun kendisini, `.stagger` ise içindeki kartları sırayla
+     açar: önce başlık, ardından kartlar kademeli olarak. Zamanlama
+     `steps()` ile kademeli — sitenin geri kalanındaki mekanik hisle aynı.
+     -------------------------------------------------------------------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.5s steps(7, end),
+      transform 0.5s steps(7, end);
+  }
+
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.45s steps(6, end),
+      transform 0.45s steps(6, end);
+  }
+
+  .is-in .stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Kartlar sırayla girer. 12'den sonrası aynı gecikmede kalır —
+     tek ekranda bundan fazlası zaten görünmüyor. */
+  .is-in .stagger > *:nth-child(1) {
+    transition-delay: 60ms;
+  }
+  .is-in .stagger > *:nth-child(2) {
+    transition-delay: 120ms;
+  }
+  .is-in .stagger > *:nth-child(3) {
+    transition-delay: 180ms;
+  }
+  .is-in .stagger > *:nth-child(4) {
+    transition-delay: 240ms;
+  }
+  .is-in .stagger > *:nth-child(5) {
+    transition-delay: 300ms;
+  }
+  .is-in .stagger > *:nth-child(6) {
+    transition-delay: 360ms;
+  }
+  .is-in .stagger > *:nth-child(7) {
+    transition-delay: 420ms;
+  }
+  .is-in .stagger > *:nth-child(8) {
+    transition-delay: 480ms;
+  }
+  .is-in .stagger > *:nth-child(n + 9) {
+    transition-delay: 540ms;
+  }
+
+  /* Hareket azaltma: geçişler zaten kapalı, burada içeriğin görünür
+     kaldığından emin oluyoruz — gecikmeler de sıfırlanır. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .stagger > * {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0ms !important;
+    }
+  }
+}

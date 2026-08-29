@@ -39,7 +39,7 @@ export default function Services() {
         ) : serviceList.length === 0 ? (
           <EmptyState title="Henüz hizmet eklenmemiş" />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {serviceList.map((service, index) => (
               <ServiceCard key={service.id ?? service.slug} service={service} index={index} />
             ))}
@@ -49,7 +49,7 @@ export default function Services() {
 
       <Section className="bg-bg-soft/60">
         <SectionHeading code="03" eyebrow="İşleyiş" title="4 adımda net bir süreç" align="center" />
-        <ol className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="stagger mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((item) => (
             <li key={item.step} className="panel p-6">
               <span className="num font-display text-3xl font-bold text-accent">{item.step}</span>

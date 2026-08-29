@@ -34,7 +34,7 @@ export default function Blog() {
         ) : postList.length === 0 ? (
           <EmptyState title="Henüz kayıt yok" description="Çok yakında ilk notumuzu paylaşacağız." />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {postList.map((post) => (
               <PostCard key={post.id ?? post.slug} post={post} />
             ))}

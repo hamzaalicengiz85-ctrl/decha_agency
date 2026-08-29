@@ -62,7 +62,7 @@ export default function Home() {
           {servicesLoading ? (
             <CardSkeleton count={6} />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {serviceList.map((service, index) => (
                 <ServiceCard key={service.id ?? service.slug} service={service} index={index} />
               ))}
@@ -89,7 +89,7 @@ export default function Home() {
           {projectsLoading ? (
             <CardSkeleton count={3} />
           ) : (
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className="stagger grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {projectList.map((project) => (
                 <ProjectCard key={project.id ?? project.slug} project={project} />
               ))}
@@ -107,7 +107,7 @@ export default function Home() {
           title="Müşterilerimiz ne diyor?"
           align="center"
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {testimonialList.map((testimonial) => (
             <TestimonialCard key={testimonial.id ?? testimonial.name} testimonial={testimonial} />
           ))}

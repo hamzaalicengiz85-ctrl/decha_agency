@@ -209,7 +209,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
     │   ├── layout/           # Layout, Navbar, Footer, Rail, Hud, ScreenFx, ScrollToTop
-    │   ├── ui/               # Button, Stamp, Logo, Section, Icon, Loader…
+    │   ├── ui/               # Button, Stamp, Logo, Section, DecodeText, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
     │   ├── MeetingModal.jsx  # Üst menüdeki "Toplantı Planla" penceresi
@@ -294,6 +294,42 @@ durur.
 
 Ekran zemini (turuncu grafik ızgarası + üstten aşağı ton geçişi) doğrudan
 `body` üzerindedir, `background-attachment: fixed` ile sabit durur.
+
+### Hareket
+
+İki animasyon içerik katmanında çalışır; ikisi de `steps()` zamanlamasıyla
+kademeli ilerler, sürekli eğri yerine mekanik bir his verir.
+
+**Başlıktaki şifre çözülme** — `DecodeText` (`src/components/ui/DecodeText.jsx`)
+ana başlıktaki vurgu kelimesini 5 saniyede bir değiştirir. Geçişte harfler
+soldan sağa doğru rastgele karakterlerden çözülür. Kelime listesi `Hero.jsx`
+içinde modül seviyesinde sabittir.
+
+Üç ayrıntı bilinçli:
+
+- **Karışma alfabesi kelimelerin kendi harflerinden türetilir.** Rastgele bir
+  alfabe kullanıldığında karışma metni gerçek kelimelerden geniş çizilip
+  turuncu kutuyu zorluyordu.
+- **Kutu en uzun kelimeye göre rezerve edilir.** Görünen katman `absolute`
+  olduğu için kutunun ölçüsünü etkilemez; kelime değişse de satır zıplamaz
+  (ölçüldü: h1 genişliği ve kutunun x konumu tüm döngü boyunca Δ0.0 px).
+- **Erişilebilir ad sabit kalır.** Animasyonlu katman `aria-hidden`, ekran
+  okuyucular `sr-only` içindeki ilk kelimeyi okur; başlığın adı her zaman
+  "Markanızı dijitalde büyüten tasarım ve yazılım" olur.
+
+**Kaydırırken açılma** — `Section` görünür alana girdiğinde kapsayıcısına
+`is-in` sınıfını ekler (`useScrollReveal`, `IntersectionObserver`).
+
+| Sınıf | İş |
+| ----- | -- |
+| `reveal` | Bloğun kendisi aşağıdan yukarı belirir |
+| `stagger` | İçindeki kartlar `nth-child` gecikmeleriyle sırayla açılır |
+
+`stagger` bir ızgaraya elle eklenir; ilk 8 çocuk 60 ms aralıklarla, sonrakiler
+aynı gecikmeyle girer. Kart açılışı uçtan uca ~880 ms sürer.
+
+`prefers-reduced-motion: reduce` altında kelime `büyüten` üzerinde donar ve
+tüm içerik gecikmesiz, tam görünür gelir — hiçbir şey gizli kalmaz.
 
 ### Sabit düzen ölçüleri
 

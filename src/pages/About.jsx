@@ -109,7 +109,7 @@ export default function About() {
 
       <Section className="bg-bg-soft/60">
         <SectionHeading code="07" eyebrow="Yönetmelik" title="Bizi biz yapan dört ilke" align="center" />
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
             <div key={value.title} className="panel panel-hover p-7">
               <span className="grid h-10 w-10 place-items-center border border-accent/35 text-accent">
@@ -124,7 +124,7 @@ export default function About() {
 
       <Section>
         <SectionHeading code="08" eyebrow="Personel" title="Projenizde çalışacak kişiler" align="center" />
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member) => (
             <div key={member.name} className="panel overflow-hidden pb-1 text-center">
               <div

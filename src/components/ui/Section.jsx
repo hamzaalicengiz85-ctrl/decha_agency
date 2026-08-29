@@ -34,8 +34,8 @@ export default function Section({
       <div
         className={classNames(
           'container',
-          reveal && 'transition-all duration-700 ease-out',
-          reveal && (visible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'),
+          reveal && 'reveal',
+          reveal && visible && 'is-in',
           containerClassName,
         )}
       >

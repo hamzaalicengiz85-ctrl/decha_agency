@@ -81,7 +81,7 @@ export default function Work() {
               description="Başka bir sınıflandırma seçmeyi deneyin."
             />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((project) => (
                 <ProjectCard key={project.id ?? project.slug} project={project} />
               ))}

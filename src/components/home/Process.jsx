@@ -14,7 +14,7 @@ export default function Process() {
       />
 
       <div className="mt-12">
-        <ol className="panel brackets grid gap-px bg-accent/25 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="panel brackets stagger grid gap-px bg-accent/25 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((item) => (
             <li key={item.step} className="bg-bg p-6">
                 <div className="flex items-baseline gap-2">

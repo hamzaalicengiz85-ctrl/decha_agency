@@ -148,7 +148,7 @@ export default function ProjectDetail() {
       {related.length > 0 ? (
         <Section spacing="top-none" className="bg-bg-soft/60">
           <h2 className="font-display text-[20px] font-bold uppercase">Diğer projeler</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link
                 key={item.slug}
