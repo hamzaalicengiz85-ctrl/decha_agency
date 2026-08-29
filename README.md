@@ -61,6 +61,9 @@ Site `http://localhost:5173` adresinde açılır.
 1. [supabase.com](https://supabase.com) üzerinde yeni bir proje oluşturun.
 2. **SQL Editor** sekmesinde sırasıyla şu dosyaları çalıştırın:
    - `supabase/migrations/0001_init.sql` — tablolar, indeksler ve RLS politikaları
+   - `supabase/migrations/0002_drop_legacy_tables.sql` — eski siteden kalan
+     `decha_content` ve `decha_settings` tablolarını düşürür. Sıfırdan kurulan
+     bir projede bu tablolar zaten yoktur, göç sessizce atlar.
    - `supabase/seed.sql` — örnek içerik (opsiyonel)
 3. **Project Settings → API** bölümünden şu iki değeri kopyalayın ve `.env` dosyasına yazın:
 
@@ -195,7 +198,9 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
 │   ├── favicon.svg
 │   └── robots.txt
 ├── supabase/
-│   ├── migrations/0001_init.sql   # Şema + RLS
+│   ├── migrations/
+│   │   ├── 0001_init.sql          # Şema + RLS
+│   │   └── 0002_drop_legacy_tables.sql  # Eski site tablolarını kaldırır
 │   └── seed.sql                   # Örnek içerik
 └── src/
     ├── App.jsx               # Rotalar (lazy loading ile)
