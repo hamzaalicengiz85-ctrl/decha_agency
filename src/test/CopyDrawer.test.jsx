@@ -1,12 +1,12 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
-const state = { upserts: [], error: null, listRow: null }
+const state = { upserts: [], updates: [], error: null, listRow: null, record: null }
 
 vi.mock('../lib/supabase', () => ({
   isSupabaseConfigured: true,
   supabase: {
-    from: vi.fn(() => ({
+    from: vi.fn((table) => ({
       upsert: vi.fn((payload) => ({
         select: vi.fn(() => {
           state.upserts.push(payload)
@@ -15,7 +15,17 @@ vi.mock('../lib/supabase', () => ({
       })),
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
-          maybeSingle: vi.fn(() => Promise.resolve({ data: state.listRow, error: null })),
+          maybeSingle: vi.fn(() =>
+            Promise.resolve({ data: table === 'site_lists' ? state.listRow : state.record, error: null }),
+          ),
+        })),
+      })),
+      update: vi.fn((payload) => ({
+        eq: vi.fn(() => ({
+          select: vi.fn(() => {
+            state.updates.push({ table, payload })
+            return Promise.resolve({ data: null, error: state.error })
+          }),
         })),
       })),
     })),
@@ -26,8 +36,10 @@ const CopyDrawer = (await import('../components/admin/CopyDrawer')).default
 
 beforeEach(() => {
   state.upserts = []
+  state.updates = []
   state.error = null
   state.listRow = null
+  state.record = null
 })
 
 describe('CopyDrawer', () => {
@@ -113,5 +125,24 @@ describe('CopyDrawer', () => {
     render(<CopyDrawer picked={{ copyKey: 'x', text: 'a' }} inventory={[]} />)
     fireEvent.click(screen.getByRole('button', { name: /kaydet/i }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(/izin yok/i))
+  })
+
+  it('kayıt kartına tıklayınca kaydı aynı yerde düzenletir', async () => {
+    // Kullanıcıyı kenar menüsüne göndermek yerine çekmecede açılmalı.
+    state.record = { id: 'abc', title: 'Web Tasarım', slug: 'web-tasarim', features: [] }
+
+    render(
+      <CopyDrawer picked={{ rec: 'services:abc' }} inventory={[]} />,
+    )
+
+    const titleField = await screen.findByLabelText(/başlık/i)
+    expect(titleField).toHaveValue('Web Tasarım')
+
+    fireEvent.change(titleField, { target: { value: 'Web Tasarımı' } })
+    fireEvent.click(screen.getByRole('button', { name: /kaydet/i }))
+
+    await waitFor(() => expect(state.updates).toHaveLength(1))
+    expect(state.updates[0].table).toBe('services')
+    expect(state.updates[0].payload.title).toBe('Web Tasarımı')
   })
 })

@@ -3,6 +3,8 @@ import Button from '../ui/Button'
 import { adminWrite } from '../../lib/adminAuth'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { LIST_DEFAULTS } from '../../data/lists'
+import RecordForm from './RecordForm'
+import { RECORD_TYPES } from './records'
 
 /**
  * Önizlemede tıklanan öğenin düzenleyicisi.
@@ -15,11 +17,36 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [listRow, setListRow] = useState(null)
+  const [record, setRecord] = useState(null)
 
   useEffect(() => {
     setValue(picked?.text ?? '')
     setFeedback('')
   }, [picked])
+
+  // Kayıt kartı seçildiğinde ("tablo:id") satırı çek ki aynı yerde
+  // düzenlenebilsin; kullanıcıyı kenar menüsüne göndermek gereksiz.
+  useEffect(() => {
+    const ref = picked?.rec
+    if (!ref) return setRecord(null)
+
+    const [table, id] = ref.split(':')
+    if (!table || !id || !RECORD_TYPES[table]) return setRecord(null)
+    if (!isSupabaseConfigured || !supabase) return setRecord(null)
+
+    let alive = true
+    supabase
+      .from(table)
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (alive) setRecord(data ? { table, row: data } : null)
+      })
+    return () => {
+      alive = false
+    }
+  }, [picked?.rec])
 
   // Liste öğesi seçildiğinde kayıtlı diziyi çek. Kayıt yoksa koddaki
   // varsayılandan başlanır — DOM'dan yeniden kurmak, ekranda görünmeyen
@@ -91,10 +118,29 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
     onApplied?.({ listKey: key, items })
   }
 
+  async function handleSaveRecord(payload, id) {
+    setSaving(true)
+    const result = await adminWrite((client) =>
+      client.from(record.table).update(payload).eq('id', id).select(),
+    )
+    setSaving(false)
+
+    if (result.needsReauth) return onNeedsReauth?.()
+    if (result.error) return setFeedback(result.error)
+
+    setFeedback('Kayıt güncellendi. Önizlemeyi tazelemek için sayfayı yeniden seçin.')
+  }
+
   const isList = Boolean(picked?.listKey)
+  const isRecord = Boolean(record) && !picked?.copyKey && !isList
 
   return (
-    <aside className="flex w-80 shrink-0 flex-col border border-accent/35 bg-bg-soft/40">
+    <aside
+      className={[
+        'flex shrink-0 flex-col border border-accent/35 bg-bg-soft/40 transition-[width]',
+        isRecord ? 'w-[26rem]' : 'w-80',
+      ].join(' ')}
+    >
       <div className="border-b border-accent/35 px-4 py-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
           {picked ? 'Seçili öğe' : 'Sayfa metinleri'}
@@ -163,10 +209,28 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
               </Button>
             </div>
           </>
+        ) : isRecord ? (
+          <>
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+              {RECORD_TYPES[record.table].singular}
+            </p>
+            {feedback ? (
+              <p role="status" className="mb-3 font-mono text-[10.5px] text-accent">
+                {feedback}
+              </p>
+            ) : null}
+            <RecordForm
+              typeKey={record.table}
+              record={record.row}
+              saving={saving}
+              onSave={handleSaveRecord}
+              onCancel={onClose}
+            />
+          </>
         ) : picked?.rec ? (
           <p className="font-mono text-[11.5px] leading-relaxed text-fg-muted">
-            Bu bir kayıt: <span className="text-accent">{picked.rec}</span>. Sol menüdeki
-            ilgili bölümden düzenleyebilirsiniz.
+            Bu bir kayıt ama okunamadı. Sol menüdeki ilgili bölümden
+            düzenleyebilirsiniz.
           </p>
         ) : (
           <>
