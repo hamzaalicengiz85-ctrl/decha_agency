@@ -589,6 +589,13 @@
     }
   }
 
+  /* "Geç" düğmesi. Konum güvenli alanı (iPhone ana ekran çubuğu) hesaba
+     katar; ölçüsü dokunma hedefi alt sınırı olan 44x44 px'in altına inmez. */
+  .intro-skip {
+    bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
+    right: max(1.25rem, calc(env(safe-area-inset-right, 0px) + 0.75rem));
+  }
+
   /* Panel kapanmaya başlayınca "Geç" düğmesi de çekilsin. */
   .intro[data-phase='reveal'] .intro-skip {
     opacity: 0;

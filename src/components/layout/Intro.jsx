@@ -142,7 +142,7 @@ export default function Intro() {
           </p>
 
           <span className="relative mt-5 inline-block">
-            <span className="phosphor font-display text-[clamp(2.6rem,9vw,5rem)] font-bold uppercase leading-none tracking-[0.16em] text-accent">
+            <span className="phosphor font-display text-[clamp(3rem,12vw,5rem)] font-bold uppercase leading-none tracking-[0.16em] text-accent">
               {text}
             </span>
             {phase === 'lock' ? <span className="intro-sweep" /> : null}
@@ -157,7 +157,7 @@ export default function Intro() {
       <button
         type="button"
         onClick={dismiss}
-        className="key intro-skip absolute bottom-8 right-6 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.18em] sm:bottom-10 sm:right-10"
+        className="key intro-skip absolute inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-4 font-mono text-[10px] uppercase tracking-[0.18em]"
       >
         Geç
       </button>

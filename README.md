@@ -363,13 +363,20 @@ Tekrar gelen ziyaretçide (`localStorage` izi varsa) yalnızca `hold` → `revea
 Her açılışta değişen bir dosya numarası (`DOSYA NO: 7741-C`) gösterilir —
 statik metin, hareket eklemez.
 
-İki ayrıntı ölçülerek çözüldü:
+Mobil: "Geç" düğmesi 44×44 px dokunma hedefi alt sınırının altına inmez
+(ölçüldü: 55×44) ve konumu `env(safe-area-inset-*)` ile ana ekran çubuğunu
+hesaba katar. Ekranın herhangi bir yerine dokunmak da açılışı geçer. Yazı
+boyutu `clamp(3rem, 12vw, 5rem)` — dar ekranda 48 px'in altına düşmez.
+
+Üç ayrıntı ölçülerek çözüldü:
 
 - **Kapanan katman ayrı.** Turuncu tarama çizgisi ve "Geç" düğmesi panelin
   dışında duruyor; içinde olsalardı `scaleY` ile birlikte ezilirlerdi.
 - **Tarama `background-position` ile hareket ediyor.** Taşıyıcıyı
   `overflow: hidden` yapmak fosfor parıltısını kırpıyordu; `transform` ile de
   çubuk kutunun dışına taşıp sayfanın solunda görünüyordu.
+- **"Geç" düğmesi dokunma hedefi sınırının altındaydı** (47×31 px). Ölçüsü
+  44×44'ün altına inmeyecek şekilde sabitlendi.
 
 Ölçüldü: ilk ziyaret ~1.55 sn, tekrar ziyaret ~0.57 sn; CLS 0.004; konsol
 hatası yok; ilk `Tab` doğrudan "Geç" düğmesine gidiyor; panel kalkınca kaydırma
