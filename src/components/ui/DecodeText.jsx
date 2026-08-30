@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { classNames } from '../../lib/format'
+import { FRAME_MS, GLYPHS, shuffled } from '../../lib/decode'
 
 /**
  * Şifre çözülür (decode) efektiyle kelime değiştiren metin.
@@ -21,23 +22,9 @@ import { classNames } from '../../lib/format'
  */
 
 // Testler zamanlamayı buradan okur; sabitler değişince testler kaymaz.
-export const FRAME_MS = 55 // kare süresi — kademeli, mekanik akış
+export { FRAME_MS }
 export const DECODE_MS = 1100 // bir kelimenin tamamen çözülme süresi
 const NEAREST = 5 // aynı genişlik sınıfındaki kaç aday arasından seçilecek
-
-// Şifreli görünüm için yabancı karakterler: Latin büyük harfler, rakamlar ve
-// terminal sembolleri.
-const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÇĞİÖŞÜ0123456789#%&*+=<>[]{}/\\'
-
-/** Fisher-Yates karıştırma — glif ölçüsü alınamadığında yedek yol. */
-function shuffled(chars) {
-  const list = [...chars]
-  for (let i = list.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[list[i], list[j]] = [list[j], list[i]]
-  }
-  return list.join('')
-}
 
 /**
  * Gliflerin gerçek çizim genişliklerini ölçer. Canvas yoksa (jsdom) null döner

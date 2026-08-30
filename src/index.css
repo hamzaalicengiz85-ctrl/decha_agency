@@ -484,6 +484,44 @@
 
 @layer components {
   /* --------------------------------------------------------------------
+     Giriş ekranı
+     --------------------------------------------------------------------
+     Siyah panel yukarı süpürülerek siteyi açar. Süpürme `transform` ile
+     yapılır (genişlik/yükseklik animasyonu yerine) — yerleşim yeniden
+     hesaplanmaz. Alt kenardaki turuncu çizgi tarama bandını taklit eder.
+     -------------------------------------------------------------------- */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 100; /* modal (90) dâhil her şeyin üstünde */
+    display: grid;
+    place-items: center;
+    background-color: rgb(var(--c-bg));
+    transform: translateY(0);
+    transition: transform 0.4s steps(8, end);
+  }
+
+  .intro[data-phase='reveal'] {
+    transform: translateY(-100%);
+  }
+
+  .intro::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: rgb(var(--c-accent));
+    box-shadow: 0 0 20px 2px rgb(var(--c-accent) / 0.6);
+    opacity: 0;
+    transition: opacity 0.1s steps(2, end);
+  }
+
+  .intro[data-phase='reveal']::after {
+    opacity: 1;
+  }
+
+  /* --------------------------------------------------------------------
      Kaydırırken içerik açılması
      --------------------------------------------------------------------
      Bölüm görünür alana girdiğinde kapsayıcı `.is-in` sınıfını kazanır.

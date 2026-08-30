@@ -208,7 +208,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     ├── index.css             # Token'lar (kağıt + fosfor) + CRT/damga/plaka malzemeleri
     ├── fonts.css             # @font-face tanımları (self-host)
     ├── components/
-    │   ├── layout/           # Layout, Navbar, Footer, Rail, Hud, ScreenFx, ScrollToTop
+    │   ├── layout/           # Layout, Navbar, Footer, Rail, Hud, ScreenFx, Intro, ScrollToTop
     │   ├── ui/               # Button, Stamp, Logo, Section, DecodeText, Icon, Loader…
     │   ├── home/             # Hero, Process, CTA, ClientMarquee
     │   ├── ContactForm.jsx
@@ -221,6 +221,7 @@ Bu kural hem `netlify.toml` hem de `public/_redirects` içinde tanımlıdır; do
     │   ├── useSupabaseData.js  # Veri çekme + otomatik fallback
     │   └── useScrollReveal.js
     ├── lib/
+    │   ├── decode.js         # Şifre çözülme efektinin ortak parçaları
     │   ├── supabase.js       # İstemci (env yoksa güvenli şekilde null)
     │   ├── seo.js            # Sayfa başlığı / meta yönetimi
     │   └── format.js         # Tarih, slug, className yardımcıları
@@ -336,6 +337,23 @@ Dört ayrıntı bilinçli:
 kelimeler ve 93 farklı karışma karesi boyunca: üstte 4.9 px, altta 6.0 px,
 yanlarda 5.4 px. Hiçbir karede taşma yok.
 
+**Giriş ekranı** — `Intro` (`src/components/layout/Intro.jsx`) siyah panelde
+`DECHA` yazısını şifre çözülür gibi açar, ardından paneli yukarı süpürerek
+siteyi gösterir. Ortak decode parçaları `src/lib/decode.js` içinde; başlıktaki
+kelime döngüsüyle aynı alfabeyi ve kare süresini kullanır.
+
+| Kural | Uygulama |
+| ----- | -------- |
+| Görünüm başına 1-2 hareket | Yalnızca çözülen yazı ve panelin süpürülmesi |
+| Yükleme göstergesi değil | Hiçbir şeyi beklemez, sahte ilerleme çubuğu yok |
+| Atlanabilir | Tıklama, `Escape` ve odaklanabilir "Geç" düğmesi |
+| Bir kez | `sessionStorage` (`decha:intro-seen`) |
+| Yerleşimi bozmaz | `position: fixed` + `transform` ile süpürme |
+
+Ölçüldü: çözülme 800 ms, süpürme 400 ms, panel ~1.45 sn'de kalkıyor; CLS 0.005;
+ilk `Tab` doğrudan "Geç" düğmesine gidiyor; panel kalkınca kaydırma kilidi
+serbest bırakılıyor.
+
 **Kaydırırken açılma** — `Section` görünür alana girdiğinde kapsayıcısına
 `is-in` sınıfını ekler (`useScrollReveal`, `IntersectionObserver`).
 
@@ -347,8 +365,9 @@ yanlarda 5.4 px. Hiçbir karede taşma yok.
 `stagger` bir ızgaraya elle eklenir; ilk 8 çocuk 60 ms aralıklarla, sonrakiler
 aynı gecikmeyle girer. Kart açılışı uçtan uca ~880 ms sürer.
 
-`prefers-reduced-motion: reduce` altında kelime `büyüten` üzerinde donar ve
-tüm içerik gecikmesiz, tam görünür gelir — hiçbir şey gizli kalmaz.
+`prefers-reduced-motion: reduce` altında giriş ekranı hiç gösterilmez, kelime
+`büyüten` üzerinde donar ve tüm içerik gecikmesiz, tam görünür gelir — hiçbir
+şey gizli kalmaz.
 
 ### Sabit düzen ölçüleri
 

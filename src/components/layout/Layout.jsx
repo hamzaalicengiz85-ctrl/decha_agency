@@ -4,6 +4,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import ScrollToTop from './ScrollToTop'
 import ScreenFx from './ScreenFx'
+import Intro from './Intro'
 import Rail from './Rail'
 import Hud from './Hud'
 import { Spinner } from '../ui/Loader'
@@ -11,6 +12,9 @@ import { Spinner } from '../ui/Loader'
 export default function Layout() {
   return (
     <>
+      {/* Sekme sırasında en başta dursun: "Geç" düğmesine ilk Tab ile ulaşılır. */}
+      <Intro />
+
       <ScreenFx />
       <Rail />
       <Hud />
