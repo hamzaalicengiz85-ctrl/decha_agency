@@ -48,8 +48,9 @@ export default {
         '3xl': '12px',
       },
       transitionTimingFunction: {
-        // Mekanik his: sürekli eğri yerine kademeli hareket
-        step: 'steps(3, end)',
+        // Ortak hareket eğrileri (index.css'teki belirteçlerle aynı)
+        out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'in-out': 'cubic-bezier(0.65, 0, 0.35, 1)',
       },
       keyframes: {
         'fade-up': {
@@ -66,7 +67,7 @@ export default {
         },
       },
       animation: {
-        'fade-up': 'fade-up 0.5s steps(6, end) both',
+        'fade-up': 'fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both',
         marquee: 'marquee 42s linear infinite',
         blink: 'blink 1.4s steps(1, end) infinite',
       },

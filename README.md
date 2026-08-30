@@ -298,8 +298,20 @@ Ekran zemini (turuncu grafik ızgarası + üstten aşağı ton geçişi) doğrud
 
 ### Hareket
 
-İki animasyon içerik katmanında çalışır; ikisi de `steps()` zamanlamasıyla
-kademeli ilerler, sürekli eğri yerine mekanik bir his verir.
+Hareket belirteçleri `index.css` içindeki `:root` bloğunda tek yerde durur:
+`--ease-out`, `--ease-in-out`, `--dur-fast`, `--dur-base`.
+
+> **Not:** Animasyonlara başlangıçta `steps()` zamanlaması verilmişti; amaç
+> mekanik bir his vermekti ama sonuç düşük kare hızı gibi görünüyordu.
+> Ölçüldü: 450 ms'lik bir kart açılışında tarayıcı 67 kare çiziyor, kart ise
+> yalnızca **7 farklı görsel duruma** giriyordu — yani göze ~16 fps. Yumuşak
+> eğriye geçildi (24 durum, ~53 fps). Kademeli zamanlama yalnızca gerçekten
+> açık/kapalı olan iki efektte kaldı: imleç yanıp sönmesi ve glitch kanalları.
+>
+> Bunun bir boyama maliyeti sorunu olmadığı ayrıca doğrulandı: mobil + 6 kat
+> yavaş CPU altında 3 sn kaydırma boyunca `background-attachment: fixed`, CRT
+> katmanı ve menü çubuğundaki `backdrop-blur` tek tek kapatıldığında ana iş
+> parçacığı süresi gürültü sınırları içinde kalıyor (1130-1170 ms).
 
 **Başlıktaki şifre çözülme** — `DecodeText` (`src/components/ui/DecodeText.jsx`)
 ana başlıktaki vurgu kelimesini 5 saniyede bir değiştirir. Geçişte harfler
@@ -345,7 +357,7 @@ Aşamalar (ilk ziyaret): `decode` → `lock` → `reveal`
 
 | Aşama | Süre | Ne olur |
 | ----- | ---- | ------- |
-| `decode` | 700 ms | `DECHA` rastgele gliflerden soldan sağa çözülür |
+| `decode` | 700 ms | `DECHA` rastgele gliflerden soldan sağa çözülür (30 kare/sn) |
 | `lock` | 260 ms | Yazının üzerinden "kilitlendi" taraması geçer |
 | `reveal` | 380 ms | Panel eski televizyon gibi ince bir çizgiye kapanır |
 

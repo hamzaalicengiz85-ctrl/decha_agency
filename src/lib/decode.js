@@ -8,8 +8,11 @@
 // terminal sembolleri. Başlıklar büyük harf olduğu için alfabe de büyük harf.
 export const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÇĞİÖŞÜ0123456789#%&*+=<>[]{}/\\'
 
-/** Kare süresi — kademeli, mekanik akış (sitedeki steps() zamanlamasıyla uyumlu). */
-export const FRAME_MS = 55
+/**
+ * Karakter değişim aralığı. 55 ms (~18 fps) düşük kare hızı gibi
+ * görünüyordu; 33 ms (~30 fps) karışmayı okunur tutarken akıcı gösteriyor.
+ */
+export const FRAME_MS = 33
 
 export function randomGlyph() {
   return GLYPHS[Math.floor(Math.random() * GLYPHS.length)]

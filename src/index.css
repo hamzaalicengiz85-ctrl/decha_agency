@@ -82,6 +82,18 @@
     --rail-w: 0px;
     --hud-h: 24px;
     --map-filter: none;
+
+    /* Hareket belirteçleri.
+       Buradaki eğriler bilerek yumuşak: animasyonlara önce `steps()`
+       verilmişti ve mekanik hissi güçlendirmek yerine düşük kare hızı gibi
+       görünüyordu (ölçüldü: 450 ms'lik bir kart açılışı 7 farklı görsel
+       duruma giriyordu, yani göze ~16 fps). Kademeli zamanlama yalnızca
+       gerçekten açık/kapalı olan efektlerde kaldı: imleç yanıp sönmesi ve
+       glitch kanalları. */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-fast: 0.14s;
+    --dur-base: 0.42s;
   }
 }
 
@@ -162,9 +174,9 @@
 
   .panel-hover {
     transition:
-      border-color 0.15s steps(2, end),
-      box-shadow 0.15s steps(2, end),
-      background-color 0.15s steps(2, end);
+      border-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
   }
 
   .panel-hover:hover {
@@ -223,8 +235,8 @@
     text-transform: uppercase;
     color: rgb(var(--c-accent));
     transition:
-      background-color 0.12s steps(2, end),
-      color 0.12s steps(2, end);
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
   }
 
   .list-row:hover,
@@ -278,9 +290,9 @@
   .key {
     border-radius: 0;
     transition:
-      background-color 0.12s steps(2, end),
-      color 0.12s steps(2, end),
-      box-shadow 0.12s steps(2, end);
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
     box-shadow: 0 0 0 3px rgb(var(--c-bg)), 0 0 0 4px rgb(var(--c-accent) / 0.35);
   }
 
@@ -511,7 +523,7 @@
   }
 
   .intro[data-phase='reveal'] .intro-panel {
-    animation: intro-crt-out var(--intro-out) steps(10, end) forwards;
+    animation: intro-crt-out var(--intro-out) var(--ease-in-out) forwards;
   }
 
   @keyframes intro-crt-out {
@@ -544,7 +556,7 @@
   }
 
   .intro[data-phase='reveal']::after {
-    animation: intro-line var(--intro-out) steps(6, end) forwards;
+    animation: intro-line var(--intro-out) var(--ease-out) forwards;
   }
 
   @keyframes intro-line {
@@ -577,7 +589,7 @@
     );
     background-repeat: no-repeat;
     background-size: 45% 100%;
-    animation: intro-sweep 260ms steps(8, end) forwards;
+    animation: intro-sweep 260ms linear forwards;
   }
 
   @keyframes intro-sweep {
@@ -599,7 +611,7 @@
   /* Panel kapanmaya başlayınca "Geç" düğmesi de çekilsin. */
   .intro[data-phase='reveal'] .intro-skip {
     opacity: 0;
-    transition: opacity 120ms steps(3, end);
+    transition: opacity 120ms var(--ease-out);
   }
 
   /* --------------------------------------------------------------------
@@ -608,14 +620,14 @@
      Bölüm görünür alana girdiğinde kapsayıcı `.is-in` sınıfını kazanır.
      `.reveal` bloğun kendisini, `.stagger` ise içindeki kartları sırayla
      açar: önce başlık, ardından kartlar kademeli olarak. Zamanlama
-     `steps()` ile kademeli — sitenin geri kalanındaki mekanik hisle aynı.
+     Yumuşak eğri: kademeli `steps()` düşük kare hızı gibi görünüyordu.
      -------------------------------------------------------------------- */
   .reveal {
     opacity: 0;
     transform: translateY(14px);
     transition:
-      opacity 0.5s steps(7, end),
-      transform 0.5s steps(7, end);
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
   }
 
   .reveal.is-in {
@@ -627,8 +639,8 @@
     opacity: 0;
     transform: translateY(16px);
     transition:
-      opacity 0.45s steps(6, end),
-      transform 0.45s steps(6, end);
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
   }
 
   .is-in .stagger > * {
