@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
 import { SITE } from '../../data/content'
@@ -13,6 +13,7 @@ const navigation = [
 ]
 
 export default function Footer() {
+  const navigate = useNavigate()
   const { data: services } = useServices({ limit: 5 })
 
   return (
@@ -102,7 +103,14 @@ export default function Footer() {
         {/* Resmî alt şerit */}
         <div className="mt-12 border-t border-accent/30 pt-6">
           <div className="flex flex-col items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent/70 sm:flex-row">
-            <p>© {new Date().getFullYear()} {SITE.name} · Tüm kayıtlar saklıdır</p>
+            {/* Yönetim paneli girişi: üç kez art arda tıklama.
+                event.detail tarayıcının kendi çoklu tıklama sayacı — işletim
+                sisteminin zamanlamasını kullanır, elle sayaç tutmaya gerek
+                kalmaz. Görünüm değişmez, klavye/ekran okuyucu davranışına
+                dokunmaz; erişilebilir yol doğrudan /yonetim adresidir. */}
+            <p onClick={(event) => event.detail >= 3 && navigate('/yonetim')}>
+              © {new Date().getFullYear()} {SITE.name} · Tüm kayıtlar saklıdır
+            </p>
             <p className="num">Form DA-01 · Rev. 2026.04</p>
             <p>React · Supabase · Netlify</p>
           </div>

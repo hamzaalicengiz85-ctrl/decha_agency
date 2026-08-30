@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useId } from 'react'
 import { createPortal } from 'react-dom'
 import Icon from './Icon'
 
@@ -18,6 +18,9 @@ const FOCUSABLE =
 export default function Modal({ open, onClose, title, code, children }) {
   const panelRef = useRef(null)
   const restoreFocusRef = useRef(null)
+  // Sabit "modal-title" idi; yönetim panelinde iki pencere üst üste
+  // açılabildiği için ID çakışıyordu.
+  const titleId = useId()
 
   const handleKeyDown = useCallback(
     (event) => {
@@ -82,7 +85,7 @@ export default function Modal({ open, onClose, title, code, children }) {
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="modal-title"
+        aria-labelledby={titleId}
         className="panel brackets relative z-10 w-full max-w-lg animate-fade-up"
       >
         <div className="flex items-center justify-between gap-4 border-b border-accent/45 bg-accent/10 px-4 py-3">
@@ -93,7 +96,7 @@ export default function Modal({ open, onClose, title, code, children }) {
               </span>
             ) : null}
             <h2
-              id="modal-title"
+              id={titleId}
               className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-accent"
             >
               {title}

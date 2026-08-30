@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
@@ -12,10 +12,24 @@ const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+// Yönetim paneli site kabuğunun dışında: menü, footer ve giriş animasyonu yok.
+const Admin = lazy(() => import('./pages/Admin'))
+
+function AdminSuspense() {
+  return (
+    <Suspense fallback={null}>
+      <Admin />
+    </Suspense>
+  )
+}
 
 export default function App() {
   return (
     <Routes>
+      {/* Layout'un dışında kardeş rota. React Router sabit segmenti Layout
+          içindeki path="*" NotFound'dan önce sıralar, çakışma olmaz. */}
+      <Route path="yonetim" element={<AdminSuspense />} />
+
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="hizmetler" element={<Services />} />
