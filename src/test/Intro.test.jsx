@@ -1,8 +1,9 @@
 import { render, screen, act, fireEvent } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import Intro, { DECODE_MS, REVEAL_MS } from '../components/layout/Intro'
+import Intro, { DECODE_MS, LOCK_MS, REVEAL_MS, SHORT_REVEAL_MS, HOLD_MS } from '../components/layout/Intro'
 
-const STORAGE_KEY = 'decha:intro-seen'
+const SESSION_KEY = 'decha:intro-session'
+const VISITOR_KEY = 'decha:intro-seen'
 
 function mockReducedMotion(reduce) {
   window.matchMedia = vi.fn().mockImplementation((query) => ({
@@ -15,6 +16,7 @@ function mockReducedMotion(reduce) {
 
 afterEach(() => {
   window.sessionStorage.clear()
+  window.localStorage.clear()
   document.body.style.overflow = ''
   vi.useRealTimers()
   vi.restoreAllMocks()
@@ -37,7 +39,7 @@ describe('Intro', () => {
 
     const { container } = render(<Intro />)
     expect(container).toBeEmptyDOMElement()
-    expect(window.sessionStorage.getItem(STORAGE_KEY)).toBe('1')
+    expect(window.sessionStorage.getItem(SESSION_KEY)).toBe('1')
   })
 
   it('hareket azaltma açıkken hiç gösterilmez', () => {
@@ -54,11 +56,18 @@ describe('Intro', () => {
     vi.useFakeTimers()
     const { container } = render(<Intro />)
 
-    // İki adım: önce süpürme fazına geçilir (React yeniden render eder ve
-    // kalkış zamanlayıcısını kurar), sonra süpürme süresi ilerletilir.
+    // Aşama aşama: her geçişte React yeniden render edip bir sonraki
+    // zamanlayıcıyı kuruyor, tek adımda ilerletilirse zincir kopar.
     act(() => {
       vi.advanceTimersByTime(DECODE_MS + 200)
     })
+    expect(container.querySelector('.intro')).toHaveAttribute('data-phase', 'lock')
+
+    act(() => {
+      vi.advanceTimersByTime(LOCK_MS + 50)
+    })
+    expect(container.querySelector('.intro')).toHaveAttribute('data-phase', 'reveal')
+
     act(() => {
       vi.advanceTimersByTime(REVEAL_MS + 100)
     })
@@ -80,5 +89,45 @@ describe('Intro', () => {
 
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(container.querySelector('.intro')).toHaveAttribute('data-phase', 'reveal')
+  })
+
+  it('ilk ziyarette tam, sonraki ziyarette kısa biçimde açılır', () => {
+    mockReducedMotion(false)
+
+    const first = render(<Intro />)
+    expect(first.container.querySelector('.intro')).toHaveAttribute('data-mode', 'full')
+    expect(first.container.querySelector('.intro')).toHaveAttribute('data-phase', 'decode')
+    first.unmount()
+
+    // Yeni oturum, aynı ziyaretçi: localStorage izi duruyor.
+    window.sessionStorage.clear()
+    const second = render(<Intro />)
+    expect(second.container.querySelector('.intro')).toHaveAttribute('data-mode', 'short')
+    expect(second.container.querySelector('.intro')).toHaveAttribute('data-phase', 'hold')
+    expect(window.localStorage.getItem(VISITOR_KEY)).toBe('1')
+  })
+
+  it('kısa biçim daha erken kapanır', () => {
+    mockReducedMotion(false)
+    window.localStorage.setItem(VISITOR_KEY, '1')
+    vi.useFakeTimers()
+    const { container } = render(<Intro />)
+
+    act(() => {
+      vi.advanceTimersByTime(HOLD_MS + 20)
+    })
+    expect(container.querySelector('.intro')).toHaveAttribute('data-phase', 'reveal')
+
+    act(() => {
+      vi.advanceTimersByTime(SHORT_REVEAL_MS + 20)
+    })
+    expect(container).toBeEmptyDOMElement()
+  })
+
+  it('her açılışta bir dosya numarası gösterir', () => {
+    mockReducedMotion(false)
+    render(<Intro />)
+
+    expect(screen.getByText(/Dosya No:\s*\d{4}-[A-Z]/)).toBeInTheDocument()
   })
 })

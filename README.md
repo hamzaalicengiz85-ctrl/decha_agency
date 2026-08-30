@@ -337,22 +337,43 @@ Dört ayrıntı bilinçli:
 kelimeler ve 93 farklı karışma karesi boyunca: üstte 4.9 px, altta 6.0 px,
 yanlarda 5.4 px. Hiçbir karede taşma yok.
 
-**Giriş ekranı** — `Intro` (`src/components/layout/Intro.jsx`) siyah panelde
-`DECHA` yazısını şifre çözülür gibi açar, ardından paneli yukarı süpürerek
-siteyi gösterir. Ortak decode parçaları `src/lib/decode.js` içinde; başlıktaki
-kelime döngüsüyle aynı alfabeyi ve kare süresini kullanır.
+**Giriş ekranı** — `Intro` (`src/components/layout/Intro.jsx`). Ortak decode
+parçaları `src/lib/decode.js` içinde; başlıktaki kelime döngüsüyle aynı alfabeyi
+ve kare süresini kullanır.
+
+Aşamalar (ilk ziyaret): `decode` → `lock` → `reveal`
+
+| Aşama | Süre | Ne olur |
+| ----- | ---- | ------- |
+| `decode` | 700 ms | `DECHA` rastgele gliflerden soldan sağa çözülür |
+| `lock` | 260 ms | Yazının üzerinden "kilitlendi" taraması geçer |
+| `reveal` | 380 ms | Panel eski televizyon gibi ince bir çizgiye kapanır |
+
+Tekrar gelen ziyaretçide (`localStorage` izi varsa) yalnızca `hold` → `reveal`
+çalışır: ~570 ms'lik kısa bir marka anı. İlk ziyarette toplam ~1.55 sn.
 
 | Kural | Uygulama |
 | ----- | -------- |
-| Görünüm başına 1-2 hareket | Yalnızca çözülen yazı ve panelin süpürülmesi |
+| Aynı anda tek hareket | Aşamalar art arda çalışır, üst üste binmez |
 | Yükleme göstergesi değil | Hiçbir şeyi beklemez, sahte ilerleme çubuğu yok |
 | Atlanabilir | Tıklama, `Escape` ve odaklanabilir "Geç" düğmesi |
-| Bir kez | `sessionStorage` (`decha:intro-seen`) |
-| Yerleşimi bozmaz | `position: fixed` + `transform` ile süpürme |
+| Oturumda bir kez | `sessionStorage` (`decha:intro-session`) |
+| Yerleşimi bozmaz | `position: fixed` + `transform: scaleY()` ile kapanma |
 
-Ölçüldü: çözülme 800 ms, süpürme 400 ms, panel ~1.45 sn'de kalkıyor; CLS 0.005;
-ilk `Tab` doğrudan "Geç" düğmesine gidiyor; panel kalkınca kaydırma kilidi
-serbest bırakılıyor.
+Her açılışta değişen bir dosya numarası (`DOSYA NO: 7741-C`) gösterilir —
+statik metin, hareket eklemez.
+
+İki ayrıntı ölçülerek çözüldü:
+
+- **Kapanan katman ayrı.** Turuncu tarama çizgisi ve "Geç" düğmesi panelin
+  dışında duruyor; içinde olsalardı `scaleY` ile birlikte ezilirlerdi.
+- **Tarama `background-position` ile hareket ediyor.** Taşıyıcıyı
+  `overflow: hidden` yapmak fosfor parıltısını kırpıyordu; `transform` ile de
+  çubuk kutunun dışına taşıp sayfanın solunda görünüyordu.
+
+Ölçüldü: ilk ziyaret ~1.55 sn, tekrar ziyaret ~0.57 sn; CLS 0.004; konsol
+hatası yok; ilk `Tab` doğrudan "Geç" düğmesine gidiyor; panel kalkınca kaydırma
+kilidi serbest bırakılıyor.
 
 **Kaydırırken açılma** — `Section` görünür alana girdiğinde kapsayıcısına
 `is-in` sınıfını ekler (`useScrollReveal`, `IntersectionObserver`).

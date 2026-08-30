@@ -486,39 +486,113 @@
   /* --------------------------------------------------------------------
      Giriş ekranı
      --------------------------------------------------------------------
-     Siyah panel yukarı süpürülerek siteyi açar. Süpürme `transform` ile
-     yapılır (genişlik/yükseklik animasyonu yerine) — yerleşim yeniden
-     hesaplanmaz. Alt kenardaki turuncu çizgi tarama bandını taklit eder.
+     Panel eski televizyon gibi kapanır: dikeyde ince bir çizgiye ezilir,
+     turuncu tarama çizgisi parlar ve söner. Kapanma `transform` ile yapılır
+     (genişlik/yükseklik animasyonu yerine) — yerleşim yeniden hesaplanmaz.
      -------------------------------------------------------------------- */
   .intro {
     position: fixed;
     inset: 0;
     z-index: 100; /* modal (90) dâhil her şeyin üstünde */
+    --intro-out: 380ms;
+  }
+
+  .intro[data-mode='short'] {
+    --intro-out: 300ms;
+  }
+
+  .intro-panel {
+    position: absolute;
+    inset: 0;
     display: grid;
     place-items: center;
     background-color: rgb(var(--c-bg));
-    transform: translateY(0);
-    transition: transform 0.4s steps(8, end);
+    transform-origin: center;
   }
 
-  .intro[data-phase='reveal'] {
-    transform: translateY(-100%);
+  .intro[data-phase='reveal'] .intro-panel {
+    animation: intro-crt-out var(--intro-out) steps(10, end) forwards;
   }
 
+  @keyframes intro-crt-out {
+    0% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+    64% {
+      transform: scaleY(0.008);
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.008);
+      opacity: 0;
+    }
+  }
+
+  /* Kapanırken ortada parlayıp sönen tarama çizgisi. Panelin dışında duruyor,
+     yoksa onunla birlikte ezilirdi. */
   .intro::after {
     content: '';
     position: absolute;
     inset-inline: 0;
-    bottom: 0;
+    top: 50%;
     height: 2px;
     background-color: rgb(var(--c-accent));
-    box-shadow: 0 0 20px 2px rgb(var(--c-accent) / 0.6);
+    box-shadow: 0 0 26px 3px rgb(var(--c-accent) / 0.7);
     opacity: 0;
-    transition: opacity 0.1s steps(2, end);
+    transform: translateY(-50%);
   }
 
   .intro[data-phase='reveal']::after {
-    opacity: 1;
+    animation: intro-line var(--intro-out) steps(6, end) forwards;
+  }
+
+  @keyframes intro-line {
+    0% {
+      opacity: 0;
+    }
+    58% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Yazı çözülünce üzerinden geçen "kilitlendi" taraması.
+     Hareket `transform` yerine `background-position` ile: taşıyıcıyı
+     `overflow: hidden` yapmak fosfor parıltısını kırpardı, transform ile de
+     çubuk kutunun dışına taşıp sayfanın solunda görünüyordu. */
+  .intro-sweep {
+    position: absolute;
+    inset: -0.22em -0.5em;
+    pointer-events: none;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(var(--c-accent) / 0.45) 38%,
+      rgb(var(--c-highlight) / 0.6) 50%,
+      rgb(var(--c-accent) / 0.45) 62%,
+      transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 45% 100%;
+    animation: intro-sweep 260ms steps(8, end) forwards;
+  }
+
+  @keyframes intro-sweep {
+    from {
+      background-position: -60% 0;
+    }
+    to {
+      background-position: 160% 0;
+    }
+  }
+
+  /* Panel kapanmaya başlayınca "Geç" düğmesi de çekilsin. */
+  .intro[data-phase='reveal'] .intro-skip {
+    opacity: 0;
+    transition: opacity 120ms steps(3, end);
   }
 
   /* --------------------------------------------------------------------
