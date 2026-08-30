@@ -45,3 +45,13 @@ export function useList(key, fallback = []) {
   const value = lists[key]
   return Array.isArray(value) && value.length > 0 ? value : fallback
 }
+
+/**
+ * Dizi öğelerinin düzenlenebilir alanlarını işaretler.
+ * Yalnızca düzenleme modunda öznitelik üretir; genel sitede boş nesne döner
+ * ve DOM'a hiçbir şey eklenmez.
+ */
+export function listAttrs(edit, key, index, field) {
+  if (!edit) return {}
+  return { 'data-list-key': key, 'data-list-index': index, 'data-list-field': field }
+}

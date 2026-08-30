@@ -3,6 +3,8 @@ import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
 import { SITE } from '../../data/content'
 import { useServices } from '../../hooks/useServices'
+import { Copy } from '../../lib/siteCopy'
+import { useCopy } from '../../lib/siteCopyContext'
 
 const navigation = [
   { to: '/hizmetler', label: 'Hizmetler' },
@@ -14,6 +16,8 @@ const navigation = [
 
 export default function Footer() {
   const navigate = useNavigate()
+  const email = useCopy('site.eposta', SITE.email)
+  const phone = useCopy('site.telefon', SITE.phone)
   const { data: services } = useServices({ limit: 5 })
 
   return (
@@ -25,7 +29,9 @@ export default function Footer() {
               <Logo className="text-[28px]" />
             </Link>
             <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-fg-muted">
-              {SITE.tagline}. Strateji, tasarım ve mühendislik tek dosyada.
+              <Copy k="footer.slogan">
+                {`${SITE.tagline}. Strateji, tasarım ve mühendislik tek dosyada.`}
+              </Copy>
             </p>
             <div className="mt-6 flex flex-wrap gap-1.5">
               {SITE.social.map((item) => (
@@ -43,7 +49,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">Bölümler</p>
+            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+              <Copy k="footer.baslik.bolumler">Bölümler</Copy>
+            </p>
             <ul className="mt-4 space-y-2.5">
               {navigation.map((item) => (
                 <li key={item.to}>
@@ -59,7 +67,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">Hizmetler</p>
+            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+              <Copy k="footer.baslik.hizmetler">Hizmetler</Copy>
+            </p>
             <ul className="mt-4 space-y-2.5">
               {services.map((service) => (
                 <li key={service.slug}>
@@ -75,26 +85,30 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">Büro</p>
+            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+              <Copy k="footer.baslik.buro">Büro</Copy>
+            </p>
             <ul className="mt-4 space-y-3 text-[13px] text-fg-muted">
               <li className="flex items-start gap-2.5">
                 <Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href={`mailto:${SITE.email}`} className="transition hover:text-accent">
-                  {SITE.email}
+                <a href={`mailto:${email}`} className="transition hover:text-accent">
+                  <Copy k="site.eposta">{SITE.email}</Copy>
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 <a
-                  href={`tel:${SITE.phone.replace(/\s|\(|\)/g, '')}`}
+                  href={`tel:${phone.replace(/\s|\(|\)/g, '')}`}
                   className="num transition hover:text-accent"
                 >
-                  {SITE.phone}
+                  <Copy k="site.telefon">{SITE.phone}</Copy>
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <span>{SITE.address}</span>
+                <span>
+                  <Copy k="site.adres">{SITE.address}</Copy>
+                </span>
               </li>
             </ul>
           </div>
@@ -111,8 +125,12 @@ export default function Footer() {
             <p onClick={(event) => event.detail >= 3 && navigate('/yonetim')}>
               © {new Date().getFullYear()} {SITE.name} · Tüm kayıtlar saklıdır
             </p>
-            <p className="num">Form DA-01 · Rev. 2026.04</p>
-            <p>React · Supabase · Netlify</p>
+            <p className="num">
+              <Copy k="footer.form">Form DA-01 · Rev. 2026.04</Copy>
+            </p>
+            <p>
+              <Copy k="footer.teknoloji">React · Supabase · Netlify</Copy>
+            </p>
           </div>
         </div>
       </div>

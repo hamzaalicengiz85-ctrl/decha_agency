@@ -6,10 +6,13 @@ import CTA from '../components/home/CTA'
 import { Spinner } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
+import { Copy } from '../lib/siteCopy'
+import { useCopy } from '../lib/siteCopyContext'
 import { formatDate } from '../lib/format'
 import { posts } from '../data/content'
 
 export default function BlogPost() {
+  const loadingLabel = useCopy('yazi.yukleniyor', 'Yazı yükleniyor')
   const { slug } = useParams()
   const fallback = posts.filter((post) => post.slug === slug)
 
@@ -34,7 +37,7 @@ export default function BlogPost() {
   if (loading) {
     return (
       <div className="container py-32">
-        <Spinner label="Yazı yükleniyor" />
+        <Spinner label={loadingLabel} />
       </div>
     )
   }
@@ -42,8 +45,10 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="font-display text-headline font-bold uppercase text-accent">Yazı bulunamadı</h1>
-        <p className="mt-4 text-fg-muted">Aradığınız yazı kaldırılmış veya adresi değişmiş olabilir.</p>
+        <h1 className="font-display text-headline font-bold uppercase text-accent"><Copy k="yazi.bulunamadi.baslik">Yazı bulunamadı</Copy></h1>
+        <Copy as="p" className="mt-4 text-fg-muted" k="yazi.bulunamadi.aciklama">
+          Aradığınız yazı kaldırılmış veya adresi değişmiş olabilir.
+        </Copy>
         <Button to="/blog" className="mt-8">
           Blog’a dön
         </Button>
@@ -96,7 +101,7 @@ export default function BlogPost() {
 
         {others.length > 0 ? (
           <div className="mx-auto mt-16 max-w-3xl border-t border-accent/30 pt-10">
-            <h2 className="font-display text-[18px] font-bold uppercase">Bunlar da ilginizi çekebilir</h2>
+            <h2 className="font-display text-[18px] font-bold uppercase"><Copy k="yazi.ilgili">Bunlar da ilginizi çekebilir</Copy></h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
                 <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">

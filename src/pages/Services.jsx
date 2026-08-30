@@ -6,9 +6,18 @@ import Icon from '../components/ui/Icon'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
+import { listAttrs, useCopy, useList, useSiteCopy } from '../lib/siteCopyContext'
 import { services, faqs, processSteps } from '../data/content'
 
+const FAQ_KEY = 'sss.liste'
+const STEP_KEY = 'surec.adimlar'
+
 export default function Services() {
+  const { edit } = useSiteCopy()
+  const faqList = useList(FAQ_KEY, faqs)
+  const steps = useList(STEP_KEY, processSteps)
+  // Hook koşullu dalda çağrılamaz; EmptyState ternary içinde render ediliyor.
+  const emptyLabel = useCopy('hizmetler.bos', 'Henüz hizmet eklenmemiş')
   usePageMeta({
     title: 'Hizmetler',
     description:
@@ -26,9 +35,12 @@ export default function Services() {
         <SectionHeading
           code="01"
           eyebrow="Hizmet kataloğu"
+          eyebrowKey="hizmetler.eyebrow"
           title="İhtiyacınız olan her şey, tek ekipte"
+          titleKey="hizmetler.baslik"
           as="h1"
           description="Strateji, tasarım, yazılım ve pazarlamayı birbirinden kopuk süreçler olarak değil; tek bir bütün olarak ele alıyoruz."
+          descriptionKey="hizmetler.aciklama"
           align="center"
         />
       </Section>
@@ -37,7 +49,7 @@ export default function Services() {
         {loading ? (
           <CardSkeleton count={6} />
         ) : serviceList.length === 0 ? (
-          <EmptyState title="Henüz hizmet eklenmemiş" />
+          <EmptyState title={emptyLabel} />
         ) : (
           <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {serviceList.map((service, index) => (
@@ -48,34 +60,63 @@ export default function Services() {
       </Section>
 
       <Section className="bg-bg-soft/60">
-        <SectionHeading code="03" eyebrow="İşleyiş" title="4 adımda net bir süreç" align="center" />
+        <SectionHeading
+          code="03"
+          eyebrow="İşleyiş"
+          eyebrowKey="hizmetler.surec.eyebrow"
+          title="4 adımda net bir süreç"
+          titleKey="hizmetler.surec.baslik"
+          align="center"
+        />
         <ol className="stagger mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {processSteps.map((item) => (
+          {steps.map((item, index) => (
             <li key={item.step} className="panel p-6">
               <span className="num font-display text-3xl font-bold text-accent">{item.step}</span>
-              <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-accent">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.text}</p>
+              <h3
+                className="mt-4 font-display text-[15px] font-bold uppercase text-accent"
+                {...listAttrs(edit, STEP_KEY, index, 'title')}
+              >
+                {item.title}
+              </h3>
+              <p
+                className="mt-3 text-sm leading-relaxed text-fg-muted"
+                {...listAttrs(edit, STEP_KEY, index, 'text')}
+              >
+                {item.text}
+              </p>
             </li>
           ))}
         </ol>
       </Section>
 
       <Section>
-        <SectionHeading code="05" eyebrow="Bilgi notu" title="Sık sorulan sorular" align="center" />
+        <SectionHeading
+          code="05"
+          eyebrow="Bilgi notu"
+          eyebrowKey="sss.eyebrow"
+          title="Sık sorulan sorular"
+          titleKey="sss.baslik"
+          align="center"
+        />
         <div className="mx-auto mt-12 max-w-3xl space-y-4">
-          {faqs.map((faq) => (
+          {faqList.map((faq, index) => (
             <details
               key={faq.q}
               className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
               <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.06em] text-accent">
-                {faq.q}
+                <span {...listAttrs(edit, FAQ_KEY, index, 'q')}>{faq.q}</span>
                 <Icon
                   name="plus"
                   className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
                 />
               </summary>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-fg-muted">{faq.a}</p>
+              <p
+                className="mt-3 text-[13.5px] leading-relaxed text-fg-muted"
+                {...listAttrs(edit, FAQ_KEY, index, 'a')}
+              >
+                {faq.a}
+              </p>
             </details>
           ))}
         </div>

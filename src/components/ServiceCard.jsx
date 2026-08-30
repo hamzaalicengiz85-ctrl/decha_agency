@@ -1,5 +1,6 @@
 import Icon from './ui/Icon'
 import { classNames } from '../lib/format'
+import { Copy } from '../lib/siteCopy'
 
 export default function ServiceCard({ service, index = 0 }) {
   const features = Array.isArray(service.features) ? service.features : []
@@ -11,7 +12,7 @@ export default function ServiceCard({ service, index = 0 }) {
       {/* Form başlığı satırı */}
       <div className="flex items-center justify-between border-b border-accent/35 pb-3">
         <span className="num font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
-          Hizmet {code}
+          <Copy k="kart.hizmet.rozet">Hizmet</Copy> {code}
         </span>
         <span className="grid h-8 w-8 place-items-center border border-accent/45 text-accent">
           <Icon name={service.icon} className="h-4 w-4" />
@@ -41,7 +42,7 @@ export default function ServiceCard({ service, index = 0 }) {
             'font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle',
           )}
         >
-          Tarife
+          <Copy k="kart.hizmet.tarife">Tarife</Copy>
           <span className="text-[13px] font-medium text-fg">
             {new Intl.NumberFormat('tr-TR', {
               style: 'currency',

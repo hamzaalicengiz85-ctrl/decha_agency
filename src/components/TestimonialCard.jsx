@@ -1,5 +1,6 @@
 import Stamp from './ui/Stamp'
 import { initials } from '../lib/initials'
+import { Copy } from '../lib/siteCopy'
 
 export default function TestimonialCard({ testimonial }) {
   return (
@@ -8,8 +9,8 @@ export default function TestimonialCard({ testimonial }) {
       data-rec={`testimonials:${testimonial.id ?? ''}`}
     >
       <div className="flex items-center justify-between border-b border-accent/30 pb-3">
-        <span className="eyebrow">Tutanak</span>
-        <Stamp tone="approved">Doğrulandı</Stamp>
+        <span className="eyebrow"><Copy k="kart.referans.rozet">Tutanak</Copy></span>
+        <Stamp tone="approved"><Copy k="kart.referans.damga">Doğrulandı</Copy></Stamp>
       </div>
 
       <blockquote className="mt-5 flex-1 text-[14.5px] leading-relaxed text-fg">

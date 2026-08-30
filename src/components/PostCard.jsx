@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { formatDate } from '../lib/format'
+import { Copy } from '../lib/siteCopy'
 
 /** Kayıt defteri girdisi — görsel yok, tipografik künye var. */
 export default function PostCard({ post, index = 0 }) {
@@ -29,7 +30,7 @@ export default function PostCard({ post, index = 0 }) {
         <p className="mt-3 flex-1 text-[13.5px] leading-relaxed text-fg-muted">{post.excerpt}</p>
 
         <span className="mt-5 flex items-center justify-between border-t border-dashed border-accent/25 pt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-          Kaydı oku
+          <Copy k="kart.yazi.baglanti">Kaydı oku</Copy>
           <span aria-hidden="true">→</span>
         </span>
       </div>

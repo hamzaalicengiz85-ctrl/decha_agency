@@ -10,6 +10,7 @@ yayınlama için **Netlify** kullanır.
 - [Teknoloji yığını](#teknoloji-yığını)
 - [Hızlı başlangıç](#hızlı-başlangıç)
 - [Supabase kurulumu](#supabase-kurulumu)
+- [Yönetim paneli](#yönetim-paneli)
 - [Netlify ile yayınlama](#netlify-ile-yayınlama)
 - [Proje yapısı](#proje-yapısı)
 - [Tasarım sistemi](#tasarım-sistemi)
@@ -124,6 +125,64 @@ RLS'ini atlayıp kayıtları silebilirdi.
 Kısıt ihlali (Postgres `23505`) formda "bu saat az önce doldu" mesajına çevrilir
 ve saat tablosu tazelenir. Mesajları Supabase panelinden veya oturum açmış bir kullanıcıyla
 görüntüleyebilirsiniz.
+
+---
+
+## Yönetim paneli
+
+Sitenin içeriği koda dokunmadan `/yonetim` adresinden yönetilir.
+
+**Giriş:** Sayfanın en altındaki telif satırına üç kez art arda tıklayın.
+Kullanıcı adı `admin`, şifre Supabase Auth kullanıcısının şifresidir — şifre
+hiçbir yerde kodda tutulmaz. Panel yalnızca masaüstü için tasarlandı.
+
+| Bölüm | Ne yapar |
+| ----- | -------- |
+| Sayfalar | Sitenin gerçek görüntüsü; kesikli çerçeveli her yazıya tıklanıp düzenlenir |
+| Kayıtlar | Hizmet, proje, blog yazısı, referans ekle/düzenle/sil |
+| Gelen kutusu | İletişim mesajları ve toplantı talepleri (salt okunur) |
+| Ayarlar | Şifre değiştirme |
+
+### İçerik nasıl saklanıyor
+
+Metinler veritabanına taşınmadı; kodda yazdıkları gibi duruyor ve varsayılan
+olarak kullanılıyor. `site_copy` / `site_lists` kayıtları yalnızca **üzerine
+yazıyor**:
+
+- Tablolar boşken site bugünkü hâliyle çalışır, veri göçü gerekmez.
+- Supabase kapalıysa ya da sorgu düşerse site yine açılır.
+- Bir metni düzenlemek tek satırlık bir `upsert`'tür.
+- **Boş bırakmak "varsayılana dön" demektir** — yanlışlıkla boşaltılan bir
+  başlık kalıcı olarak kaybolmaz.
+
+`<Copy>` normal modda Fragment döner, üretim çıktısına tek bir DOM düğümü bile
+eklemez (ölçüldü: genel sitede `data-copy-key` sayısı 0). Yalnızca `?edit=1`
+ile açılan önizlemede tıklanabilir bir kutuya sarar.
+
+Dizi içerikler (süreç adımları, SSS, ekip, künye…) `src/data/lists.js`
+içindeki varsayılanlardan başlar. Panel bir öğeyi düzenlerken **yalnızca
+seçilen alanı** değiştirir; ekranda görünmeyen alanlar (örneğin ilke simgesi)
+olduğu gibi kalır.
+
+### Önizleme neden iframe
+
+Sayfayı panelin içinde doğrudan render etmek `min-h-screen`, `100vh`,
+`position: fixed` (menü, CRT katmanı) ve `body.style.overflow` kilitlerinin
+panele sızmasına yol açıyordu. Ayrı bir tarayıcı bağlamı bunların hepsini
+kendiliğinden çözüyor. Ölçek iframe elemanının kendisine uygulanıyor, içeride
+`innerWidth` 1280 kalıyor — medya sorguları ve sabit konumlandırma gerçek bir
+masaüstündeki gibi davranıyor.
+
+### Kurulum
+
+1. Supabase → Authentication → Users → **Add user**: e-posta
+   `admin@dechaagency.com`, bir şifre belirleyin.
+2. Supabase → Authentication → Providers → Email → **kaydı (signup) kapatın**.
+   İçerik yazma izni `authenticated` rolüne açık; kayıt açık kalırsa herhangi
+   biri hesap açıp siteyi değiştirebilir.
+3. SQL Editor'de `supabase/migrations/0003_site_content.sql` dosyasını
+   çalıştırın.
+4. Netlify → Environment variables → `VITE_ADMIN_EMAIL` ekleyin.
 
 ---
 

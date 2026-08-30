@@ -6,10 +6,14 @@ import CTA from '../components/home/CTA'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
+import { Copy } from '../lib/siteCopy'
+import { useCopy } from '../lib/siteCopyContext'
 import { projects } from '../data/content'
 import { classNames } from '../lib/format'
 
 export default function Work() {
+  const emptyTitle = useCopy('projeler.bos.baslik', 'Bu sınıfta kayıt yok')
+  const emptyDesc = useCopy('projeler.bos.aciklama', 'Başka bir sınıflandırma seçmeyi deneyin.')
   usePageMeta({
     title: 'Projeler',
     description: 'Decha Agency tarafından hayata geçirilen web, mobil ve marka projeleri.',
@@ -41,9 +45,12 @@ export default function Work() {
         <SectionHeading
           code="02"
           eyebrow="Arşiv kayıtları"
+          eyebrowKey="projeler.eyebrow"
           title="Yaptığımız işler kendini anlatsın"
+          titleKey="projeler.baslik"
           as="h1"
           description="Farklı sektörlerden markalar için tasarladığımız ve geliştirdiğimiz dosyalardan bir seçki."
+          descriptionKey="projeler.aciklama"
           align="center"
         />
       </Section>
@@ -52,7 +59,7 @@ export default function Work() {
         {/* Dolap sekmesi filtreleri */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5">
           <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
-            Sınıflandırma:
+            <Copy k="projeler.filtre">Sınıflandırma:</Copy>
           </span>
           {categories.map((category) => (
             <button
@@ -77,8 +84,8 @@ export default function Work() {
             <CardSkeleton count={6} />
           ) : filtered.length === 0 ? (
             <EmptyState
-              title="Bu sınıfta kayıt yok"
-              description="Başka bir sınıflandırma seçmeyi deneyin."
+              title={emptyTitle}
+              description={emptyDesc}
             />
           ) : (
             <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

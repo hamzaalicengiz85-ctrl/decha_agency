@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import Button from '../ui/Button'
 import { adminWrite } from '../../lib/adminAuth'
+import { supabase, isSupabaseConfigured } from '../../lib/supabase'
+import { LIST_DEFAULTS } from '../../data/lists'
 
 /**
  * Önizlemede tıklanan öğenin düzenleyicisi.
@@ -12,11 +14,37 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
   const [value, setValue] = useState('')
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState('')
+  const [listRow, setListRow] = useState(null)
 
   useEffect(() => {
     setValue(picked?.text ?? '')
     setFeedback('')
   }, [picked])
+
+  // Liste öğesi seçildiğinde kayıtlı diziyi çek. Kayıt yoksa koddaki
+  // varsayılandan başlanır — DOM'dan yeniden kurmak, ekranda görünmeyen
+  // alanları (örneğin ilke simgesi) düşürürdü.
+  useEffect(() => {
+    const key = picked?.listKey
+    if (!key) return setListRow(null)
+
+    let alive = true
+    const fallback = LIST_DEFAULTS[key] ?? []
+    if (!isSupabaseConfigured || !supabase) return setListRow(fallback)
+
+    supabase
+      .from('site_lists')
+      .select('items')
+      .eq('key', key)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!alive) return
+        setListRow(Array.isArray(data?.items) && data.items.length > 0 ? data.items : fallback)
+      })
+    return () => {
+      alive = false
+    }
+  }, [picked?.listKey])
 
   async function handleSave() {
     if (!picked?.copyKey) return
@@ -37,6 +65,34 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
     onApplied?.({ key: picked.copyKey, value })
   }
 
+  async function handleSaveList() {
+    const key = picked?.listKey
+    const index = Number(picked?.listIndex)
+    const field = picked?.listField
+    if (!key || !listRow || Number.isNaN(index)) return
+
+    // Yalnızca seçilen alan değişir; öğenin diğer alanları olduğu gibi kalır.
+    const items = listRow.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+
+    setSaving(true)
+    const result = await adminWrite((client) =>
+      client
+        .from('site_lists')
+        .upsert({ key, items, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+        .select(),
+    )
+    setSaving(false)
+
+    if (result.needsReauth) return onNeedsReauth?.()
+    if (result.error) return setFeedback(result.error)
+
+    setListRow(items)
+    setFeedback('Kaydedildi.')
+    onApplied?.({ listKey: key, items })
+  }
+
+  const isList = Boolean(picked?.listKey)
+
   return (
     <aside className="flex w-80 shrink-0 flex-col border border-accent/35 bg-bg-soft/40">
       <div className="border-b border-accent/35 px-4 py-3">
@@ -46,7 +102,39 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-4">
-        {picked?.copyKey ? (
+        {isList ? (
+          <>
+            <p className="mb-2 break-all font-mono text-[10px] text-fg-subtle">
+              {picked.listKey} · {Number(picked.listIndex) + 1}. öğe · {picked.listField}
+            </p>
+            <textarea
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              rows={5}
+              aria-label="Metin"
+              className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2.5 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+            />
+            <p className="mt-2 font-mono text-[10px] leading-relaxed text-fg-subtle">
+              Bu listedeki {listRow?.length ?? '—'} öğeden birini düzenliyorsunuz. Öğe ekleme ve
+              silme henüz panelde yok.
+            </p>
+
+            {feedback ? (
+              <p role="status" className="mt-3 font-mono text-[10.5px] text-accent">
+                {feedback}
+              </p>
+            ) : null}
+
+            <div className="mt-4 flex gap-2">
+              <Button type="button" size="sm" onClick={handleSaveList} disabled={saving || !listRow}>
+                {saving ? 'Kaydediliyor…' : 'Kaydet'}
+              </Button>
+              <Button type="button" size="sm" variant="outline" onClick={onClose}>
+                Kapat
+              </Button>
+            </div>
+          </>
+        ) : picked?.copyKey ? (
           <>
             <p className="mb-2 break-all font-mono text-[10px] text-fg-subtle">{picked.copyKey}</p>
             <textarea

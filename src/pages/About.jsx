@@ -4,39 +4,30 @@ import CTA from '../components/home/CTA'
 import Icon from '../components/ui/Icon'
 import { usePageMeta } from '../lib/seo'
 import { stats } from '../data/content'
+import {
+  HAKKIMIZDA_EKIP,
+  HAKKIMIZDA_ILKELER,
+  HAKKIMIZDA_KUNYE,
+} from '../data/lists'
 import { initials } from '../lib/initials'
+import { Copy } from '../lib/siteCopy'
+import { listAttrs, useList, useSiteCopy } from '../lib/siteCopyContext'
 
-const values = [
-  {
-    icon: 'compass',
-    title: 'Önce hedef',
-    text: 'Güzel görünen değil, işe yarayan çözümler üretiriz. Her kararın arkasında bir hedef vardır.',
-  },
-  {
-    icon: 'sparkles',
-    title: 'Detaycılık',
-    text: 'Piksel hizasından kod kalitesine kadar detaylara takıntılıyız; fark orada oluşur.',
-  },
-  {
-    icon: 'trending',
-    title: 'Ölçülebilirlik',
-    text: 'Yayın sonrası veriyi takip eder, iyileştirmeleri veriye dayandırırız.',
-  },
-  {
-    icon: 'shield',
-    title: 'Şeffaflık',
-    text: 'Süreç boyunca ne yaptığımızı, neden yaptığımızı ve nerede olduğumuzu açıkça paylaşırız.',
-  },
-]
+const VALUES_KEY = 'hakkimizda.ilkeler'
+const TEAM_KEY = 'hakkimizda.ekip'
+const STATS_KEY = 'site.istatistikler'
+const KUNYE_KEY = 'hakkimizda.kunye'
 
-const team = [
-  { name: 'Deniz Yılmaz', role: 'Kurucu & Kreatif Direktör' },
-  { name: 'Cem Arslan', role: 'Teknoloji Direktörü' },
-  { name: 'Nil Şahin', role: 'Ürün Tasarımcısı' },
-  { name: 'Barış Öz', role: 'Büyüme Uzmanı' },
-]
+
+
 
 export default function About() {
+  const { edit } = useSiteCopy()
+  const valueList = useList(VALUES_KEY, HAKKIMIZDA_ILKELER)
+  const teamList = useList(TEAM_KEY, HAKKIMIZDA_EKIP)
+  const statList = useList(STATS_KEY, stats)
+  const kunye = useList(KUNYE_KEY, HAKKIMIZDA_KUNYE)
+
   usePageMeta({
     title: 'Hakkımızda',
     description:
@@ -49,9 +40,12 @@ export default function About() {
         <SectionHeading
           code="03"
           eyebrow="Kurum künyesi"
+          eyebrowKey="hakkimizda.eyebrow"
           title="Dijital ürünler geliştiren küçük ama iddialı bir ekibiz"
+          titleKey="hakkimizda.baslik"
           as="h1"
           description="2018'den bu yana kurumsal markalar ve girişimler için tasarım ve yazılım üretiyoruz. İşimizi ajans değil, ürün ekibi gibi yapıyoruz."
+          descriptionKey="hakkimizda.aciklama"
           align="center"
         />
       </Section>
@@ -60,44 +54,55 @@ export default function About() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="panel brackets relative overflow-hidden p-8 sm:p-10">
             <div className="relative">
-              <p className="eyebrow">Kuruluş kaydı</p>
+              <p className="eyebrow">
+                <Copy k="hakkimizda.kunye.eyebrow">Kuruluş kaydı</Copy>
+              </p>
               <p className="num phosphor mt-4 font-display text-[4rem] font-bold leading-none text-accent sm:text-[5.5rem]">
-                2018
+                <Copy k="hakkimizda.kunye.yil">2018</Copy>
               </p>
               <div className="mt-8 grid gap-px border border-accent/35 bg-accent/25 sm:grid-cols-2">
-                {[
-                  ['Merkez', 'Levent, İstanbul'],
-                  ['Kadro', '12 kişi'],
-                  ['Faaliyet alanı', 'Tasarım · Yazılım'],
-                  ['Dosya durumu', 'Açık'],
-                ].map(([k, v]) => (
-                  <div key={k} className="bg-bg px-4 py-3">
-                    <p className="eyebrow">{k}</p>
-                    <p className="mt-1 font-mono text-[12.5px] text-fg">{v}</p>
+                {kunye.map((item, index) => (
+                  <div key={item.label} className="bg-bg px-4 py-3">
+                    <p className="eyebrow" {...listAttrs(edit, KUNYE_KEY, index, 'label')}>
+                      {item.label}
+                    </p>
+                    <p
+                      className="mt-1 font-mono text-[12.5px] text-fg"
+                      {...listAttrs(edit, KUNYE_KEY, index, 'value')}
+                    >
+                      {item.value}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
           <div>
-            <h2 className="font-display text-headline font-bold uppercase">Ajans değil, uzatılmış ekibiniz</h2>
+            <h2 className="font-display text-headline font-bold uppercase">
+              <Copy k="hakkimizda.metin.baslik">Ajans değil, uzatılmış ekibiniz</Copy>
+            </h2>
             <div className="mt-5 space-y-4 leading-relaxed text-fg-muted">
-              <p>
+              <Copy as="p" k="hakkimizda.metin.paragraf1">
                 Projelere dışarıdan bakan bir tedarikçi gibi değil, ekibinizin bir parçası gibi
                 yaklaşıyoruz. Bu yüzden çalışmalarımız keşif toplantısıyla başlar, ölçümleme ve
                 iyileştirmeyle sürer.
-              </p>
-              <p>
+              </Copy>
+              <Copy as="p" k="hakkimizda.metin.paragraf2">
                 Tasarım, yazılım ve pazarlama yeteneklerini tek çatı altında tuttuğumuz için karar
                 döngüleri kısa; bu da hem hızı hem kaliteyi artırır.
-              </p>
+              </Copy>
             </div>
 
             <dl className="mt-10 grid grid-cols-2 gap-4">
-              {stats.map((item) => (
+              {statList.map((item, index) => (
                 <div key={item.label} className="panel p-5">
-                  <dd className="font-display text-2xl font-bold text-accent">{item.value}</dd>
-                  <dt className="mt-1 eyebrow">
+                  <dd
+                    className="font-display text-2xl font-bold text-accent"
+                    {...listAttrs(edit, STATS_KEY, index, 'value')}
+                  >
+                    {item.value}
+                  </dd>
+                  <dt className="mt-1 eyebrow" {...listAttrs(edit, STATS_KEY, index, 'label')}>
                     {item.label}
                   </dt>
                 </div>
@@ -108,24 +113,48 @@ export default function About() {
       </Section>
 
       <Section className="bg-bg-soft/60">
-        <SectionHeading code="07" eyebrow="Yönetmelik" title="Bizi biz yapan dört ilke" align="center" />
+        <SectionHeading
+          code="07"
+          eyebrow="Yönetmelik"
+          eyebrowKey="hakkimizda.ilkeler.eyebrow"
+          title="Bizi biz yapan dört ilke"
+          titleKey="hakkimizda.ilkeler.baslik"
+          align="center"
+        />
         <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {values.map((value) => (
+          {valueList.map((value, index) => (
             <div key={value.title} className="panel panel-hover p-7">
               <span className="grid h-10 w-10 place-items-center border border-accent/35 text-accent">
                 <Icon name={value.icon} className="h-5 w-5" />
               </span>
-              <h3 className="mt-5 font-display text-[15px] font-bold uppercase text-accent">{value.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-fg-muted">{value.text}</p>
+              <h3
+                className="mt-5 font-display text-[15px] font-bold uppercase text-accent"
+                {...listAttrs(edit, VALUES_KEY, index, 'title')}
+              >
+                {value.title}
+              </h3>
+              <p
+                className="mt-3 text-sm leading-relaxed text-fg-muted"
+                {...listAttrs(edit, VALUES_KEY, index, 'text')}
+              >
+                {value.text}
+              </p>
             </div>
           ))}
         </div>
       </Section>
 
       <Section>
-        <SectionHeading code="08" eyebrow="Personel" title="Projenizde çalışacak kişiler" align="center" />
+        <SectionHeading
+          code="08"
+          eyebrow="Personel"
+          eyebrowKey="hakkimizda.ekip.eyebrow"
+          title="Projenizde çalışacak kişiler"
+          titleKey="hakkimizda.ekip.baslik"
+          align="center"
+        />
         <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((member) => (
+          {teamList.map((member, index) => (
             <div key={member.name} className="panel overflow-hidden pb-1 text-center">
               <div
                 className="grid aspect-square w-full place-items-center border-b border-accent/30 bg-accent/8"
@@ -136,8 +165,18 @@ export default function About() {
                 </span>
               </div>
               <div className="p-5">
-                <p className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-accent">{member.name}</p>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle">{member.role}</p>
+                <p
+                  className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-accent"
+                  {...listAttrs(edit, TEAM_KEY, index, 'name')}
+                >
+                  {member.name}
+                </p>
+                <p
+                  className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle"
+                  {...listAttrs(edit, TEAM_KEY, index, 'role')}
+                >
+                  {member.role}
+                </p>
               </div>
             </div>
           ))}

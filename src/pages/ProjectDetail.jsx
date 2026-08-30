@@ -8,8 +8,11 @@ import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
 import { projects } from '../data/content'
 import { fileCode, initials } from '../lib/initials'
+import { Copy } from '../lib/siteCopy'
+import { useCopy } from '../lib/siteCopyContext'
 
 export default function ProjectDetail() {
+  const loadingLabel = useCopy('proje.yukleniyor', 'Proje yükleniyor')
   const { slug } = useParams()
   const fallback = projects.filter((project) => project.slug === slug)
 
@@ -19,7 +22,7 @@ export default function ProjectDetail() {
     single: true,
   })
 
-  // "Diğer projeler" de canlı veriden gelmeli; statik listeden okunursa
+  // "<Copy k="proje.diger">Diğer projeler</Copy>" de canlı veriden gelmeli; statik listeden okunursa
   // panelden eklenen projeler burada hiç görünmez.
   const { data: allProjects } = useSupabaseData('projects', {
     fallback: projects,
@@ -34,7 +37,7 @@ export default function ProjectDetail() {
   if (loading) {
     return (
       <div className="container py-32">
-        <Spinner label="Proje yükleniyor" />
+        <Spinner label={loadingLabel} />
       </div>
     )
   }
@@ -42,10 +45,12 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <div className="container py-32 text-center">
-        <h1 className="font-display text-headline font-bold uppercase text-accent">Proje bulunamadı</h1>
-        <p className="mt-4 text-fg-muted">Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.</p>
+        <h1 className="font-display text-headline font-bold uppercase text-accent"><Copy k="proje.bulunamadi.baslik">Proje bulunamadı</Copy></h1>
+        <Copy as="p" className="mt-4 text-fg-muted" k="proje.bulunamadi.aciklama">
+          Aradığınız proje kaldırılmış veya adresi değişmiş olabilir.
+        </Copy>
         <Button to="/projeler" className="mt-8">
-          Tüm projelere dön
+          <Copy k="proje.donus">Tüm projelere dön</Copy>
         </Button>
       </div>
     )
@@ -97,7 +102,7 @@ export default function ProjectDetail() {
             {initials(project.client || project.title)}
           </span>
           <div className="relative text-right">
-            <p className="eyebrow">Dosya kodu</p>
+            <p className="eyebrow"><Copy k="proje.dosya-kodu">Dosya kodu</Copy></p>
             <p className="num mt-1 font-mono text-[13px] text-fg">
               {fileCode(project.slug, project.year)}
             </p>
@@ -108,7 +113,7 @@ export default function ProjectDetail() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <h2 className="font-display text-[20px] font-bold uppercase">Proje hakkında</h2>
+            <h2 className="font-display text-[20px] font-bold uppercase"><Copy k="proje.hakkinda">Proje hakkında</Copy></h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-fg-muted">
               {String(project.description ?? '')
                 .split('\n')
@@ -135,7 +140,7 @@ export default function ProjectDetail() {
           {metrics.length > 0 ? (
             <aside className="panel h-fit p-7">
               <h3 className="eyebrow">
-                Sonuçlar
+                <Copy k="proje.sonuclar">Sonuçlar</Copy>
               </h3>
               <dl className="mt-6 space-y-6">
                 {metrics.map((metric) => (
@@ -154,7 +159,7 @@ export default function ProjectDetail() {
 
       {related.length > 0 ? (
         <Section spacing="top-none" className="bg-bg-soft/60">
-          <h2 className="font-display text-[20px] font-bold uppercase">Diğer projeler</h2>
+          <h2 className="font-display text-[20px] font-bold uppercase"><Copy k="proje.diger">Diğer projeler</Copy></h2>
           <div className="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link
