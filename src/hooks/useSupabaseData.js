@@ -14,6 +14,10 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
  * @param {object} options.filters       { column: value } eşitlik filtreleri
  * @param {number} options.limit         Kayıt limiti
  * @param {boolean} options.single       Tek kayıt döndür
+ * @param {boolean} options.fallbackOnEmpty  Sorgu boş dönerse yedeğe düşülsün mü?
+ *   Varsayılan true (mevcut davranış). Yönetim panelinden içerik yönetilen
+ *   tablolarda false olmalı: aksi hâlde son kayıt silindiğinde site demo
+ *   içeriğini geri getirir ve silme işlemi olmamış gibi görünür.
  */
 export function useSupabaseData(table, options = {}) {
   const {
@@ -24,6 +28,7 @@ export function useSupabaseData(table, options = {}) {
     limit,
     single = false,
     enabled = true,
+    fallbackOnEmpty = true,
   } = options
 
   const [data, setData] = useState(single ? null : fallback)
@@ -83,10 +88,11 @@ export function useSupabaseData(table, options = {}) {
       if (queryError) throw queryError
 
       const isEmpty = single ? !result : !Array.isArray(result) || result.length === 0
+      const useFallback = isEmpty && fallbackOnEmpty
 
       if (mounted.current) {
-        setData(isEmpty ? localFallback : result)
-        setSource(isEmpty ? 'fallback' : 'supabase')
+        setData(useFallback ? localFallback : result)
+        setSource(useFallback ? 'fallback' : 'supabase')
         setError(null)
       }
     } catch (err) {
@@ -103,7 +109,7 @@ export function useSupabaseData(table, options = {}) {
     }
     // fallback bilinçli olarak bağımlılıkta değil: her render'da yeni referans üretebilir.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [table, select, filtersKey, orderKey, limit, single, enabled])
+  }, [table, select, filtersKey, orderKey, limit, single, enabled, fallbackOnEmpty])
 
   useEffect(() => {
     run()

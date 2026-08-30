@@ -2,7 +2,8 @@ import { useState } from 'react'
 import Button from './ui/Button'
 import Icon from './ui/Icon'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { SITE, services } from '../data/content'
+import { SITE } from '../data/content'
+import { useServices } from '../hooks/useServices'
 import { classNames } from '../lib/format'
 
 const EMPTY = {
@@ -39,6 +40,7 @@ function validate(values) {
 }
 
 export default function ContactForm() {
+  const { data: services } = useServices()
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | loading | success | error

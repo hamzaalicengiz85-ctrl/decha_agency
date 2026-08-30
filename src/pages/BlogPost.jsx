@@ -19,6 +19,13 @@ export default function BlogPost() {
     single: true,
   })
 
+  // İlgili yazılar da canlı veriden gelmeli (statik liste panelden eklenen
+  // yazıları hiç göstermezdi).
+  const { data: allPosts } = useSupabaseData('posts', {
+    fallback: posts,
+    order: { column: 'published_at', ascending: false },
+  })
+
   usePageMeta({
     title: post?.title ?? 'Blog',
     description: post?.excerpt,
@@ -44,7 +51,7 @@ export default function BlogPost() {
     )
   }
 
-  const others = posts.filter((item) => item.slug !== post.slug).slice(0, 2)
+  const others = allPosts.filter((item) => item.slug !== post.slug).slice(0, 2)
 
   return (
     <>

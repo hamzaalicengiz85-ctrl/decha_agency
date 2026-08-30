@@ -19,6 +19,13 @@ export default function ProjectDetail() {
     single: true,
   })
 
+  // "Diğer projeler" de canlı veriden gelmeli; statik listeden okunursa
+  // panelden eklenen projeler burada hiç görünmez.
+  const { data: allProjects } = useSupabaseData('projects', {
+    fallback: projects,
+    order: { column: 'order_no', ascending: true },
+  })
+
   usePageMeta({
     title: project?.title ?? 'Proje',
     description: project?.summary,
@@ -46,7 +53,7 @@ export default function ProjectDetail() {
 
   const tags = Array.isArray(project.tags) ? project.tags : []
   const metrics = Array.isArray(project.metrics) ? project.metrics : []
-  const related = projects.filter((item) => item.slug !== project.slug).slice(0, 3)
+  const related = allProjects.filter((item) => item.slug !== project.slug).slice(0, 3)
 
   return (
     <>

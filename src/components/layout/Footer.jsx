@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
-import { SITE, services } from '../../data/content'
+import { SITE } from '../../data/content'
+import { useServices } from '../../hooks/useServices'
 
 const navigation = [
   { to: '/hizmetler', label: 'Hizmetler' },
@@ -12,6 +13,8 @@ const navigation = [
 ]
 
 export default function Footer() {
+  const { data: services } = useServices({ limit: 5 })
+
   return (
     <footer className="border-t border-accent/40 bg-accent/[0.03]">
       <div className="container py-14">
@@ -57,7 +60,7 @@ export default function Footer() {
           <div>
             <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">Hizmetler</p>
             <ul className="mt-4 space-y-2.5">
-              {services.slice(0, 5).map((service) => (
+              {services.map((service) => (
                 <li key={service.slug}>
                   <Link
                     to="/hizmetler"

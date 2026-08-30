@@ -80,6 +80,34 @@ describe('useSupabaseData', () => {
     expect(result.current.data).toEqual(fallback)
   })
 
+  it('fallbackOnEmpty false iken boş sonuç boş kalır', async () => {
+    // Panelden yönetilen tablolarda kritik: son kayıt silindiğinde site demo
+    // içeriğini geri getirmemeli, yoksa silme işlemi olmamış gibi görünür.
+    state.result = { data: [], error: null }
+
+    const { result } = renderHook(() =>
+      useSupabaseData('projects', { fallback, fallbackOnEmpty: false }),
+    )
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(result.current.source).toBe('supabase')
+    expect(result.current.data).toEqual([])
+  })
+
+  it('fallbackOnEmpty false olsa da hata durumunda yedeğe düşer', async () => {
+    // Boş sonuç ile hata farklı şeyler: ağ/izin hatasında site yine de
+    // içerikle açılmalı.
+    state.result = { data: null, error: new Error('bağlantı yok') }
+
+    const { result } = renderHook(() =>
+      useSupabaseData('projects', { fallback, fallbackOnEmpty: false }),
+    )
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(result.current.source).toBe('fallback')
+    expect(result.current.data).toEqual(fallback)
+  })
+
   it('filtre, sıralama ve limit sorguya aktarılır', async () => {
     state.result = { data: [{ id: 'x' }], error: null }
 

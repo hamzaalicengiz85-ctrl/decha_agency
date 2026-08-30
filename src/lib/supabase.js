@@ -13,7 +13,18 @@ export const isSupabaseConfigured = Boolean(
 
 export const supabase = isSupabaseConfigured
   ? createClient(url, anonKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
+      auth: {
+        // Yönetim paneli oturumu sayfa yenilemede sürsün diye açık. Anonim
+        // ziyaretçinin oturumu olmadığı için genel siteye maliyeti yok:
+        // açılışta bir localStorage okuması, o kadar.
+        persistSession: true,
+        autoRefreshToken: true,
+        // Varsayılan true; açık kalırsa supabase-js genel sitede URL
+        // parçasını ayrıştırıp temizler. Sihirli bağlantı / OAuth
+        // yönlendirmesi kullanmıyoruz, kapalı olmalı.
+        detectSessionInUrl: false,
+        storageKey: 'decha-auth',
+      },
       global: { headers: { 'x-application-name': 'decha-agency-web' } },
     })
   : null
