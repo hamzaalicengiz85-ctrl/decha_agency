@@ -13,6 +13,7 @@ import { CardSkeleton } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
 import { services, projects, testimonials } from '../data/content'
+import { Copy } from '../lib/siteCopy'
 
 export default function Home() {
   usePageMeta({
@@ -49,11 +50,14 @@ export default function Home() {
           <SectionHeading
             code="01"
             eyebrow="Hizmet kataloğu"
+            eyebrowKey="home.hizmetler.eyebrow"
             title="Uçtan uca dijital çözümler"
+            titleKey="home.hizmetler.baslik"
             description="Fikir aşamasından yayına ve büyümeye kadar ihtiyacınız olan her şey tek ekipte."
+            descriptionKey="home.hizmetler.aciklama"
           />
           <Button to="/hizmetler" variant="outline" size="sm" className="self-start md:self-auto">
-            Tüm katalog
+            <Copy k="home.hizmetler.buton">Tüm katalog</Copy>
             <Icon name="arrow" className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -76,11 +80,14 @@ export default function Home() {
               <SectionHeading
                 code="02"
                 eyebrow="Kayıtlı dosyalar"
+                eyebrowKey="home.projeler.eyebrow"
                 title="Sonuç üreten projeler"
+                titleKey="home.projeler.baslik"
                 description="Her projede önce hedefi, sonra tasarımı konuşuruz."
+                descriptionKey="home.projeler.aciklama"
               />
           <Button to="/projeler" variant="outline" size="sm" className="self-start md:self-auto">
-            Tüm arşiv
+            <Copy k="home.projeler.buton">Tüm arşiv</Copy>
             <Icon name="arrow" className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -104,7 +111,9 @@ export default function Home() {
         <SectionHeading
           code="04"
           eyebrow="Tutanaklar"
+          eyebrowKey="home.referanslar.eyebrow"
           title="Müşterilerimiz ne diyor?"
+          titleKey="home.referanslar.baslik"
           align="center"
         />
         <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -113,9 +122,9 @@ export default function Home() {
           ))}
         </div>
         <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
-          Referanslarımızla görüşmek ister misiniz?{' '}
+          <Copy k="home.referanslar.davet">Referanslarımızla görüşmek ister misiniz?</Copy>{' '}
           <Link to="/iletisim" className="link-underline text-accent">
-            Bize yazın
+            <Copy k="home.referanslar.baglanti">Bize yazın</Copy>
           </Link>
         </p>
       </Section>

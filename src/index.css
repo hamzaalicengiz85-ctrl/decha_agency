@@ -689,3 +689,57 @@
     }
   }
 }
+
+@layer components {
+  /* --------------------------------------------------------------------
+     Düzenleme modu (?edit=1 — yalnızca yönetim panelindeki önizleme)
+     --------------------------------------------------------------------
+     Köprü <html data-edit="1"> koyar. Buradaki kurallar yalnızca o zaman
+     çalışır, genel sitede hiçbir etkisi yok.
+     -------------------------------------------------------------------- */
+
+  /* Açılma animasyonları kapatılır. Ölçeklenmiş çerçevede alt bölümler
+     `opacity: 0` ile beklerdi; düzenlerken her şey görünür olmalı. */
+  [data-edit] .reveal,
+  [data-edit] .stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Tarama çizgileri ve yayın bandı düzenleme çerçeveleriyle yarışıyor. */
+  [data-edit] .tv-overlay {
+    opacity: 0.25;
+  }
+  [data-edit] .tv-sweep {
+    display: none;
+  }
+
+  /* Düzenlenebilir hedefler */
+  [data-edit] [data-copy-key],
+  [data-edit] [data-list-key],
+  [data-edit] [data-rec-field] {
+    outline: 1px dashed rgb(var(--c-highlight) / 0.45);
+    outline-offset: 2px;
+    cursor: pointer;
+  }
+
+  [data-edit] [data-copy-key]:hover,
+  [data-edit] [data-list-key]:hover,
+  [data-edit] [data-rec-field]:hover {
+    outline: 1px solid rgb(var(--c-highlight));
+    background-color: rgb(var(--c-highlight) / 0.12);
+  }
+
+  /* Boşaltılmış bir metin de tıklanabilir kalmalı, yoksa geri getirilemez. */
+  [data-edit] [data-copy-key]:empty::after {
+    content: '—';
+    opacity: 0.5;
+  }
+
+  /* Kayıt kartları: alan yerine kaydın tamamı düzenlenir. */
+  [data-edit] [data-rec] {
+    outline: 1px dashed rgb(var(--c-accent) / 0.4);
+    outline-offset: 3px;
+  }
+}

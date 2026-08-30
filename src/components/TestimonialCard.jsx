@@ -3,7 +3,10 @@ import { initials } from '../lib/initials'
 
 export default function TestimonialCard({ testimonial }) {
   return (
-    <figure className="panel brackets flex h-full flex-col p-5">
+    <figure
+      className="panel brackets flex h-full flex-col p-5"
+      data-rec={`testimonials:${testimonial.id ?? ''}`}
+    >
       <div className="flex items-center justify-between border-b border-accent/30 pb-3">
         <span className="eyebrow">Tutanak</span>
         <Stamp tone="approved">Doğrulandı</Stamp>

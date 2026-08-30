@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 const state = { rows: {}, error: null }
@@ -30,6 +30,11 @@ beforeEach(() => {
   state.error = null
 })
 
+/** Kenar çubuğu — sayfa sekmeleriyle aynı adlar kullanıldığı için kapsamlı sorgu. */
+function sidebar() {
+  return within(screen.getByRole('navigation'))
+}
+
 function renderShell() {
   return render(
     <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -39,29 +44,36 @@ function renderShell() {
 }
 
 describe('AdminShell', () => {
-  it('her sayfa için bir kategori gösterir', () => {
+  it('kenar çubuğunda tüm bölümler var', () => {
     renderShell()
-    for (const label of ['Hizmetler', 'Projeler', 'Blog yazıları', 'Referanslar', 'Şifre']) {
-      expect(screen.getByRole('button', { name: label })).toBeInTheDocument()
+    for (const label of ['Sayfalar', 'Hizmetler', 'Projeler', 'Blog yazıları', 'Referanslar', 'Şifre']) {
+      expect(sidebar().getByRole('button', { name: label })).toBeInTheDocument()
     }
+  })
+
+  it('görsel düzenleme varsayılan bölüm', () => {
+    renderShell()
+    expect(screen.getByTitle('Sayfa önizlemesi')).toBeInTheDocument()
   })
 
   it('boş tabloda demo içerik uyarısı verir', async () => {
     // Kritik: panel yerel demo içeriğini asla göstermemeli, yoksa olmayan
     // kaydın üstüne yazılır.
     renderShell()
+    fireEvent.click(sidebar().getByRole('button', { name: 'Hizmetler' }))
     expect(await screen.findByText(/yerel demo içeriğini gösteriyor/i)).toBeInTheDocument()
   })
 
   it('kayıtları listeler', async () => {
     state.rows.services = [{ id: '1', title: 'Web Tasarım', slug: 'web-tasarim' }]
     renderShell()
+    fireEvent.click(sidebar().getByRole('button', { name: 'Hizmetler' }))
     expect(await screen.findByText('Web Tasarım')).toBeInTheDocument()
   })
 
   it('kategori değiştirilebilir', async () => {
     renderShell()
-    fireEvent.click(screen.getByRole('button', { name: 'Şifre' }))
+    fireEvent.click(sidebar().getByRole('button', { name: 'Şifre' }))
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: /şifre değiştir/i })).toBeInTheDocument(),
     )
@@ -70,6 +82,7 @@ describe('AdminShell', () => {
 
   it('yeni kayıt formu açılır ve zorunlu alanları doğrular', async () => {
     renderShell()
+    fireEvent.click(sidebar().getByRole('button', { name: 'Hizmetler' }))
     fireEvent.click(await screen.findByRole('button', { name: /hizmet ekle/i }))
 
     const submit = await screen.findByRole('button', { name: /oluştur/i })
@@ -81,6 +94,7 @@ describe('AdminShell', () => {
   it('okuma hatasını gösterir, sessizce yutmaz', async () => {
     state.error = new Error('izin yok')
     renderShell()
+    fireEvent.click(sidebar().getByRole('button', { name: 'Hizmetler' }))
     expect(await screen.findByRole('alert')).toHaveTextContent(/izin yok/i)
   })
 })

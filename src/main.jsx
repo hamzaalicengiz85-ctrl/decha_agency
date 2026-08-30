@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
+import { SiteCopyProvider } from './lib/siteCopy'
 import './index.css'
 
 const container = document.getElementById('root')
@@ -15,7 +16,9 @@ createRoot(container).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <App />
+        <SiteCopyProvider>
+          <App />
+        </SiteCopyProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>,

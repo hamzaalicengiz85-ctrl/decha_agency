@@ -1,6 +1,7 @@
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import DecodeText from '../ui/DecodeText'
+import { Copy } from '../../lib/siteCopy'
 import { stats } from '../../data/content'
 
 // Başlıktaki vurgu kelimesi 5 saniyede bir çözülerek değişir.
@@ -15,28 +16,31 @@ export default function Hero() {
         <div className="px-2 py-14 text-center sm:py-20">
             <p className="flex animate-fade-up items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-accent">
               <span className="h-2 w-2 animate-blink bg-accent" aria-hidden="true" />
-              Kayıt açık
+              <Copy k="home.hero.durum">Kayıt açık</Copy>
               <span className="hatch inline-block h-2.5 w-14" aria-hidden="true" />
             </p>
 
             <h1 className="phosphor mt-7 animate-fade-up text-display font-bold uppercase text-accent [animation-delay:90ms]">
-              Markanızı dijitalde
+              <Copy k="home.hero.baslik.on">Markanızı dijitalde</Copy>
               <br className="hidden sm:block" />{' '}
-              <DecodeText words={HEADLINE_WORDS} /> tasarım ve yazılım
+              <DecodeText words={HEADLINE_WORDS} />{' '}
+              <Copy k="home.hero.baslik.son">tasarım ve yazılım</Copy>
             </h1>
 
             <p className="mx-auto mt-7 max-w-xl animate-fade-up font-mono text-[13px] leading-relaxed text-fg-muted [animation-delay:180ms]">
-              Strateji, tasarım ve mühendisliği tek dosyada topluyoruz. Her proje kayıt altına
-              alınır, ölçülür ve raporlanır.
+              <Copy k="home.hero.aciklama">
+                Strateji, tasarım ve mühendisliği tek dosyada topluyoruz. Her proje kayıt altına
+                alınır, ölçülür ve raporlanır.
+              </Copy>
             </p>
 
             <div className="mt-10 flex animate-fade-up flex-col items-center justify-center gap-3 [animation-delay:270ms] sm:flex-row">
               <Button to="/iletisim" size="lg">
-                Ücretsiz dosya aç
+                <Copy k="home.hero.buton.birincil">Ücretsiz dosya aç</Copy>
                 <Icon name="arrow" className="h-4 w-4" />
               </Button>
               <Button to="/projeler" variant="panel" size="lg">
-                Arşivi incele
+                <Copy k="home.hero.buton.ikincil">Arşivi incele</Copy>
               </Button>
             </div>
 

@@ -14,7 +14,8 @@ export default function ProjectCard({ project }) {
     <Link
       to={`/projeler/${project.slug}`}
       className="panel panel-hover brackets group flex h-full flex-col overflow-hidden"
-    >
+    
+      data-rec={`projects:${project.id ?? ''}`}>
       {/* Dosya sekmesi */}
       <div className="flex items-center justify-between border-b border-accent/40 bg-accent/10 px-4 py-2">
         <span className="num font-mono text-[10px] uppercase tracking-[0.18em] text-accent">

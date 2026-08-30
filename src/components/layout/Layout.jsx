@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
@@ -8,12 +8,25 @@ import Intro from './Intro'
 import Rail from './Rail'
 import Hud from './Hud'
 import { Spinner } from '../ui/Loader'
+import { isEditMode } from '../../lib/siteCopyContext'
+
+// Yalnızca önizlemede (?edit=1) yüklenir; genel ziyaretçi bu kodu indirmez.
+const EditBridge = lazy(() => import('../../edit/EditBridge'))
 
 export default function Layout() {
+  const edit = isEditMode()
+
   return (
     <>
-      {/* Sekme sırasında en başta dursun: "Geç" düğmesine ilk Tab ile ulaşılır. */}
-      <Intro />
+      {/* Önizlemede giriş ekranı gösterilmez: paneli her açılışta bekletirdi. */}
+      {edit ? (
+        <Suspense fallback={null}>
+          <EditBridge />
+        </Suspense>
+      ) : (
+        /* Sekme sırasında en başta dursun: "Geç" düğmesine ilk Tab ile ulaşılır. */
+        <Intro />
+      )}
 
       <ScreenFx />
       <Rail />
