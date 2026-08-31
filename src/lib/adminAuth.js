@@ -12,7 +12,12 @@ import { supabase, isSupabaseConfigured } from './supabase'
  * Panelin kendisi yalnızca arayüz kapısıdır.
  */
 
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'admin@dechaagency.com'
+/**
+ * Supabase Auth kimlik olarak e-posta biçiminde bir metin istiyor; bu adres
+ * yalnızca iç kimliktir, gerçek bir posta kutusu değildir ve oraya hiçbir şey
+ * gönderilmez. Kullanıcı panelde sadece "admin" yazar.
+ */
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'admin@decha.local'
 
 // Kullanıcı adı → e-posta. Türkçe yerele duyarlı küçültme KULLANILMAZ:
 // 'ADMIN'.toLocaleLowerCase('tr') → 'admın' olur ve eşleşme kaçar.

@@ -133,8 +133,11 @@ görüntüleyebilirsiniz.
 Sitenin içeriği koda dokunmadan `/yonetim` adresinden yönetilir.
 
 **Giriş:** Sayfanın en altındaki telif satırına üç kez art arda tıklayın.
-Kullanıcı adı `admin`, şifre Supabase Auth kullanıcısının şifresidir — şifre
-hiçbir yerde kodda tutulmaz. Panel yalnızca masaüstü için tasarlandı.
+Kullanıcı adı `admin`, şifre Supabase Auth kullanıcısının şifresidir.
+
+> Şifre hiçbir yerde kodda tutulmaz; Supabase kullanıcısını oluştururken
+> belirlenir ve panelin "Şifre" bölümünden değiştirilir. Şifre unutulursa
+> Supabase → Authentication → Users → ilgili kullanıcı → **Reset password**. Panel yalnızca masaüstü için tasarlandı.
 
 | Bölüm | Ne yapar |
 | ----- | -------- |
@@ -175,8 +178,14 @@ masaüstündeki gibi davranıyor.
 
 ### Kurulum
 
-1. Supabase → Authentication → Users → **Add user**: e-posta
-   `admin@dechaagency.com`, bir şifre belirleyin.
+1. Supabase → Authentication → Users → **Add user**:
+   - E-posta: `admin@decha.local` — bu yalnızca iç kimliktir, gerçek bir posta
+     kutusu olmak zorunda değildir ve oraya hiçbir şey gönderilmez. Panelde
+     yalnızca `admin` yazılır, uygulama bunu bu adrese eşler.
+   - Şifre: ne belirlerseniz o olur. **Kodda hiçbir şifre tutulmaz.**
+   - **"Auto Confirm User" kutusunu işaretleyin.** İşaretlenmezse Supabase
+     doğrulama e-postası göndermeye çalışır, adres gerçek olmadığı için
+     kullanıcı doğrulanmamış kalır ve giriş başarısız olur.
 2. Supabase → Authentication → Providers → Email → **kaydı (signup) kapatın**.
    İçerik yazma izni `authenticated` rolüne açık; kayıt açık kalırsa herhangi
    biri hesap açıp siteyi değiştirebilir.
