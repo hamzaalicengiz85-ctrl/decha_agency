@@ -19,10 +19,24 @@ export const CACHE_KEY = 'decha:copy:v1'
 
 export const SiteCopyContext = createContext({ copy: {}, lists: {}, edit: false })
 
-/** Düzenleme modu: önizleme iframe'i ?edit=1 ile açılır. */
+/**
+ * Düzenleme modu: önizleme iframe'i ?edit=1 ile açılır.
+ *
+ * Yalnızca çerçeve içinde açılır. Adres çubuğuna ?edit=1 yazan bir ziyaretçi
+ * normal siteyi görür — aksi hâlde bu bağlantıyı paylaşan biri sitenin
+ * tıklanamaz, kesikli çerçeveli bir sürümünü gösterebilirdi.
+ */
 export function isEditMode() {
   if (typeof window === 'undefined') return false
-  return new URLSearchParams(window.location.search).get('edit') === '1'
+  if (new URLSearchParams(window.location.search).get('edit') !== '1') return false
+  try {
+    // Yabancı bir sayfa siteyi çerçeveleyemez (CSP: frame-ancestors 'self'),
+    // ama kaynak erişimi denemesi yine de yapılıyor: yalnızca kendi
+    // panelimizin çerçevesi düzenleme modunu açabilsin.
+    return window.parent !== window && window.parent.location.origin === window.location.origin
+  } catch {
+    return false
+  }
 }
 
 export function useSiteCopy() {

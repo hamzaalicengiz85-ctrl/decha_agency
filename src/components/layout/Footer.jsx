@@ -6,6 +6,7 @@ import { useServices } from '../../hooks/useServices'
 import { Copy } from '../../lib/siteCopy'
 import { listAttrs, useCopy, useList, useSiteCopy } from '../../lib/siteCopyContext'
 import { SITE_MENU_ALT } from '../../data/lists'
+import { safePath, safeUrl } from '../../lib/url'
 
 const NAV_KEY = 'site.menu.alt'
 const SOCIAL_KEY = 'site.sosyal'
@@ -40,7 +41,7 @@ export default function Footer() {
               {social.map((item, index) => (
                 <a
                   key={item.label}
-                  href={item.href}
+                  href={safeUrl(item.href)}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="border border-accent/35 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-accent transition hover:bg-accent hover:text-accent-fg"
@@ -60,7 +61,7 @@ export default function Footer() {
               {navigation.map((item, index) => (
                 <li key={item.to}>
                   <Link
-                    to={item.to}
+                    to={safePath(item.to)}
                     className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
                     {...listAttrs(edit, NAV_KEY, index, 'label')}
                   >

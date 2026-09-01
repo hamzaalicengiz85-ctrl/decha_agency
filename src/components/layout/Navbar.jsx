@@ -6,6 +6,7 @@ import Logo from '../ui/Logo'
 import { Copy } from '../../lib/siteCopy'
 import { listAttrs, useList, useSiteCopy } from '../../lib/siteCopyContext'
 import { SITE_MENU } from '../../data/lists'
+import { safePath } from '../../lib/url'
 import MeetingModal from '../MeetingModal'
 import { classNames } from '../../lib/format'
 
@@ -49,7 +50,7 @@ export default function Navbar() {
             {links.map((link, index) => (
               <li key={link.to}>
                 <NavLink
-                  to={link.to}
+                  to={safePath(link.to)}
                   end={link.to === '/'}
                   className={({ isActive }) =>
                     classNames(
@@ -99,7 +100,7 @@ export default function Navbar() {
           {links.map((link, index) => (
             <li key={link.to} className="border-b border-accent/20 last:border-0">
               <NavLink
-                to={link.to}
+                to={safePath(link.to)}
                 end={link.to === '/'}
                 className={({ isActive }) =>
                   classNames(

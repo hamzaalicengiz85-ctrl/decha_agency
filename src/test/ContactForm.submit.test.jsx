@@ -37,7 +37,7 @@ beforeEach(() => {
 describe('ContactForm — Supabase gönderimi', () => {
   it('geçerli formu contact_messages tablosuna yazar', async () => {
     render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter>
         <ContactForm />
       </MemoryRouter>,
     )
@@ -67,7 +67,7 @@ describe('ContactForm — Supabase gönderimi', () => {
     state.error = new Error('permission denied')
 
     render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter>
         <ContactForm />
       </MemoryRouter>,
     )
@@ -81,7 +81,7 @@ describe('ContactForm — Supabase gönderimi', () => {
     // Gerçek kullanıcı bu alanı göremez; dolduysa gönderen bir bottur.
     // Bota yakalandığını söylememek için ekranda başarı gösterilir.
     render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <MemoryRouter>
         <ContactForm />
       </MemoryRouter>,
     )

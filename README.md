@@ -185,6 +185,20 @@ kaldırır. Durum `site_copy` içinde `gorunurluk.<bölüm>` anahtarında tutulu
 Kapalı bölüm genel sitede hiç çizilmez; panelde soluk görünür ki geri
 açılabilsin.
 
+### Güvenlik notları
+
+- **Panelden gelen adresler şema denetiminden geçer** (`src/lib/url.js`).
+  React `href` değerini kaçırır ama şemayı denetlemez; `javascript:` yazan
+  bir satır her ziyaretçide çalışan betiğe dönüşüyordu (tarayıcıda
+  doğrulandı). Denetim kaydederken değil çizerken yapılıyor, böylece
+  veritabanına başka bir yoldan girmiş değer de zararsız kalır.
+- **`?edit=1` yalnızca çerçeve içinde çalışır.** Adres çubuğuna yazan
+  ziyaretçi normal siteyi görür; aksi hâlde bu bağlantı sitenin
+  tıklanamaz bir sürümünü gösterirdi.
+- **Supabase'de herkese açık kaydı (signup) kapalı tutun.** Yazma izni
+  `authenticated` rolüne bağlı; kayıt açık kalırsa hesap açan herkes site
+  içeriğini değiştirebilir.
+
 ### Önizleme neden iframe
 
 Sayfayı panelin içinde doğrudan render etmek `min-h-screen`, `100vh`,

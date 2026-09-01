@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { classNames } from '../../lib/format'
+import { safeUrl } from '../../lib/url'
 
 const variants = {
   // Dolu turuncu, üzerine ekran siyahı (6.91)
@@ -44,10 +45,11 @@ export default function Button({
   }
 
   if (href) {
-    const external = /^https?:\/\//.test(href)
+    const url = safeUrl(href)
+    const external = /^https?:\/\//.test(url)
     return (
       <a
-        href={href}
+        href={url}
         className={classes}
         {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
         {...props}

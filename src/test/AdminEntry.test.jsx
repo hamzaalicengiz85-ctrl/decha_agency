@@ -11,7 +11,7 @@ const Footer = (await import('../components/layout/Footer')).default
 
 function renderFooter() {
   return render(
-    <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter>
       <Routes>
         <Route path="/" element={<Footer />} />
         <Route path="/yonetim" element={<p>Yönetim ekranı</p>} />

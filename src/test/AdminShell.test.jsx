@@ -37,7 +37,7 @@ function sidebar() {
 
 function renderShell() {
   return render(
-    <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter>
       <AdminShell email="admin@ornek.com" />
     </MemoryRouter>,
   )
