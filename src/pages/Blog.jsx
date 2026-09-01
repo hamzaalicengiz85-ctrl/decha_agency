@@ -3,7 +3,7 @@ import SectionHeading from '../components/ui/SectionHeading'
 import PostCard from '../components/PostCard'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
-import { usePageMeta } from '../lib/seo'
+import { breadcrumb, usePageMeta } from '../lib/seo'
 import { useCopy } from '../lib/siteCopyContext'
 import { posts } from '../data/content'
 
@@ -13,6 +13,7 @@ export default function Blog() {
   usePageMeta({
     title: 'Blog',
     description: 'Tasarım, yazılım ve dijital pazarlama üzerine yazılarımız.',
+    schema: breadcrumb([{ name: 'Blog', path: '/blog' }]),
   })
 
   const { data: postList, loading } = useSupabaseData('posts', {
@@ -44,7 +45,7 @@ export default function Blog() {
         ) : (
           <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {postList.map((post) => (
-              <PostCard key={post.id ?? post.slug} post={post} />
+              <PostCard key={post.id ?? post.slug} post={post} as="h2" />
             ))}
           </div>
         )}

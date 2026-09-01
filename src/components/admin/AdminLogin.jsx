@@ -38,9 +38,9 @@ export default function AdminLogin({ onSignedIn, reason }) {
       <form onSubmit={handleSubmit} noValidate className="panel brackets w-full max-w-sm p-7">
         <div className="mb-6 text-center">
           <Logo className="text-[26px]" />
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.24em] text-accent/70">
+          <h1 className="mt-3 font-mono text-[10px] uppercase tracking-[0.24em] text-accent/85">
             Yönetim Girişi
-          </p>
+          </h1>
         </div>
 
         {reason ? (

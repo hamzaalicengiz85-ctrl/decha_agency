@@ -6,7 +6,7 @@ import { fileCode, initials } from '../lib/initials'
  * Proje dosya kartı. Fotoğraf kullanılmaz — kimlik, dosya kodu ve
  * tipografik bir künye alanıyla kurulur.
  */
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project, as: Heading = 'h3' }) {
   const tags = Array.isArray(project.tags) ? project.tags : []
   const metrics = Array.isArray(project.metrics) ? project.metrics : []
 
@@ -44,7 +44,7 @@ export default function ProjectCard({ project }) {
 
       <div className="flex flex-1 flex-col px-4 py-4">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-[15px] font-bold uppercase text-accent">{project.title}</h3>
+          <Heading className="font-display text-[15px] font-bold uppercase text-accent">{project.title}</Heading>
           <Icon
             name="arrow"
             className="mt-0.5 h-4 w-4 shrink-0 text-accent/60 transition group-hover:text-accent"

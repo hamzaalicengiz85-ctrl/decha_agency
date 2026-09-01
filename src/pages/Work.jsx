@@ -5,7 +5,7 @@ import ProjectCard from '../components/ProjectCard'
 import CTA from '../components/home/CTA'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
-import { usePageMeta } from '../lib/seo'
+import { breadcrumb, usePageMeta } from '../lib/seo'
 import { Copy } from '../lib/siteCopy'
 import { useCopy } from '../lib/siteCopyContext'
 import { projects } from '../data/content'
@@ -17,6 +17,7 @@ export default function Work() {
   usePageMeta({
     title: 'Projeler',
     description: 'Decha Agency tarafından hayata geçirilen web, mobil ve marka projeleri.',
+    schema: breadcrumb([{ name: 'Projeler', path: '/projeler' }]),
   })
 
   const [activeCategory, setActiveCategory] = useState('Tümü')
@@ -94,7 +95,7 @@ export default function Work() {
           ) : (
             <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((project) => (
-                <ProjectCard key={project.id ?? project.slug} project={project} />
+                <ProjectCard key={project.id ?? project.slug} project={project} as="h2" />
               ))}
             </div>
           )}

@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /yonetim
-
-Sitemap: https://decha-agency.netlify.app/sitemap.xml

@@ -4,7 +4,7 @@ import { usePageMeta } from '../lib/seo'
 import { Copy } from '../lib/siteCopy'
 
 export default function NotFound() {
-  usePageMeta({ title: '404 — Kayıt bulunamadı' })
+  usePageMeta({ title: '404 — Kayıt bulunamadı', noindex: true })
 
   return (
     <div className="container py-14">

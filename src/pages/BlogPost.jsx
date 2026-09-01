@@ -5,7 +5,7 @@ import Icon from '../components/ui/Icon'
 import CTA from '../components/home/CTA'
 import { Spinner } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
-import { usePageMeta } from '../lib/seo'
+import { articleSchema, usePageMeta } from '../lib/seo'
 import { Copy } from '../lib/siteCopy'
 import { useCopy } from '../lib/siteCopyContext'
 import { formatDate } from '../lib/format'
@@ -32,6 +32,7 @@ export default function BlogPost() {
   usePageMeta({
     title: post?.title ?? 'Blog',
     description: post?.excerpt,
+    schema: post ? articleSchema(post) : undefined,
   })
 
   if (loading) {

@@ -11,6 +11,7 @@ const About = lazy(() => import('./pages/About'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const Contact = lazy(() => import('./pages/Contact'))
+const Privacy = lazy(() => import('./pages/Privacy'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 // Yönetim paneli site kabuğunun dışında: menü, footer ve giriş animasyonu yok.
 const Admin = lazy(() => import('./pages/Admin'))
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="blog" element={<Blog />} />
         <Route path="blog/:slug" element={<BlogPost />} />
         <Route path="iletisim" element={<Contact />} />
+        <Route path="gizlilik" element={<Privacy />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -2,7 +2,7 @@ import Section from '../components/ui/Section'
 import SectionHeading from '../components/ui/SectionHeading'
 import CTA from '../components/home/CTA'
 import Icon from '../components/ui/Icon'
-import { usePageMeta } from '../lib/seo'
+import { breadcrumb, usePageMeta } from '../lib/seo'
 import { stats } from '../data/content'
 import {
   HAKKIMIZDA_EKIP,
@@ -32,6 +32,7 @@ export default function About() {
     title: 'Hakkımızda',
     description:
       'Decha Agency; tasarımcı, geliştirici ve stratejistlerden oluşan bir dijital ürün ekibidir.',
+    schema: breadcrumb([{ name: 'Hakkımızda', path: '/hakkimizda' }]),
   })
 
   return (

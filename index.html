@@ -3,8 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2c1d15" />
+    <meta name="theme-color" content="#0e0a07" />
+    <meta name="color-scheme" content="dark" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <link
       rel="preload"
       href="/fonts/chakra-petch-700-latin.woff2"
@@ -13,21 +18,79 @@
       crossorigin
     />
     <link rel="preload" href="/fonts/archivo-400-600-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <title>Decha Agency — Dijital Tasarım & Yazılım Ajansı</title>
+
+    <title>Decha Agency — Dijital Tasarım &amp; Yazılım Ajansı</title>
     <meta
       name="description"
       content="Decha Agency; markalar için web tasarımı, yazılım geliştirme, dijital pazarlama ve marka kimliği çözümleri üretir."
     />
+    <link rel="canonical" href="__SITE_URL__/" />
+
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Decha Agency" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:url" content="__SITE_URL__/" />
     <meta property="og:title" content="Decha Agency — Dijital Tasarım & Yazılım Ajansı" />
     <meta
       property="og:description"
       content="Markanızı büyüten web siteleri, uygulamalar ve dijital kampanyalar."
     />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Decha Agency — markanızı dijitalde büyüten tasarım ve yazılım" />
+
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Decha Agency — Dijital Tasarım & Yazılım Ajansı" />
+    <meta
+      name="twitter:description"
+      content="Markanızı büyüten web siteleri, uygulamalar ve dijital kampanyalar."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+
+    <!-- Arama motorlarına kurum künyesi. Sayfaya özel şemalar (hizmet, yazı,
+         kırıntı yolu) React tarafında `usePageMeta` ile eklenir. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "__SITE_URL__/#kurum",
+            "name": "Decha Agency",
+            "url": "__SITE_URL__/",
+            "logo": "__SITE_URL__/icon-512.png",
+            "image": "__SITE_URL__/og-image.png",
+            "description": "Dijital büyüme için tasarım ve yazılım.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "İstanbul",
+              "addressRegion": "Levent",
+              "addressCountry": "TR"
+            },
+            "areaServed": "TR",
+            "knowsLanguage": ["tr", "en"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__/#site",
+            "url": "__SITE_URL__/",
+            "name": "Decha Agency",
+            "inLanguage": "tr-TR",
+            "publisher": { "@id": "__SITE_URL__/#kurum" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="padding:24px;font-family:monospace;color:#d9c3a5;background:#0e0a07">
+        Bu site çalışmak için JavaScript gerektiriyor. Tarayıcınızda JavaScript'i
+        açın ya da bize merhaba@dechaagency.com adresinden yazın.
+      </div>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

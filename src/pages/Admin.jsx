@@ -12,7 +12,7 @@ import { usePageMeta } from '../lib/seo'
  * anahtarını taşır, yazma izni `authenticated` rolüne bağlıdır.
  */
 export default function Admin() {
-  usePageMeta({ title: 'Yönetim' })
+  usePageMeta({ title: 'Yönetim', noindex: true })
 
   const [session, setSession] = useState(undefined) // undefined = henüz bilinmiyor
   const [reason, setReason] = useState('')

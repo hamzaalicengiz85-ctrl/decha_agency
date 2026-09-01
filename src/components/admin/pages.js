@@ -14,6 +14,7 @@ export const PAGES = [
   { key: 'blog', label: 'Blog', path: '/blog' },
   { key: 'blogPost', label: 'Blog Yazısı', path: '/blog/:slug', table: 'posts' },
   { key: 'contact', label: 'İletişim', path: '/iletisim' },
+  { key: 'privacy', label: 'Gizlilik', path: '/gizlilik' },
 ]
 
 export function pageUrl(page, slug) {

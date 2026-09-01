@@ -51,7 +51,7 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
       <aside className="flex w-60 shrink-0 flex-col border-r border-accent/35">
         <div className="border-b border-accent/35 p-5">
           <Logo className="text-[22px]" />
-          <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.22em] text-accent/70">
+          <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.22em] text-accent/85">
             Yönetim
           </p>
         </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Button from './ui/Button'
 import Icon from './ui/Icon'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
@@ -120,7 +121,7 @@ export default function ContactForm() {
           </p>
           <p className="eyebrow mt-0.5">Form DA-42 · Tüm alanlar okunaklı doldurulmalıdır</p>
         </div>
-        <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-accent/70 sm:block">
+        <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-accent/85 sm:block">
           Rev. 2026.04
         </span>
       </div>
@@ -133,6 +134,7 @@ export default function ContactForm() {
           <input
             id="name"
             name="name"
+            autoComplete="name"
             type="text"
             value={values.name}
             onChange={handleChange}
@@ -154,6 +156,7 @@ export default function ContactForm() {
             id="email"
             name="email"
             type="email"
+            autoComplete="email"
             value={values.email}
             onChange={handleChange}
             placeholder="ornek@sirket.com"
@@ -174,6 +177,7 @@ export default function ContactForm() {
             id="phone"
             name="phone"
             type="tel"
+            autoComplete="tel"
             value={values.phone}
             onChange={handleChange}
             placeholder="+90 5xx xxx xx xx"
@@ -189,6 +193,7 @@ export default function ContactForm() {
           <input
             id="company"
             name="company"
+            autoComplete="organization"
             type="text"
             value={values.company}
             onChange={handleChange}
@@ -258,19 +263,39 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <label className="flex cursor-pointer items-start gap-3 border-t border-dashed border-accent/30 px-5 py-4 text-[12.5px] leading-relaxed text-fg-muted sm:px-6">
-        <input
-          type="checkbox"
-          name="kvkk"
-          checked={values.kvkk}
-          onChange={handleChange}
-          className="mt-0.5 h-4 w-4 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
-        />
-        <span>
-          Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).
-          {errors.kvkk ? <span className="block text-xs text-danger">{errors.kvkk}</span> : null}
-        </span>
-      </label>
+      {/* Bağlantı etiketin DIŞINDA: içine konsaydı ona tıklamak hem onay
+          kutusunu işaretler hem sayfayı değiştirirdi. */}
+      <div className="border-t border-dashed border-accent/30 px-5 py-4 sm:px-6">
+        <label
+          htmlFor="kvkk"
+          className="flex cursor-pointer items-start gap-3 text-[12.5px] leading-relaxed text-fg-muted"
+        >
+          <input
+            id="kvkk"
+            type="checkbox"
+            name="kvkk"
+            checked={values.kvkk}
+            onChange={handleChange}
+            aria-describedby={errors.kvkk ? 'kvkk-error' : 'kvkk-detay'}
+            aria-invalid={errors.kvkk ? 'true' : undefined}
+            className="mt-0.5 h-4 w-4 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
+          />
+          <span>Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).</span>
+        </label>
+
+        <p id="kvkk-detay" className="mt-2 pl-7 font-mono text-[11px] text-fg-subtle">
+          Verilerin nasıl işlendiği:{' '}
+          <Link to="/gizlilik" className="text-accent underline underline-offset-4">
+            Gizlilik ve KVKK aydınlatma metni
+          </Link>
+        </p>
+
+        {errors.kvkk ? (
+          <p id="kvkk-error" className="mt-2 pl-7 text-xs text-danger">
+            {errors.kvkk}
+          </p>
+        ) : null}
+      </div>
 
       <div className="flex flex-col gap-4 border-t border-accent/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
         <Button type="submit" disabled={status === 'loading'} size="lg">

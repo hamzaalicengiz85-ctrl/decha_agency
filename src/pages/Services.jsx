@@ -5,7 +5,7 @@ import CTA from '../components/home/CTA'
 import Icon from '../components/ui/Icon'
 import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
-import { usePageMeta } from '../lib/seo'
+import { breadcrumb, usePageMeta } from '../lib/seo'
 import { listAttrs, useCopy, useList, useSiteCopy } from '../lib/siteCopyContext'
 import { services, faqs, processSteps } from '../data/content'
 
@@ -22,6 +22,7 @@ export default function Services() {
     title: 'Hizmetler',
     description:
       'Web tasarım, marka kimliği, dijital pazarlama, mobil uygulama ve ürün stratejisi hizmetlerimiz.',
+    schema: breadcrumb([{ name: 'Hizmetler', path: '/hizmetler' }]),
   })
 
   const { data: serviceList, loading } = useSupabaseData('services', {
@@ -57,7 +58,7 @@ export default function Services() {
         ) : (
           <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {serviceList.map((service, index) => (
-              <ServiceCard key={service.id ?? service.slug} service={service} index={index} />
+              <ServiceCard key={service.id ?? service.slug} service={service} index={index} as="h2" />
             ))}
           </div>
         )}

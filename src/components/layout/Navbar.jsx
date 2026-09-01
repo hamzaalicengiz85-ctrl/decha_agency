@@ -60,7 +60,7 @@ export default function Navbar() {
                     )
                   }
                 >
-                  <span className="num text-[9px] opacity-65">{link.code}</span>
+                  <span className="num text-[9px] opacity-80">{link.code}</span>
                   <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
                 </NavLink>
               </li>
@@ -108,7 +108,7 @@ export default function Navbar() {
                   )
                 }
               >
-                <span className="num text-[10px] opacity-55">{link.code}</span>
+                <span className="num text-[10px] opacity-80">{link.code}</span>
                 <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
               </NavLink>
             </li>

@@ -2,7 +2,7 @@ import Section from '../components/ui/Section'
 import SectionHeading from '../components/ui/SectionHeading'
 import ContactForm from '../components/ContactForm'
 import Icon from '../components/ui/Icon'
-import { usePageMeta } from '../lib/seo'
+import { breadcrumb, usePageMeta } from '../lib/seo'
 import { SITE, faqs } from '../data/content'
 import { ILETISIM_KONUM } from '../data/lists'
 import { Copy } from '../lib/siteCopy'
@@ -40,6 +40,7 @@ export default function Contact() {
   usePageMeta({
     title: 'İletişim',
     description: 'Projeniz için ücretsiz teklif alın. Decha Agency ile iletişime geçin.',
+    schema: breadcrumb([{ name: 'İletişim', path: '/iletisim' }]),
   })
 
   return (

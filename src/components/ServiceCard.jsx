@@ -2,7 +2,7 @@ import Icon from './ui/Icon'
 import { classNames } from '../lib/format'
 import { Copy } from '../lib/siteCopy'
 
-export default function ServiceCard({ service, index = 0 }) {
+export default function ServiceCard({ service, index = 0, as: Heading = 'h3' }) {
   const features = Array.isArray(service.features) ? service.features : []
   const code = String(index + 1).padStart(2, '0')
 
@@ -20,9 +20,9 @@ export default function ServiceCard({ service, index = 0 }) {
         </span>
       </div>
 
-      <h3 className="mt-5 font-display text-[16px] font-bold uppercase leading-snug text-accent">
+      <Heading className="mt-5 font-display text-[16px] font-bold uppercase leading-snug text-accent">
         {service.title}
-      </h3>
+      </Heading>
       <p className="mt-3 flex-1 text-[14px] leading-relaxed text-fg-muted">{service.summary}</p>
 
       {features.length > 0 ? (

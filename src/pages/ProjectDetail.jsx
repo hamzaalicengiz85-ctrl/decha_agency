@@ -5,7 +5,7 @@ import Icon from '../components/ui/Icon'
 import CTA from '../components/home/CTA'
 import { Spinner } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
-import { usePageMeta } from '../lib/seo'
+import { projectSchema, usePageMeta } from '../lib/seo'
 import { projects } from '../data/content'
 import { fileCode, initials } from '../lib/initials'
 import { Copy } from '../lib/siteCopy'
@@ -32,6 +32,7 @@ export default function ProjectDetail() {
   usePageMeta({
     title: project?.title ?? 'Proje',
     description: project?.summary,
+    schema: project ? projectSchema(project) : undefined,
   })
 
   if (loading) {

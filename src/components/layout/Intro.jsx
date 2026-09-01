@@ -137,7 +137,7 @@ export default function Intro() {
       <div className="intro-panel">
         {/* Dekoratif: ekran okuyucular başlığı zaten sayfadan okur. */}
         <div className="text-center" aria-hidden="true">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent/70">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent/85">
             Dijital Tasarım &amp; Yazılım
           </p>
 

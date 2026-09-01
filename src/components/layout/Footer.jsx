@@ -24,7 +24,11 @@ export default function Footer() {
       <div className="container py-14">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
           <div>
-            <Link to="/" className="glitch-hover inline-flex items-center">
+            <Link
+              to="/"
+              className="glitch-hover inline-flex items-center"
+              aria-label="Decha Agency ana sayfa"
+            >
               <Logo className="text-[28px]" />
             </Link>
             <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-fg-muted">
@@ -117,7 +121,7 @@ export default function Footer() {
 
         {/* Resmî alt şerit */}
         <div className="mt-12 border-t border-accent/30 pt-6">
-          <div className="flex flex-col items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent/70 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent/85 sm:flex-row">
             {/* Yönetim paneli girişi: üç kez art arda tıklama.
                 event.detail tarayıcının kendi çoklu tıklama sayacı — işletim
                 sisteminin zamanlamasını kullanır, elle sayaç tutmaya gerek
@@ -129,6 +133,9 @@ export default function Footer() {
             <p className="num">
               <Copy k="footer.form">Form DA-01 · Rev. 2026.04</Copy>
             </p>
+            <Link to="/gizlilik" className="transition hover:text-accent">
+              <Copy k="footer.gizlilik">Gizlilik &amp; KVKK</Copy>
+            </Link>
             <p>
               <Copy k="footer.teknoloji">React · Supabase · Netlify</Copy>
             </p>

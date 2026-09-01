@@ -247,6 +247,7 @@ export default function MeetingModal({ open, onClose }) {
                 <input
                   id="meeting-name"
                   name="name"
+                  autoComplete="name"
                   type="text"
                   value={values.name}
                   onChange={handleChange}
@@ -266,6 +267,7 @@ export default function MeetingModal({ open, onClose }) {
                   id="meeting-email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   value={values.email}
                   onChange={handleChange}
                   placeholder="ornek@sirket.com"
