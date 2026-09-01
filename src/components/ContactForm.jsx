@@ -16,6 +16,8 @@ const EMPTY = {
   budget: '',
   message: '',
   kvkk: false,
+  // Bal küpü: gerçek kullanıcı bu alanı göremez, otomatik bot doldurur.
+  website: '',
 }
 
 const budgets = ['25.000₺ altı', '25.000₺ – 75.000₺', '75.000₺ – 150.000₺', '150.000₺ üzeri']
@@ -61,6 +63,15 @@ export default function ContactForm() {
     if (Object.keys(nextErrors).length > 0) {
       setStatus('error')
       setFeedback('Lütfen işaretli alanları kontrol edin.')
+      return
+    }
+
+    // Bot doldurduysa sessizce başarılı gibi davran: gerçek gönderici bu
+    // alanı asla göremez, bota da neyin yakalandığını söylememek gerekir.
+    if (values.website) {
+      setStatus('success')
+      setFeedback('Mesajınız bize ulaştı. En geç 1 iş günü içinde dönüş yapacağız.')
+      setValues(EMPTY)
       return
     }
 
@@ -126,6 +137,22 @@ export default function ContactForm() {
         </span>
       </div>
 
+      {/* Bal küpü. display:none yerine ekran dışına alınıyor: bazı botlar
+          gizli alanları atlıyor. tabIndex=-1 ve aria-hidden ile klavye ve
+          ekran okuyucudan tamamen çıkarılıyor. */}
+      <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden">
+        <label htmlFor="website">Bu alanı boş bırakın</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values.website}
+          onChange={handleChange}
+        />
+      </div>
+
       <div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
         <div>
           <label htmlFor="name" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
@@ -139,6 +166,7 @@ export default function ContactForm() {
             value={values.name}
             onChange={handleChange}
             placeholder="Adınız ve soyadınız"
+            maxLength={120}
             className={inputClass('name')}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? 'name-error' : undefined}
@@ -160,6 +188,7 @@ export default function ContactForm() {
             value={values.email}
             onChange={handleChange}
             placeholder="ornek@sirket.com"
+            maxLength={160}
             className={inputClass('email')}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? 'email-error' : undefined}
@@ -181,6 +210,7 @@ export default function ContactForm() {
             value={values.phone}
             onChange={handleChange}
             placeholder="+90 5xx xxx xx xx"
+            maxLength={32}
             className={inputClass('phone')}
           />
           {errors.phone ? <p className="mt-1.5 text-xs text-danger">{errors.phone}</p> : null}
@@ -198,6 +228,7 @@ export default function ContactForm() {
             value={values.company}
             onChange={handleChange}
             placeholder="Şirket adı"
+            maxLength={160}
             className={inputClass('company')}
           />
         </div>
@@ -249,6 +280,7 @@ export default function ContactForm() {
           <textarea
             id="message"
             name="message"
+            maxLength={5000}
             rows={5}
             value={values.message}
             onChange={handleChange}

@@ -13,7 +13,8 @@ import {
   today,
 } from '../data/meeting'
 
-const EMPTY = { name: '', email: '', date: '', time: '', location: '', notes: '' }
+// `website` bal küpü: gerçek kullanıcı göremez, otomatik bot doldurur.
+const EMPTY = { name: '', email: '', date: '', time: '', location: '', notes: '', website: '' }
 
 function validate(values) {
   const errors = {}
@@ -144,6 +145,13 @@ export default function MeetingModal({ open, onClose }) {
       return
     }
 
+    // Bal küpü doldurulmuşsa sessizce başarılı gibi davran.
+    if (values.website) {
+      setStatus('success')
+      setFeedback('Toplantı talebiniz kaydedildi. Onay için size e-posta ile döneceğiz.')
+      return
+    }
+
     setStatus('loading')
     setFeedback('')
 
@@ -234,6 +242,19 @@ export default function MeetingModal({ open, onClose }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate>
+          <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden">
+            <label htmlFor="meeting-website">Bu alanı boş bırakın</label>
+            <input
+              id="meeting-website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={values.website}
+              onChange={handleChange}
+            />
+          </div>
+
           <p className="border-b border-dashed border-accent/30 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle sm:px-6">
             Form DA-07 · Hafta içi 09:00 – 18:00 · Yıldızlı alanlar zorunlu
           </p>

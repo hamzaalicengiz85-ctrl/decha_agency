@@ -76,4 +76,20 @@ describe('ContactForm — Supabase gönderimi', () => {
 
     expect(await screen.findByText(/Mesaj gönderilemedi/i)).toBeInTheDocument()
   })
+
+  it('bal küpü doluysa hiçbir şey yazmaz', async () => {
+    // Gerçek kullanıcı bu alanı göremez; dolduysa gönderen bir bottur.
+    // Bota yakalandığını söylememek için ekranda başarı gösterilir.
+    render(
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <ContactForm />
+      </MemoryRouter>,
+    )
+    fillValidForm()
+    fireEvent.change(document.getElementById('website'), { target: { value: 'http://spam' } })
+    fireEvent.click(screen.getByRole('button', { name: /mesajı gönder/i }))
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(/ulaştı/i))
+    expect(inserted).toHaveLength(0)
+  })
 })
