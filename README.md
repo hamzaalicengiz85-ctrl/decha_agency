@@ -141,7 +141,7 @@ Kullanıcı adı `admin`, şifre Supabase Auth kullanıcısının şifresidir.
 
 | Bölüm | Ne yapar |
 | ----- | -------- |
-| Sayfalar | Sitenin gerçek görüntüsü; kesikli çerçeveli her yazıya tıklanıp düzenlenir |
+| Sayfalar | Sitenin gerçek görüntüsü + içerik ağacı; her yazı tıklanıp düzenlenir, bölümler yayından kaldırılır |
 | Kayıtlar | Hizmet, proje, blog yazısı, referans ekle/düzenle/sil |
 | Gelen kutusu | İletişim mesajları ve toplantı talepleri (salt okunur) |
 | Ayarlar | Şifre değiştirme |
@@ -166,6 +166,24 @@ Dizi içerikler (süreç adımları, SSS, ekip, künye…) `src/data/lists.js`
 içindeki varsayılanlardan başlar. Panel bir öğeyi düzenlerken **yalnızca
 seçilen alanı** değiştirir; ekranda görünmeyen alanlar (örneğin ilke simgesi)
 olduğu gibi kalır.
+
+### İçerik ağacı ve bölüm görünürlüğü
+
+Üstten bir sayfa seçince sağ sütunda o sayfanın **tüm içeriği iç içe
+pencereler** hâlinde listelenir: bölüm → metinler / listeler / kayıtlar.
+Liste öğeleri ("1. adım", "2. adım") ve kayıt kartları ("Hizmet 1",
+"Hizmet 2") kendi pencerelerinde açılır. Ağaç DOM'dan üretilir — sayfaya yeni
+bir bölüm eklendiğinde panelde ayrıca tanımlamak gerekmez.
+
+Ağaçtaki yaprağa tıklamak, önizlemede o yazıya tıklamakla **aynı** yükü
+gönderir. Böylece görselde tıklanamayan metinler (açılır menü içi, hata
+durumları, gizli bölümler) de düzenlenebilir.
+
+Her bölüm başlığındaki **Online / Offline** düğmesi o bölümü siteden
+kaldırır. Durum `site_copy` içinde `gorunurluk.<bölüm>` anahtarında tutulur
+(`gizli` = kapalı, kayıt yoksa açık) — bu yüzden ayrı bir göç gerekmez.
+Kapalı bölüm genel sitede hiç çizilmez; panelde soluk görünür ki geri
+açılabilsin.
 
 ### Önizleme neden iframe
 

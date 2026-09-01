@@ -2,13 +2,22 @@ import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import { SITE } from '../../data/content'
 import { Copy } from '../../lib/siteCopy'
-import { useCopy } from '../../lib/siteCopyContext'
+import { useCopy, useSectionVisible, useSiteCopy } from '../../lib/siteCopyContext'
 
 export default function CTA() {
   const email = useCopy('site.eposta', SITE.email)
+  const { edit } = useSiteCopy()
+  const published = useSectionVisible('ortak.cta')
+
+  if (!published && !edit) return null
 
   return (
-    <section className="py-16 sm:py-20">
+    <section
+      data-section="ortak.cta"
+      data-section-label="Randevu çağrısı"
+      data-section-hidden={published ? undefined : '1'}
+      className={`py-16 sm:py-20 ${!published && edit ? 'opacity-40' : ''}`}
+    >
       <div className="container">
         <div className="panel brackets px-6 py-14 text-center sm:px-12 sm:py-20">
             <p className="eyebrow">

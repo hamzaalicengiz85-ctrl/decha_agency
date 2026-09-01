@@ -48,7 +48,6 @@ describe('CopyDrawer', () => {
     render(
       <CopyDrawer
         picked={{ copyKey: 'home.hero.baslik', text: 'Eski başlık' }}
-        inventory={[]}
         onApplied={(payload) => applied.push(payload)}
       />,
     )
@@ -76,7 +75,6 @@ describe('CopyDrawer', () => {
     render(
       <CopyDrawer
         picked={{ listKey: 'hakkimizda.ilkeler', listIndex: '0', listField: 'text', text: 'Eski metin' }}
-        inventory={[]}
       />,
     )
 
@@ -95,7 +93,6 @@ describe('CopyDrawer', () => {
     render(
       <CopyDrawer
         picked={{ listKey: 'hakkimizda.ekip', listIndex: '1', listField: 'role', text: 'Teknoloji Direktörü' }}
-        inventory={[]}
       />,
     )
 
@@ -109,20 +106,14 @@ describe('CopyDrawer', () => {
     expect(saved[1].name).toBe('Cem Arslan') // diğer alan korundu
   })
 
-  it('hiçbir şey seçili değilken sayfa metinleri listesini gösterir', () => {
-    render(
-      <CopyDrawer
-        picked={null}
-        inventory={[{ copyKey: 'home.hero.durum', text: 'Kayıt açık' }]}
-      />,
-    )
-    expect(screen.getByText(/1 düzenlenebilir metin var/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Kayıt açık' })).toBeInTheDocument()
+  it('hiçbir şey seçili değilken yönlendirme gösterir', () => {
+    render(<CopyDrawer picked={null} />)
+    expect(screen.getByText(/içerik ağacından bir öğe seçin/i)).toBeInTheDocument()
   })
 
   it('yazma hatasını gösterir', async () => {
     state.error = { message: 'izin yok' }
-    render(<CopyDrawer picked={{ copyKey: 'x', text: 'a' }} inventory={[]} />)
+    render(<CopyDrawer picked={{ copyKey: 'x', text: 'a' }} />)
     fireEvent.click(screen.getByRole('button', { name: /kaydet/i }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(/izin yok/i))
   })
@@ -132,7 +123,7 @@ describe('CopyDrawer', () => {
     state.record = { id: 'abc', title: 'Web Tasarım', slug: 'web-tasarim', features: [] }
 
     render(
-      <CopyDrawer picked={{ rec: 'services:abc' }} inventory={[]} />,
+      <CopyDrawer picked={{ rec: 'services:abc' }} />,
     )
 
     const titleField = await screen.findByLabelText(/başlık/i)

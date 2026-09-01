@@ -7,6 +7,7 @@ export default function TestimonialCard({ testimonial }) {
     <figure
       className="panel brackets flex h-full flex-col p-5"
       data-rec={`testimonials:${testimonial.id ?? ''}`}
+      data-rec-label={testimonial.name}
     >
       <div className="flex items-center justify-between border-b border-accent/30 pb-3">
         <span className="eyebrow"><Copy k="kart.referans.rozet">Tutanak</Copy></span>

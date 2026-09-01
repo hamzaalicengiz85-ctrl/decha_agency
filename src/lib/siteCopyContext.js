@@ -55,3 +55,18 @@ export function listAttrs(edit, key, index, field) {
   if (!edit) return {}
   return { 'data-list-key': key, 'data-list-index': index, 'data-list-field': field }
 }
+
+/**
+ * Bir bölümün yayında olup olmadığı.
+ *
+ * Görünürlük ayrı bir tabloya gerek kalmadan `site_copy` içinde
+ * `gorunurluk.<bölüm>` anahtarıyla tutulur; kayıt yoksa bölüm açıktır.
+ * Böylece yeni bir göç çalıştırmak gerekmiyor.
+ */
+export function useSectionVisible(id) {
+  const { copy } = useContext(SiteCopyContext)
+  if (!id) return true
+  return copy[`gorunurluk.${id}`] !== 'gizli'
+}
+
+export const VISIBILITY_PREFIX = 'gorunurluk.'

@@ -31,7 +31,9 @@ export default function Services() {
 
   return (
     <>
-      <Section spacing="intro">
+      <Section
+        sectionId="hizmetler.giris"
+        label="Sayfa başlığı" spacing="intro">
         <SectionHeading
           code="01"
           eyebrow="Hizmet kataloğu"
@@ -45,7 +47,9 @@ export default function Services() {
         />
       </Section>
 
-      <Section spacing="top-none">
+      <Section
+        sectionId="hizmetler.liste"
+        label="Hizmet listesi" spacing="top-none">
         {loading ? (
           <CardSkeleton count={6} />
         ) : serviceList.length === 0 ? (
@@ -59,7 +63,9 @@ export default function Services() {
         )}
       </Section>
 
-      <Section className="bg-bg-soft/60">
+      <Section
+        sectionId="hizmetler.surec"
+        label="Süreç" className="bg-bg-soft/60">
         <SectionHeading
           code="03"
           eyebrow="İşleyiş"
@@ -89,7 +95,9 @@ export default function Services() {
         </ol>
       </Section>
 
-      <Section>
+      <Section
+        sectionId="hizmetler.sss"
+        label="Sık sorulan sorular">
         <SectionHeading
           code="05"
           eyebrow="Bilgi notu"

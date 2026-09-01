@@ -12,7 +12,7 @@ import { RECORD_TYPES } from './records'
  * Boş bırakmak "varsayılanı kullan" demektir: koddaki metin geri gelir.
  * Bu bilinçli — yanlışlıkla boşaltılan bir başlık kalıcı olarak kaybolmaz.
  */
-export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApplied, onNeedsReauth }) {
+export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }) {
   const [value, setValue] = useState('')
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState('')
@@ -233,29 +233,9 @@ export default function CopyDrawer({ picked, inventory, onSelect, onClose, onApp
             düzenleyebilirsiniz.
           </p>
         ) : (
-          <>
-            <p className="mb-3 font-mono text-[10.5px] leading-relaxed text-fg-subtle">
-              Bu sayfada {inventory.length} düzenlenebilir metin var. Görselde
-              tıklaması zor olanlar (açılır menü, hata mesajları) buradan
-              seçilebilir.
-            </p>
-            <ul className="space-y-1">
-              {inventory
-                .filter((item) => item.copyKey)
-                .map((item) => (
-                  <li key={item.copyKey}>
-                    <button
-                      type="button"
-                      onClick={() => onSelect?.(item)}
-                      className="w-full truncate border border-accent/25 px-2 py-1.5 text-left font-mono text-[10.5px] text-fg-muted transition hover:border-accent hover:text-accent"
-                      title={item.copyKey}
-                    >
-                      {item.text || item.copyKey}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          </>
+          <p className="font-mono text-[10.5px] leading-relaxed text-fg-subtle">
+            Soldaki görselden ya da içerik ağacından bir öğe seçin.
+          </p>
         )}
       </div>
     </aside>

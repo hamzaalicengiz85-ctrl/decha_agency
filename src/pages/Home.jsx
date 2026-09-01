@@ -45,7 +45,9 @@ export default function Home() {
     <>
       <Hero />
 
-      <Section id="hizmetler">
+      <Section
+        sectionId="home.hizmetler"
+        label="Hizmet kataloğu" id="hizmetler">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             code="01"
@@ -75,7 +77,9 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section>
+      <Section
+        sectionId="home.projeler"
+        label="Öne çıkan projeler">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <SectionHeading
                 code="02"
@@ -107,7 +111,9 @@ export default function Home() {
 
       <Process />
 
-      <Section>
+      <Section
+        sectionId="home.referanslar"
+        label="Referanslar">
         <SectionHeading
           code="04"
           eyebrow="Tutanaklar"

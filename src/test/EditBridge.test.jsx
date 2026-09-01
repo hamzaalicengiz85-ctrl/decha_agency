@@ -12,14 +12,20 @@ function fixture() {
   return render(
     <>
       <EditBridge />
-      <a href="/projeler" id="link">
-        <span data-copy-key="home.buton">Tüm arşiv</span>
-      </a>
-      <article data-rec="services:abc">
-        <h3 data-rec-field="title" id="field">
-          Web Tasarım
-        </h3>
-      </article>
+      <section data-section="home.hizmetler" data-section-label="Hizmet kataloğu">
+        <a href="/projeler" id="link">
+          <span data-copy-key="home.buton">Tüm arşiv</span>
+        </a>
+        <article data-rec="services:abc" data-rec-label="Web Tasarım">
+          <h3 data-rec-field="title" id="field">
+            Web Tasarım
+          </h3>
+        </article>
+        <p data-list-key="sss.liste" data-list-index="0" data-list-field="q">
+          Soru bir
+        </p>
+      </section>
+      <section data-section="home.projeler" data-section-label="Projeler" data-section-hidden="1" />
       <details id="sss">
         <summary>Soru</summary>
         <p>Cevap</p>
@@ -79,13 +85,32 @@ describe('EditBridge', () => {
     expect(document.getElementById('sss').open).toBe(true)
   })
 
-  it('sayfadaki düzenlenebilir her şeyin envanterini çıkarır', () => {
+  it('sayfanın içerik ağacını bölümlere ayırarak çıkarır', () => {
     const posted = []
     vi.spyOn(window, 'postMessage').mockImplementation((message) => posted.push(message))
     fixture()
 
-    const inventory = posted.find((message) => message.type === 'decha:inventory')
-    expect(inventory.items).toHaveLength(2) // bir metin + bir kayıt alanı
-    expect(inventory.items.map((item) => item.copyKey)).toContain('home.buton')
+    const outline = posted.find((message) => message.type === 'decha:outline')
+    const services = outline.sections.find((item) => item.id === 'home.hizmetler')
+
+    expect(services.label).toBe('Hizmet kataloğu')
+    expect(services.texts.map((item) => item.copyKey)).toContain('home.buton')
+    // Kayıt kartı kendi penceresi; alanları altında.
+    expect(services.records).toHaveLength(1)
+    expect(services.records[0].label).toBe('Web Tasarım')
+    expect(services.records[0].fields[0].recField).toBe('title')
+    // Liste öğeleri kendi penceresinde gruplanır.
+    expect(services.lists[0].key).toBe('sss.liste')
+    expect(services.lists[0].items[0].fields[0].listField).toBe('q')
+  })
+
+  it('içeriği olmayan gizli bölümü de listeler — tekrar açılabilsin', () => {
+    const posted = []
+    vi.spyOn(window, 'postMessage').mockImplementation((message) => posted.push(message))
+    fixture()
+
+    const outline = posted.find((message) => message.type === 'decha:outline')
+    const hidden = outline.sections.find((item) => item.id === 'home.projeler')
+    expect(hidden.hidden).toBe(true)
   })
 })

@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 const FRAME_WIDTH = 1280
 
-export default function PreviewFrame({ src, frameRef: externalRef, onPick, onInventory, onReady }) {
+export default function PreviewFrame({ src, frameRef: externalRef, onPick, onOutline, onReady }) {
   const wrapperRef = useRef(null)
   const localRef = useRef(null)
   // Panel çerçeveye mesaj gönderebilsin diye ref dışarıdan verilebilir.
@@ -51,12 +51,12 @@ export default function PreviewFrame({ src, frameRef: externalRef, onPick, onInv
       if (data?.source !== 'decha-edit') return
 
       if (data.type === 'decha:pick') onPick?.(data)
-      if (data.type === 'decha:inventory') onInventory?.(data.items)
+      if (data.type === 'decha:outline') onOutline?.(data.sections)
       if (data.type === 'decha:ready') onReady?.(data)
     }
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
-  }, [onPick, onInventory, onReady, frameRef])
+  }, [onPick, onOutline, onReady, frameRef])
 
   return (
     <div ref={wrapperRef} className="h-full w-full overflow-hidden border border-accent/35 bg-bg">

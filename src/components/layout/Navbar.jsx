@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
+import { Copy } from '../../lib/siteCopy'
 import MeetingModal from '../MeetingModal'
 import { classNames } from '../../lib/format'
 
@@ -70,7 +71,7 @@ export default function Navbar() {
 
           <div className="hidden lg:block">
             <Button type="button" size="sm" onClick={() => setMeetingOpen(true)}>
-              Toplantı Planla
+              <Copy k="menu.toplanti-butonu">Toplantı Planla</Copy>
             </Button>
           </div>
 
@@ -116,7 +117,7 @@ export default function Navbar() {
           ))}
           <li className="py-3">
             <Button type="button" className="w-full" onClick={() => setMeetingOpen(true)}>
-              Toplantı Planla
+              <Copy k="menu.toplanti-butonu">Toplantı Planla</Copy>
             </Button>
           </li>
         </ul>

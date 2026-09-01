@@ -41,7 +41,9 @@ export default function Work() {
 
   return (
     <>
-      <Section spacing="intro">
+      <Section
+        sectionId="projeler.giris"
+        label="Sayfa başlığı" spacing="intro">
         <SectionHeading
           code="02"
           eyebrow="Arşiv kayıtları"
@@ -55,7 +57,9 @@ export default function Work() {
         />
       </Section>
 
-      <Section spacing="top-none">
+      <Section
+        sectionId="projeler.liste"
+        label="Proje listesi" spacing="top-none">
         {/* Dolap sekmesi filtreleri */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5">
           <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">

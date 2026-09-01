@@ -8,7 +8,8 @@ export default function ServiceCard({ service, index = 0 }) {
 
   return (
     <article className="panel panel-hover brackets flex h-full flex-col p-5"
-      data-rec={`services:${service.id ?? ''}`}>
+      data-rec={`services:${service.id ?? ''}`}
+      data-rec-label={service.title}>
       {/* Form başlığı satırı */}
       <div className="flex items-center justify-between border-b border-accent/35 pb-3">
         <span className="num font-mono text-[10px] uppercase tracking-[0.2em] text-accent">

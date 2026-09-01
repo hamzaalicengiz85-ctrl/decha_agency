@@ -10,7 +10,9 @@ export default function Process() {
   const steps = useList(LIST_KEY, processSteps)
 
   return (
-    <Section>
+    <Section
+        sectionId="ortak.surec"
+        label="Süreç adımları">
       <SectionHeading
         code="03"
         eyebrow="İşleyiş"

@@ -3,14 +3,28 @@ import Icon from '../ui/Icon'
 import DecodeText from '../ui/DecodeText'
 import { Copy } from '../../lib/siteCopy'
 import { stats } from '../../data/content'
+import { listAttrs, useList, useSectionVisible, useSiteCopy } from '../../lib/siteCopyContext'
+
+const STATS_KEY = 'site.istatistikler'
 
 // Başlıktaki vurgu kelimesi 5 saniyede bir çözülerek değişir.
 // Sıra sabit tutulur: ilk kelime aynı zamanda ekran okuyucuların okuduğu metin.
 const HEADLINE_WORDS = ['büyüten', 'yükselten', 'dönüştüren', 'hızlandıran', 'güçlendiren']
 
 export default function Hero() {
+  const { edit } = useSiteCopy()
+  const statList = useList(STATS_KEY, stats)
+  const published = useSectionVisible('home.hero')
+
+  if (!published && !edit) return null
+
   return (
-    <section className="relative py-8 sm:py-12">
+    <section
+      data-section="home.hero"
+      data-section-label="Giriş bölümü"
+      data-section-hidden={published ? undefined : '1'}
+      className={`relative py-8 sm:py-12 ${!published && edit ? 'opacity-40' : ''}`}
+    >
       <div className="container relative">
         {/* Ana yayın monitörü */}
         <div className="px-2 py-14 text-center sm:py-20">
@@ -47,7 +61,7 @@ export default function Hero() {
             {/* Ekran altı okuma satırı */}
             {/* Ölçüm paneli: grafik kağıdı zemin, turuncu ayraçlar */}
             <div className="panel brackets mx-auto mt-14 grid max-w-3xl animate-fade-up grid-cols-2 [animation-delay:360ms] sm:grid-cols-4">
-              {stats.map((item, index) => (
+              {statList.map((item, index) => (
                 <div
                   key={item.label}
                   className={[
@@ -59,10 +73,15 @@ export default function Hero() {
                     .filter(Boolean)
                     .join(' ')}
                 >
-                  <p className="num phosphor font-display text-2xl font-bold text-accent sm:text-3xl">
+                  <p
+                    className="num phosphor font-display text-2xl font-bold text-accent sm:text-3xl"
+                    {...listAttrs(edit, STATS_KEY, index, 'value')}
+                  >
                     {item.value}
                   </p>
-                  <p className="eyebrow mt-1.5">{item.label}</p>
+                  <p className="eyebrow mt-1.5" {...listAttrs(edit, STATS_KEY, index, 'label')}>
+                    {item.label}
+                  </p>
                 </div>
               ))}
             </div>

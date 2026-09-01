@@ -44,7 +44,9 @@ export default function Contact() {
 
   return (
     <>
-      <Section spacing="intro">
+      <Section
+        sectionId="iletisim.giris"
+        label="Sayfa başlığı" spacing="intro">
         <SectionHeading
           code="06"
           eyebrow="Başvuru masası"
@@ -58,7 +60,9 @@ export default function Contact() {
         />
       </Section>
 
-      <Section spacing="top-none">
+      <Section
+        sectionId="iletisim.form"
+        label="İletişim formu ve kanallar" spacing="top-none">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
           <div className="space-y-4">
             {channelList.map((channel) => (
@@ -108,7 +112,9 @@ export default function Contact() {
         </div>
       </Section>
 
-      <Section spacing="top-none" className="bg-bg-soft/60">
+      <Section
+        sectionId="iletisim.sss"
+        label="Sık sorulan sorular" spacing="top-none" className="bg-bg-soft/60">
         <SectionHeading
           code="05"
           eyebrow="Bilgi notu"

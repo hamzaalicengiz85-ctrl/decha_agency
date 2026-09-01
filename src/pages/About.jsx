@@ -36,7 +36,9 @@ export default function About() {
 
   return (
     <>
-      <Section spacing="intro">
+      <Section
+        sectionId="hakkimizda.giris"
+        label="Sayfa başlığı" spacing="intro">
         <SectionHeading
           code="03"
           eyebrow="Kurum künyesi"
@@ -50,7 +52,9 @@ export default function About() {
         />
       </Section>
 
-      <Section spacing="top-none">
+      <Section
+        sectionId="hakkimizda.kunye-bolumu"
+        label="Künye ve tanıtım" spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="panel brackets relative overflow-hidden p-8 sm:p-10">
             <div className="relative">
@@ -112,7 +116,9 @@ export default function About() {
         </div>
       </Section>
 
-      <Section className="bg-bg-soft/60">
+      <Section
+        sectionId="hakkimizda.ilkeler-bolumu"
+        label="İlkeler" className="bg-bg-soft/60">
         <SectionHeading
           code="07"
           eyebrow="Yönetmelik"
@@ -144,7 +150,9 @@ export default function About() {
         </div>
       </Section>
 
-      <Section>
+      <Section
+        sectionId="hakkimizda.ekip-bolumu"
+        label="Ekip">
         <SectionHeading
           code="08"
           eyebrow="Personel"

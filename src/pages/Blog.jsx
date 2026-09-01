@@ -21,7 +21,9 @@ export default function Blog() {
   })
 
   return (
-    <Section spacing="bottom-none">
+    <Section
+        sectionId="blog.liste"
+        label="Yazı listesi" spacing="bottom-none">
       <SectionHeading
         code="04"
         eyebrow="Kayıt defteri"

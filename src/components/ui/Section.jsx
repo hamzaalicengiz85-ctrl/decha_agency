@@ -1,5 +1,6 @@
 import { classNames } from '../../lib/format'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useSectionVisible, useSiteCopy } from '../../lib/siteCopyContext'
 
 /**
  * Dikey boşluk `spacing` prop'u ile verilir — className üzerinden geçilen
@@ -17,6 +18,8 @@ const SPACING = {
 
 export default function Section({
   id,
+  sectionId,
+  label,
   spacing = 'default',
   className,
   containerClassName,
@@ -24,12 +27,25 @@ export default function Section({
   reveal = true,
 }) {
   const { ref, visible } = useScrollReveal()
+  const { edit } = useSiteCopy()
+  const published = useSectionVisible(sectionId)
+
+  // Yayından kaldırılan bölüm genel sitede hiç çizilmez. Panelde ise soluk
+  // görünür ki geri açılabilsin.
+  if (!published && !edit) return null
 
   return (
     <section
       id={id}
       ref={reveal ? ref : undefined}
-      className={classNames(SPACING[spacing] ?? SPACING.default, className)}
+      data-section={sectionId}
+      data-section-label={label}
+      data-section-hidden={published ? undefined : '1'}
+      className={classNames(
+        SPACING[spacing] ?? SPACING.default,
+        !published && edit && 'opacity-40',
+        className,
+      )}
     >
       <div
         className={classNames(
