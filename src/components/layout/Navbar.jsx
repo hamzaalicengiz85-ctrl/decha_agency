@@ -4,18 +4,16 @@ import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import Logo from '../ui/Logo'
 import { Copy } from '../../lib/siteCopy'
+import { listAttrs, useList, useSiteCopy } from '../../lib/siteCopyContext'
+import { SITE_MENU } from '../../data/lists'
 import MeetingModal from '../MeetingModal'
 import { classNames } from '../../lib/format'
 
-const links = [
-  { to: '/', label: 'Ana Sayfa', code: '00' },
-  { to: '/hizmetler', label: 'Hizmetler', code: '01' },
-  { to: '/projeler', label: 'Projeler', code: '02' },
-  { to: '/hakkimizda', label: 'Hakkımızda', code: '03' },
-  { to: '/blog', label: 'Blog', code: '04' },
-]
+const MENU_KEY = 'site.menu'
 
 export default function Navbar() {
+  const { edit } = useSiteCopy()
+  const links = useList(MENU_KEY, SITE_MENU)
   const [open, setOpen] = useState(false)
   const [meetingOpen, setMeetingOpen] = useState(false)
   const location = useLocation()
@@ -48,7 +46,7 @@ export default function Navbar() {
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">
-            {links.map((link) => (
+            {links.map((link, index) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
@@ -63,7 +61,7 @@ export default function Navbar() {
                   }
                 >
                   <span className="num text-[9px] opacity-65">{link.code}</span>
-                  {link.label}
+                  <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
                 </NavLink>
               </li>
             ))}
@@ -98,7 +96,7 @@ export default function Navbar() {
         inert={open ? undefined : ''}
       >
         <ul className="container flex flex-col py-2">
-          {links.map((link) => (
+          {links.map((link, index) => (
             <li key={link.to} className="border-b border-accent/20 last:border-0">
               <NavLink
                 to={link.to}
@@ -111,7 +109,7 @@ export default function Navbar() {
                 }
               >
                 <span className="num text-[10px] opacity-55">{link.code}</span>
-                {link.label}
+                <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
               </NavLink>
             </li>
           ))}

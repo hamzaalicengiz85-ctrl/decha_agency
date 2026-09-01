@@ -46,6 +46,22 @@ export const HAKKIMIZDA_KUNYE = [
   { label: 'Dosya durumu', value: 'Açık' },
 ]
 
+export const SITE_MENU = [
+  { label: 'Ana Sayfa', to: '/', code: '00' },
+  { label: 'Hizmetler', to: '/hizmetler', code: '01' },
+  { label: 'Projeler', to: '/projeler', code: '02' },
+  { label: 'Hakkımızda', to: '/hakkimizda', code: '03' },
+  { label: 'Blog', to: '/blog', code: '04' },
+]
+
+export const SITE_MENU_ALT = [
+  { label: 'Hizmetler', to: '/hizmetler' },
+  { label: 'Projeler', to: '/projeler' },
+  { label: 'Hakkımızda', to: '/hakkimizda' },
+  { label: 'Blog', to: '/blog' },
+  { label: 'İletişim', to: '/iletisim' },
+]
+
 export const ILETISIM_KONUM = [
   { label: 'Enlem', value: '41.0812 K' },
   { label: 'Boylam', value: '29.0094 D' },
@@ -59,6 +75,8 @@ export const LIST_DEFAULTS = {
   'sss.liste': faqs,
   'site.istatistikler': stats,
   'site.sosyal': SITE.social,
+  'site.menu': SITE_MENU,
+  'site.menu.alt': SITE_MENU_ALT,
   'hakkimizda.ilkeler': HAKKIMIZDA_ILKELER,
   'hakkimizda.ekip': HAKKIMIZDA_EKIP,
   'hakkimizda.kunye': HAKKIMIZDA_KUNYE,
@@ -71,6 +89,8 @@ export const LIST_LABELS = {
   'sss.liste': 'Sık sorulan sorular',
   'site.istatistikler': 'İstatistikler',
   'site.sosyal': 'Sosyal bağlantılar',
+  'site.menu': 'Üst menü bağlantıları',
+  'site.menu.alt': 'Alt bilgi bağlantıları',
   'hakkimizda.ilkeler': 'Hakkımızda — ilkeler',
   'hakkimizda.ekip': 'Hakkımızda — ekip',
   'hakkimizda.kunye': 'Hakkımızda — künye',

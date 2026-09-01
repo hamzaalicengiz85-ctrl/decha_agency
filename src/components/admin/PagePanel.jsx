@@ -155,6 +155,7 @@ export default function PagePanel({ onNeedsReauth }) {
         {picked ? (
           <CopyDrawer
             picked={picked}
+            onSelect={setPicked}
             onClose={() => setPicked(null)}
             onApplied={applyToPreview}
             onNeedsReauth={onNeedsReauth}

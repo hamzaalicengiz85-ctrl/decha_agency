@@ -89,6 +89,9 @@ function outline() {
         item = { index, fields: [] }
         group.items.push(item)
       }
+      // Aynı liste alanı sayfada iki kez çizilebilir (masaüstü + mobil
+      // menü); ağaçta bir kez görünsün.
+      if (item.fields.some((field) => field.listField === (el.dataset.listField ?? null))) continue
       item.fields.push({
         listKey: key,
         listIndex: index,

@@ -4,18 +4,17 @@ import Logo from '../ui/Logo'
 import { SITE } from '../../data/content'
 import { useServices } from '../../hooks/useServices'
 import { Copy } from '../../lib/siteCopy'
-import { useCopy } from '../../lib/siteCopyContext'
+import { listAttrs, useCopy, useList, useSiteCopy } from '../../lib/siteCopyContext'
+import { SITE_MENU_ALT } from '../../data/lists'
 
-const navigation = [
-  { to: '/hizmetler', label: 'Hizmetler' },
-  { to: '/projeler', label: 'Projeler' },
-  { to: '/hakkimizda', label: 'Hakkımızda' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/iletisim', label: 'İletişim' },
-]
+const NAV_KEY = 'site.menu.alt'
+const SOCIAL_KEY = 'site.sosyal'
 
 export default function Footer() {
   const navigate = useNavigate()
+  const { edit } = useSiteCopy()
+  const navigation = useList(NAV_KEY, SITE_MENU_ALT)
+  const social = useList(SOCIAL_KEY, SITE.social)
   const email = useCopy('site.eposta', SITE.email)
   const phone = useCopy('site.telefon', SITE.phone)
   const { data: services } = useServices({ limit: 5 })
@@ -34,13 +33,14 @@ export default function Footer() {
               </Copy>
             </p>
             <div className="mt-6 flex flex-wrap gap-1.5">
-              {SITE.social.map((item) => (
+              {social.map((item, index) => (
                 <a
                   key={item.label}
                   href={item.href}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="border border-accent/35 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-accent transition hover:bg-accent hover:text-accent-fg"
+                  {...listAttrs(edit, SOCIAL_KEY, index, 'label')}
                 >
                   {item.label}
                 </a>
@@ -53,11 +53,12 @@ export default function Footer() {
               <Copy k="footer.baslik.bolumler">Bölümler</Copy>
             </p>
             <ul className="mt-4 space-y-2.5">
-              {navigation.map((item) => (
+              {navigation.map((item, index) => (
                 <li key={item.to}>
                   <Link
                     to={item.to}
                     className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
+                    {...listAttrs(edit, NAV_KEY, index, 'label')}
                   >
                     {item.label}
                   </Link>

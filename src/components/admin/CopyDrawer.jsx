@@ -4,7 +4,17 @@ import { adminWrite } from '../../lib/adminAuth'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { LIST_DEFAULTS } from '../../data/lists'
 import RecordForm from './RecordForm'
+import ListEditor from './ListEditor'
 import { RECORD_TYPES } from './records'
+
+/** Öğenin alan adları: listedeki tüm öğelerin birleşimi (biri eksik olabilir). */
+function fieldNames(items) {
+  const names = []
+  for (const item of items ?? []) {
+    for (const name of Object.keys(item ?? {})) if (!names.includes(name)) names.push(name)
+  }
+  return names
+}
 
 /**
  * Önizlemede tıklanan öğenin düzenleyicisi.
@@ -12,17 +22,26 @@ import { RECORD_TYPES } from './records'
  * Boş bırakmak "varsayılanı kullan" demektir: koddaki metin geri gelir.
  * Bu bilinçli — yanlışlıkla boşaltılan bir başlık kalıcı olarak kaybolmaz.
  */
-export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }) {
+export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNeedsReauth }) {
   const [value, setValue] = useState('')
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState('')
   const [listRow, setListRow] = useState(null)
+  const [draft, setDraft] = useState(null)
   const [record, setRecord] = useState(null)
 
   useEffect(() => {
     setValue(picked?.text ?? '')
     setFeedback('')
   }, [picked])
+
+  // Seçilen öğenin tüm alanları taslağa alınır; kaydedene kadar listeye
+  // dokunulmaz.
+  useEffect(() => {
+    const index = Number(picked?.listIndex)
+    if (!listRow || Number.isNaN(index)) return setDraft(null)
+    setDraft({ ...(listRow[index] ?? {}) })
+  }, [listRow, picked?.listIndex])
 
   // Kayıt kartı seçildiğinde ("tablo:id") satırı çek ki aynı yerde
   // düzenlenebilsin; kullanıcıyı kenar menüsüne göndermek gereksiz.
@@ -92,15 +111,7 @@ export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }
     onApplied?.({ key: picked.copyKey, value })
   }
 
-  async function handleSaveList() {
-    const key = picked?.listKey
-    const index = Number(picked?.listIndex)
-    const field = picked?.listField
-    if (!key || !listRow || Number.isNaN(index)) return
-
-    // Yalnızca seçilen alan değişir; öğenin diğer alanları olduğu gibi kalır.
-    const items = listRow.map((item, i) => (i === index ? { ...item, [field]: value } : item))
-
+  async function writeList(key, items) {
     setSaving(true)
     const result = await adminWrite((client) =>
       client
@@ -110,12 +121,75 @@ export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }
     )
     setSaving(false)
 
-    if (result.needsReauth) return onNeedsReauth?.()
-    if (result.error) return setFeedback(result.error)
+    if (result.needsReauth) {
+      onNeedsReauth?.()
+      return false
+    }
+    if (result.error) {
+      setFeedback(result.error)
+      return false
+    }
 
     setListRow(items)
-    setFeedback('Kaydedildi.')
     onApplied?.({ listKey: key, items })
+    return true
+  }
+
+  async function handleSaveList() {
+    const key = picked?.listKey
+    const index = Number(picked?.listIndex)
+    if (!key || !listRow || !draft || Number.isNaN(index)) return
+
+    // Yalnızca bu öğe değişir; listedeki diğer öğeler olduğu gibi kalır.
+    const items = listRow.map((item, i) => (i === index ? { ...item, ...draft } : item))
+    if (await writeList(key, items)) setFeedback('Kaydedildi.')
+  }
+
+  async function handleAddItem() {
+    const key = picked?.listKey
+    const index = Number(picked?.listIndex)
+    if (!key || !listRow || Number.isNaN(index)) return
+
+    // Yeni öğe listedeki alanların tümünü boş olarak taşır: kaydedilmeden
+    // önce hangi alanların doldurulacağı formda görünür.
+    const blank = Object.fromEntries(fieldNames(listRow).map((name) => [name, '']))
+    const items = [...listRow.slice(0, index + 1), blank, ...listRow.slice(index + 1)]
+
+    if (await writeList(key, items)) {
+      setFeedback('Yeni öğe eklendi, alanlarını doldurup kaydedin.')
+      onSelect?.({ ...picked, listIndex: String(index + 1), text: '' })
+    }
+  }
+
+  async function handleRemoveItem() {
+    const key = picked?.listKey
+    const index = Number(picked?.listIndex)
+    if (!key || !listRow || Number.isNaN(index)) return
+
+    // Son öğe silinemez: boş liste `useList` içinde koddaki varsayılana
+    // düşer, yani silinen öğeler geri gelmiş gibi görünürdü.
+    if (listRow.length <= 1) return setFeedback('Listedeki son öğe silinemez.')
+
+    const items = listRow.filter((_, i) => i !== index)
+    if (await writeList(key, items)) {
+      setFeedback('Öğe silindi.')
+      onClose?.()
+    }
+  }
+
+  async function handleMoveItem(direction) {
+    const key = picked?.listKey
+    const index = Number(picked?.listIndex)
+    const target = index + direction
+    if (!key || !listRow || Number.isNaN(index)) return
+    if (target < 0 || target >= listRow.length) return
+
+    const items = [...listRow]
+    ;[items[index], items[target]] = [items[target], items[index]]
+    if (await writeList(key, items)) {
+      setFeedback('Sıra değişti.')
+      onSelect?.({ ...picked, listIndex: String(target) })
+    }
   }
 
   async function handleSaveRecord(payload, id) {
@@ -150,20 +224,15 @@ export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }
       <div className="min-h-0 flex-1 overflow-y-auto p-4">
         {isList ? (
           <>
-            <p className="mb-2 break-all font-mono text-[10px] text-fg-subtle">
-              {picked.listKey} · {Number(picked.listIndex) + 1}. öğe · {picked.listField}
+            <p className="mb-3 break-all font-mono text-[10px] text-fg-subtle">
+              {picked.listKey} · {Number(picked.listIndex) + 1}. öğe / {listRow?.length ?? '—'}
             </p>
-            <textarea
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-              rows={5}
-              aria-label="Metin"
-              className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2.5 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+
+            <ListEditor
+              item={draft}
+              fields={fieldNames(listRow)}
+              onChange={(name, next) => setDraft((current) => ({ ...current, [name]: next }))}
             />
-            <p className="mt-2 font-mono text-[10px] leading-relaxed text-fg-subtle">
-              Bu listedeki {listRow?.length ?? '—'} öğeden birini düzenliyorsunuz. Öğe ekleme ve
-              silme henüz panelde yok.
-            </p>
 
             {feedback ? (
               <p role="status" className="mt-3 font-mono text-[10.5px] text-accent">
@@ -172,12 +241,54 @@ export default function CopyDrawer({ picked, onClose, onApplied, onNeedsReauth }
             ) : null}
 
             <div className="mt-4 flex gap-2">
-              <Button type="button" size="sm" onClick={handleSaveList} disabled={saving || !listRow}>
+              <Button type="button" size="sm" onClick={handleSaveList} disabled={saving || !draft}>
                 {saving ? 'Kaydediliyor…' : 'Kaydet'}
               </Button>
               <Button type="button" size="sm" variant="outline" onClick={onClose}>
                 Kapat
               </Button>
+            </div>
+
+            <div className="mt-6 border-t border-accent/25 pt-4">
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">
+                Liste işlemleri
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button type="button" size="sm" variant="outline" onClick={handleAddItem} disabled={saving}>
+                  Yeni öğe ekle
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={handleRemoveItem}
+                  disabled={saving || (listRow?.length ?? 0) <= 1}
+                >
+                  Bu öğeyi sil
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleMoveItem(-1)}
+                  disabled={saving || Number(picked.listIndex) === 0}
+                >
+                  Yukarı taşı
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleMoveItem(1)}
+                  disabled={saving || Number(picked.listIndex) >= (listRow?.length ?? 1) - 1}
+                >
+                  Aşağı taşı
+                </Button>
+              </div>
+              <p className="mt-2 font-mono text-[10px] leading-relaxed text-fg-subtle">
+                Yeni öğe seçili öğenin altına eklenir. Listedeki son öğe
+                silinemez — boş liste koddaki varsayılana döner.
+              </p>
             </div>
           </>
         ) : picked?.copyKey ? (

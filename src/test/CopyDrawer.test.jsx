@@ -96,7 +96,7 @@ describe('CopyDrawer', () => {
       />,
     )
 
-    fireEvent.change(await screen.findByLabelText('Metin'), { target: { value: 'CTO' } })
+    fireEvent.change(await screen.findByLabelText('Görev'), { target: { value: 'CTO' } })
     fireEvent.click(screen.getByRole('button', { name: /kaydet/i }))
 
     await waitFor(() => expect(state.upserts).toHaveLength(1))
@@ -109,6 +109,66 @@ describe('CopyDrawer', () => {
   it('hiçbir şey seçili değilken yönlendirme gösterir', () => {
     render(<CopyDrawer picked={null} />)
     expect(screen.getByText(/içerik ağacından bir öğe seçin/i)).toBeInTheDocument()
+  })
+
+  it('liste öğesinin görünmeyen alanlarını da düzenletir', async () => {
+    state.listRow = { items: [{ label: 'Instagram', href: 'https://instagram.com' }] }
+    render(<CopyDrawer picked={{ listKey: 'site.sosyal', listIndex: '0', listField: 'label' }} />)
+
+    const href = await screen.findByLabelText(/bağlantı/i)
+    expect(href).toHaveValue('https://instagram.com')
+    fireEvent.change(href, { target: { value: 'https://instagram.com/decha' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Kaydet' }))
+
+    await waitFor(() => expect(state.upserts).toHaveLength(1))
+    expect(state.upserts[0].items[0].href).toBe('https://instagram.com/decha')
+  })
+
+  it('seçili öğenin altına boş bir öğe ekler', async () => {
+    state.listRow = { items: [{ q: 'Soru 1', a: 'Cevap 1' }, { q: 'Soru 2', a: 'Cevap 2' }] }
+    const picks = []
+    render(
+      <CopyDrawer
+        picked={{ listKey: 'sss.liste', listIndex: '0', listField: 'q' }}
+        onSelect={(next) => picks.push(next)}
+      />,
+    )
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Yeni öğe ekle' }))
+    await waitFor(() => expect(state.upserts).toHaveLength(1))
+
+    const items = state.upserts[0].items
+    expect(items).toHaveLength(3)
+    expect(items[1]).toEqual({ q: '', a: '' })
+    expect(items[2].q).toBe('Soru 2')
+    // Yeni öğe seçili gelsin ki alanları doldurulabilsin.
+    expect(picks[0].listIndex).toBe('1')
+  })
+
+  it('öğeyi siler ama listedeki son öğeye dokunmaz', async () => {
+    state.listRow = { items: [{ q: 'Soru 1', a: 'Cevap 1' }, { q: 'Soru 2', a: 'Cevap 2' }] }
+    const { unmount } = render(
+      <CopyDrawer picked={{ listKey: 'sss.liste', listIndex: '0', listField: 'q' }} />,
+    )
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Bu öğeyi sil' }))
+    await waitFor(() => expect(state.upserts).toHaveLength(1))
+    expect(state.upserts[0].items).toEqual([{ q: 'Soru 2', a: 'Cevap 2' }])
+    unmount()
+
+    // Tek öğe kaldığında silme kapalı: boş liste varsayılana dönerdi.
+    state.listRow = { items: [{ q: 'Tek', a: 'Öğe' }] }
+    render(<CopyDrawer picked={{ listKey: 'sss.liste', listIndex: '0', listField: 'q' }} />)
+    expect(await screen.findByRole('button', { name: 'Bu öğeyi sil' })).toBeDisabled()
+  })
+
+  it('öğenin sırasını değiştirir', async () => {
+    state.listRow = { items: [{ label: 'A', value: '1' }, { label: 'B', value: '2' }] }
+    render(<CopyDrawer picked={{ listKey: 'site.istatistikler', listIndex: '1', listField: 'label' }} />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Yukarı taşı' }))
+    await waitFor(() => expect(state.upserts).toHaveLength(1))
+    expect(state.upserts[0].items.map((item) => item.label)).toEqual(['B', 'A'])
   })
 
   it('yazma hatasını gösterir', async () => {
