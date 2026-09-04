@@ -185,6 +185,21 @@ kaldırır. Durum `site_copy` içinde `gorunurluk.<bölüm>` anahtarında tutulu
 Kapalı bölüm genel sitede hiç çizilmez; panelde soluk görünür ki geri
 açılabilsin.
 
+### İçerik nereden geliyor (ve neden görünmeyebilir)
+
+Site içeriği **Supabase'den** gelir; `src/data/content.js` yalnızca Supabase
+kapalıyken ya da sorgu düşerken devreye giren yedektir.
+
+Bir kurulumda tablolar boş kalırsa, site yedek içeriği gösterir ama panel o
+kartları **düzenleyemez**: yedek kayıtların kimliği slug'dır, veritabanında
+karşılığı yoktur. Bu durumda panel artık "okunamadı" demek yerine ne
+yapılması gerektiğini söyler. Kalıcı çözüm `supabase/seed.sql` göçünü
+çalıştırmaktır.
+
+Liste sorgularında **boş sonuç yedeğe düşmez** (`fallbackOnEmpty: false`):
+aksi hâlde panelden silinen son kayıt geri gelmiş gibi görünüyordu. Bölüm
+boşsa "kayıt yok" kutusu çizilir.
+
 ### Güvenlik notları
 
 - **Panelden gelen adresler şema denetiminden geçer** (`src/lib/url.js`).
@@ -195,6 +210,10 @@ açılabilsin.
 - **`?edit=1` yalnızca çerçeve içinde çalışır.** Adres çubuğuna yazan
   ziyaretçi normal siteyi görür; aksi hâlde bu bağlantı sitenin
   tıklanamaz bir sürümünü gösterirdi.
+- **`meeting_slots_taken` görünümü bilerek SECURITY DEFINER'dır.** Supabase
+  linter'ı bunu uyarı olarak işaretler; kasıtlıdır: ziyaretçi
+  `meeting_requests` tablosunu okuyamaz ama dolu saatleri görmek zorundadır.
+  Görünüm yalnızca tarih ve saat döndürür, kişisel veri taşımaz.
 - **Supabase'de herkese açık kaydı (signup) kapalı tutun.** Yazma izni
   `authenticated` rolüne bağlı; kayıt açık kalırsa hesap açan herkes site
   içeriğini değiştirebilir.

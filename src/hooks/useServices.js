@@ -11,6 +11,8 @@ import { services as servicesFallback } from '../data/content'
 export function useServices(options = {}) {
   return useSupabaseData('services', {
     fallback: servicesFallback,
+    // Boş sonuçta yedeğe düşme: panelden silinen son hizmet geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
     ...options,
   })

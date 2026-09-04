@@ -18,6 +18,8 @@ export default function Blog() {
 
   const { data: postList, loading } = useSupabaseData('posts', {
     fallback: posts,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'published_at', ascending: false },
   })
 

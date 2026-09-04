@@ -26,6 +26,8 @@ export default function BlogPost() {
   // yazıları hiç göstermezdi).
   const { data: allPosts } = useSupabaseData('posts', {
     fallback: posts,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'published_at', ascending: false },
   })
 

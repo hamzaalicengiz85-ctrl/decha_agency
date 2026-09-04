@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 
-const state = { upserts: [], updates: [], error: null, listRow: null, record: null }
+const state = { upserts: [], updates: [], error: null, listRow: null, record: null, eqCalls: [] }
 
 vi.mock('../lib/supabase', () => ({
   isSupabaseConfigured: true,
@@ -14,7 +14,8 @@ vi.mock('../lib/supabase', () => ({
         }),
       })),
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn((column, value) => ({
+          __capture: state.eqCalls.push({ table, column, value }),
           maybeSingle: vi.fn(() =>
             Promise.resolve({ data: table === 'site_lists' ? state.listRow : state.record, error: null }),
           ),
@@ -40,6 +41,7 @@ beforeEach(() => {
   state.error = null
   state.listRow = null
   state.record = null
+  state.eqCalls = []
 })
 
 describe('CopyDrawer', () => {
@@ -169,6 +171,35 @@ describe('CopyDrawer', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Yukarı taşı' }))
     await waitFor(() => expect(state.upserts).toHaveLength(1))
     expect(state.upserts[0].items.map((item) => item.label)).toEqual(['B', 'A'])
+  })
+
+  it('uuid olmayan kimliği slug sütununda arar', async () => {
+    // Yedek içerik gösterilirken kart kimliği slug oluyor; uuid sütununa
+    // sormak Postgres'te 22P02 verip paneli "okunamadı"ya düşürüyordu.
+    state.record = { id: '11111111-1111-4111-8111-111111111111', title: 'Web Tasarım', slug: 'web-tasarim', features: [] }
+    render(<CopyDrawer picked={{ rec: 'services:web-tasarim' }} />)
+
+    await screen.findByLabelText(/başlık/i)
+    expect(state.eqCalls.find((call) => call.table === 'services')).toMatchObject({
+      column: 'slug',
+      value: 'web-tasarim',
+    })
+  })
+
+  it('uuid kimliği id sütununda arar', async () => {
+    state.record = { id: '11111111-1111-4111-8111-111111111111', title: 'Web Tasarım', slug: 'web-tasarim', features: [] }
+    render(<CopyDrawer picked={{ rec: 'services:11111111-1111-4111-8111-111111111111' }} />)
+
+    await screen.findByLabelText(/başlık/i)
+    expect(state.eqCalls.find((call) => call.table === 'services')).toMatchObject({ column: 'id' })
+  })
+
+  it('kayıt veritabanında yoksa ne yapılacağını söyler', async () => {
+    state.record = null
+    render(<CopyDrawer picked={{ rec: 'services:web-tasarim' }} />)
+
+    expect(await screen.findByText(/veritabanında yok/i)).toBeInTheDocument()
+    expect(screen.getByText(/koddaki örnek içerik/i)).toBeInTheDocument()
   })
 
   it('yazma hatasını gösterir', async () => {

@@ -27,6 +27,8 @@ export default function Services() {
 
   const { data: serviceList, loading } = useSupabaseData('services', {
     fallback: services,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
   })
 

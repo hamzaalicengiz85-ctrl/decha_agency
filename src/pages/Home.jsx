@@ -9,13 +9,20 @@ import ProjectCard from '../components/ProjectCard'
 import TestimonialCard from '../components/TestimonialCard'
 import Button from '../components/ui/Button'
 import Icon from '../components/ui/Icon'
-import { CardSkeleton } from '../components/ui/Loader'
+import { CardSkeleton, EmptyState } from '../components/ui/Loader'
 import { useSupabaseData } from '../hooks/useSupabaseData'
 import { usePageMeta } from '../lib/seo'
 import { services, projects, testimonials } from '../data/content'
 import { Copy } from '../lib/siteCopy'
+import { useCopy } from '../lib/siteCopyContext'
 
 export default function Home() {
+  // Tablo boşken bölüm bomboş kalmasın: yedeğe düşmüyoruz, o yüzden
+  // "kayıt yok" mesajı gerekiyor.
+  const emptyServices = useCopy('home.hizmetler.bos', 'Hizmet kaydı yok')
+  const emptyProjects = useCopy('home.projeler.bos', 'Öne çıkarılmış proje yok')
+  const emptyTestimonials = useCopy('home.referanslar.bos', 'Henüz referans kaydı yok')
+
   usePageMeta({
     title: 'Dijital Tasarım & Yazılım Ajansı',
     description:
@@ -24,12 +31,16 @@ export default function Home() {
 
   const { data: serviceList, loading: servicesLoading } = useSupabaseData('services', {
     fallback: services,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
     limit: 6,
   })
 
   const { data: projectList, loading: projectsLoading } = useSupabaseData('projects', {
     fallback: projects.filter((project) => project.featured),
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     filters: { featured: true },
     order: { column: 'order_no', ascending: true },
     limit: 3,
@@ -37,6 +48,8 @@ export default function Home() {
 
   const { data: testimonialList } = useSupabaseData('testimonials', {
     fallback: testimonials,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
     limit: 3,
   })
@@ -67,6 +80,8 @@ export default function Home() {
         <div className="mt-10">
           {servicesLoading ? (
             <CardSkeleton count={6} />
+          ) : serviceList.length === 0 ? (
+            <EmptyState title={emptyServices} />
           ) : (
             <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {serviceList.map((service, index) => (
@@ -99,6 +114,8 @@ export default function Home() {
         <div className="mt-10">
           {projectsLoading ? (
             <CardSkeleton count={3} />
+          ) : projectList.length === 0 ? (
+            <EmptyState title={emptyProjects} />
           ) : (
             <div className="stagger grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {projectList.map((project) => (
@@ -122,11 +139,17 @@ export default function Home() {
           titleKey="home.referanslar.baslik"
           align="center"
         />
-        <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {testimonialList.map((testimonial) => (
-            <TestimonialCard key={testimonial.id ?? testimonial.name} testimonial={testimonial} />
-          ))}
-        </div>
+        {testimonialList.length === 0 ? (
+          <div className="mt-10">
+            <EmptyState title={emptyTestimonials} />
+          </div>
+        ) : (
+          <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {testimonialList.map((testimonial) => (
+              <TestimonialCard key={testimonial.id ?? testimonial.name} testimonial={testimonial} />
+            ))}
+          </div>
+        )}
         <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
           <Copy k="home.referanslar.davet">Referanslarımızla görüşmek ister misiniz?</Copy>{' '}
           <Link to="/iletisim" className="link-underline text-accent">

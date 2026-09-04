@@ -24,6 +24,8 @@ export default function Work() {
 
   const { data: projectList, loading } = useSupabaseData('projects', {
     fallback: projects,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
   })
 

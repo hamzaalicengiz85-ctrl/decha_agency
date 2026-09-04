@@ -26,6 +26,8 @@ export default function ProjectDetail() {
   // panelden eklenen projeler burada hiç görünmez.
   const { data: allProjects } = useSupabaseData('projects', {
     fallback: projects,
+    // Boş sonuçta yedeğe düşme: panelden silinen son kayıt geri gelmiş görünürdü.
+    fallbackOnEmpty: false,
     order: { column: 'order_no', ascending: true },
   })
 

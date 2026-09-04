@@ -7,6 +7,12 @@ import RecordForm from './RecordForm'
 import ListEditor from './ListEditor'
 import { RECORD_TYPES } from './records'
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function isUuid(value) {
+  return UUID.test(String(value ?? ''))
+}
+
 /** Öğenin alan adları: listedeki tüm öğelerin birleşimi (biri eksik olabilir). */
 function fieldNames(items) {
   const names = []
@@ -43,8 +49,13 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
     setDraft({ ...(listRow[index] ?? {}) })
   }, [listRow, picked?.listIndex])
 
-  // Kayıt kartı seçildiğinde ("tablo:id") satırı çek ki aynı yerde
+  // Kayıt kartı seçildiğinde ("tablo:kimlik") satırı çek ki aynı yerde
   // düzenlenebilsin; kullanıcıyı kenar menüsüne göndermek gereksiz.
+  //
+  // Kimlik iki türlü olabilir: Supabase'den gelen satırlarda uuid, koddaki
+  // yedek içerikte slug. Yedek içerik gösterilirken uuid sütununa slug
+  // sormak Postgres'te 22P02 hatası veriyor ve panel "okunamadı" diyordu —
+  // bu yüzden uuid olmayan kimlik slug sütununda aranıyor.
   useEffect(() => {
     const ref = picked?.rec
     if (!ref) return setRecord(null)
@@ -53,14 +64,19 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
     if (!table || !id || !RECORD_TYPES[table]) return setRecord(null)
     if (!isSupabaseConfigured || !supabase) return setRecord(null)
 
+    const hasSlug = RECORD_TYPES[table].fields.some((field) => field.name === 'slug')
+    const column = isUuid(id) ? 'id' : hasSlug ? 'slug' : null
+    // Referanslarda slug yok: uuid değilse aranacak bir sütun da yok.
+    if (!column) return setRecord({ table, row: null })
+
     let alive = true
     supabase
       .from(table)
       .select('*')
-      .eq('id', id)
+      .eq(column, id)
       .maybeSingle()
       .then(({ data }) => {
-        if (alive) setRecord(data ? { table, row: data } : null)
+        if (alive) setRecord({ table, row: data ?? null })
       })
     return () => {
       alive = false
@@ -206,7 +222,8 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
   }
 
   const isList = Boolean(picked?.listKey)
-  const isRecord = Boolean(record) && !picked?.copyKey && !isList
+  const isRecord = Boolean(record?.row) && !picked?.copyKey && !isList
+  const missingRecord = Boolean(record) && !record.row && !picked?.copyKey && !isList
 
   return (
     <aside
@@ -338,10 +355,21 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
               onCancel={onClose}
             />
           </>
+        ) : missingRecord ? (
+          <>
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+              {RECORD_TYPES[record.table].singular} · veritabanında yok
+            </p>
+            <p className="font-mono text-[11.5px] leading-relaxed text-fg-muted">
+              Sitede şu an koddaki örnek içerik gösteriliyor; bu kart
+              Supabase&apos;de bir kayda karşılık gelmediği için düzenlenemiyor.
+              Sol menüdeki <strong className="text-accent">{RECORD_TYPES[record.table].label}</strong>{' '}
+              bölümünden ekleyin — eklediğiniz kayıt örnek içeriğin yerini alır.
+            </p>
+          </>
         ) : picked?.rec ? (
           <p className="font-mono text-[11.5px] leading-relaxed text-fg-muted">
-            Bu bir kayıt ama okunamadı. Sol menüdeki ilgili bölümden
-            düzenleyebilirsiniz.
+            Bu kaydı okumak için Supabase bağlantısı gerekiyor.
           </p>
         ) : (
           <p className="font-mono text-[10.5px] leading-relaxed text-fg-subtle">
