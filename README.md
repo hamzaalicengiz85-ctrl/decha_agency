@@ -1,7 +1,10 @@
 # Decha Agency
 
-Dijital ajans web sitesi. **React + Vite** ile geliştirildi, veritabanı olarak **Supabase**,
-yayınlama için **Netlify** kullanır.
+Dijital ajans web sitesi. **React + Vite** ile geliştirildi, veritabanı olarak **Supabase**
+kullanır. Şu an yayında değil; site yerelde çalıştırılıyor. Netlify yapılandırması
+(`netlify.toml`) ileride yayına almak isterseniz hazır duruyor.
+
+Ana dal: **`main`**.
 
 ---
 
@@ -54,6 +57,25 @@ Site `http://localhost:5173` adresinde açılır.
 > **Not:** `.env` doldurulmasa bile site çalışır. Supabase yapılandırılmamışsa
 > `src/data/content.js` içindeki yerel demo içerik gösterilir; yalnızca iletişim formu
 > kayıt oluşturamaz. Bu sayede derleme ve yayın hiçbir koşulda kırılmaz.
+>
+> Ama **yönetim paneli için `.env` şart**: içerik Supabase'den okunup oraya yazılıyor.
+
+### Yerelde ne göreceksiniz
+
+| Adres | Ne var |
+| ----- | ------ |
+| `http://localhost:5173` | Sitenin kendisi |
+| `http://localhost:5173/yonetim` | Yönetim paneli (ya da alt bilgideki telif satırına üç kez tıklayın) |
+
+Yayın derlemesini yerelde denemek isterseniz:
+
+```bash
+npm run build && npm run preview   # http://localhost:4173
+```
+
+`npm run dev` kaynak dosyaları anında yeniler; `preview` ise `dist/` klasörünü,
+yani gerçek yayın çıktısını sunar. Panelde bir şey değiştirdikten sonra sayfayı
+yenilemek yeterlidir — içerik koddan değil Supabase'den gelir.
 
 ---
 
