@@ -76,18 +76,26 @@ export default function Footer() {
             <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
               <Copy k="footer.baslik.hizmetler">Hizmetler</Copy>
             </p>
-            <ul className="mt-4 space-y-2.5">
-              {services.map((service) => (
-                <li key={service.slug}>
-                  <Link
-                    to="/hizmetler"
-                    className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
-                  >
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Hizmet kaydı yokken başlığın altını boş bırakmak sütunu bozuk
+                gösteriyordu. */}
+            {services.length === 0 ? (
+              <p className="mt-4 font-mono text-[12px] text-fg-subtle">
+                <Copy k="footer.hizmetler.bos">Çok yakında sizlerle</Copy>
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-2.5">
+                {services.map((service) => (
+                  <li key={service.slug}>
+                    <Link
+                      to="/hizmetler"
+                      className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div>

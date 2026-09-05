@@ -25,10 +25,17 @@ export function CardSkeleton({ count = 3 }) {
   )
 }
 
-export function EmptyState({ title = 'Kayıt bulunamadı', description }) {
+/**
+ * Boş bölüm kutusu.
+ *
+ * `eyebrow` iki durumu ayırır: içerik henüz hiç girilmemişse "Hazırlanıyor",
+ * elde kayıt varken filtre boş döndüyse "Arşiv". İkisi aynı görünürse
+ * ziyaretçi siteyi bozuk sanıyor.
+ */
+export function EmptyState({ title = 'Kayıt bulunamadı', description, eyebrow = 'Arşiv' }) {
   return (
     <div className="panel brackets p-12 text-center">
-      <p className="eyebrow">Arşiv</p>
+      <p className="eyebrow">{eyebrow}</p>
       <h3 className="mt-3 font-display text-lg font-bold uppercase text-accent">{title}</h3>
       {description ? <p className="mt-2 text-sm text-fg-muted">{description}</p> : null}
     </div>

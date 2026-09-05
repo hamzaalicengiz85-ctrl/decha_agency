@@ -17,7 +17,8 @@ export default function Services() {
   const faqList = useList(FAQ_KEY, faqs)
   const steps = useList(STEP_KEY, processSteps)
   // Hook koşullu dalda çağrılamaz; EmptyState ternary içinde render ediliyor.
-  const emptyLabel = useCopy('hizmetler.bos', 'Henüz hizmet eklenmemiş')
+  const emptyLabel = useCopy('hizmetler.bos', 'Çok yakında sizlerle')
+  const emptyDesc = useCopy('hizmetler.bos.aciklama', 'Hizmet kataloğumuz hazırlanıyor.')
   usePageMeta({
     title: 'Hizmetler',
     description:
@@ -56,7 +57,7 @@ export default function Services() {
         {loading ? (
           <CardSkeleton count={6} />
         ) : serviceList.length === 0 ? (
-          <EmptyState title={emptyLabel} />
+          <EmptyState title={emptyLabel} description={emptyDesc} eyebrow="Hazırlanıyor" />
         ) : (
           <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {serviceList.map((service, index) => (

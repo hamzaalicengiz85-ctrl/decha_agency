@@ -12,6 +12,10 @@ import { projects } from '../data/content'
 import { classNames } from '../lib/format'
 
 export default function Work() {
+  // İki ayrı boş durum: hiç proje yoksa "çok yakında", proje varken filtre
+  // boş döndüyse kullanıcıya filtreyi değiştirmesini söylemek gerekiyor.
+  const soonTitle = useCopy('projeler.yakinda.baslik', 'Çok yakında sizlerle')
+  const soonDesc = useCopy('projeler.yakinda.aciklama', 'İlk projelerimizi kısa süre içinde yayınlayacağız.')
   const emptyTitle = useCopy('projeler.bos.baslik', 'Bu sınıfta kayıt yok')
   const emptyDesc = useCopy('projeler.bos.aciklama', 'Başka bir sınıflandırma seçmeyi deneyin.')
   usePageMeta({
@@ -63,8 +67,12 @@ export default function Work() {
       <Section
         sectionId="projeler.liste"
         label="Proje listesi" spacing="top-none">
-        {/* Dolap sekmesi filtreleri */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5">
+        {/* Dolap sekmesi filtreleri. Hiç proje yokken tek başına "Tümü"
+            düğmesi göstermek anlamsız; filtre satırı gizleniyor. */}
+        <div
+          className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5"
+          hidden={projectList.length === 0}
+        >
           <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
             <Copy k="projeler.filtre">Sınıflandırma:</Copy>
           </span>
@@ -89,11 +97,10 @@ export default function Work() {
         <div className="mt-8">
           {loading ? (
             <CardSkeleton count={6} />
+          ) : projectList.length === 0 ? (
+            <EmptyState title={soonTitle} description={soonDesc} eyebrow="Hazırlanıyor" />
           ) : filtered.length === 0 ? (
-            <EmptyState
-              title={emptyTitle}
-              description={emptyDesc}
-            />
+            <EmptyState title={emptyTitle} description={emptyDesc} />
           ) : (
             <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((project) => (

@@ -8,8 +8,8 @@ import { useCopy } from '../lib/siteCopyContext'
 import { posts } from '../data/content'
 
 export default function Blog() {
-  const emptyTitle = useCopy('blog.bos.baslik', 'Henüz kayıt yok')
-  const emptyDesc = useCopy('blog.bos.aciklama', 'Çok yakında ilk notumuzu paylaşacağız.')
+  const emptyTitle = useCopy('blog.bos.baslik', 'Çok yakında sizlerle')
+  const emptyDesc = useCopy('blog.bos.aciklama', 'İlk notumuzu kısa süre içinde paylaşacağız.')
   usePageMeta({
     title: 'Blog',
     description: 'Tasarım, yazılım ve dijital pazarlama üzerine yazılarımız.',
@@ -43,7 +43,7 @@ export default function Blog() {
         {loading ? (
           <CardSkeleton count={3} />
         ) : postList.length === 0 ? (
-          <EmptyState title={emptyTitle} description={emptyDesc} />
+          <EmptyState title={emptyTitle} description={emptyDesc} eyebrow="Hazırlanıyor" />
         ) : (
           <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {postList.map((post) => (

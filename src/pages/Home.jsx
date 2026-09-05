@@ -19,9 +19,12 @@ import { useCopy } from '../lib/siteCopyContext'
 export default function Home() {
   // Tablo boşken bölüm bomboş kalmasın: yedeğe düşmüyoruz, o yüzden
   // "kayıt yok" mesajı gerekiyor.
-  const emptyServices = useCopy('home.hizmetler.bos', 'Hizmet kaydı yok')
-  const emptyProjects = useCopy('home.projeler.bos', 'Öne çıkarılmış proje yok')
-  const emptyTestimonials = useCopy('home.referanslar.bos', 'Henüz referans kaydı yok')
+  const emptyServices = useCopy('home.hizmetler.bos', 'Çok yakında sizlerle')
+  const emptyServicesDesc = useCopy('home.hizmetler.bos.aciklama', 'Hizmet kataloğumuz hazırlanıyor.')
+  const emptyProjects = useCopy('home.projeler.bos', 'Çok yakında sizlerle')
+  const emptyProjectsDesc = useCopy('home.projeler.bos.aciklama', 'İlk dosyalarımızı kısa süre içinde paylaşacağız.')
+  const emptyTestimonials = useCopy('home.referanslar.bos', 'Çok yakında sizlerle')
+  const emptyTestimonialsDesc = useCopy('home.referanslar.bos.aciklama', 'Müşteri görüşlerimiz yakında burada olacak.')
 
   usePageMeta({
     title: 'Dijital Tasarım & Yazılım Ajansı',
@@ -81,7 +84,7 @@ export default function Home() {
           {servicesLoading ? (
             <CardSkeleton count={6} />
           ) : serviceList.length === 0 ? (
-            <EmptyState title={emptyServices} />
+            <EmptyState title={emptyServices} description={emptyServicesDesc} eyebrow="Hazırlanıyor" />
           ) : (
             <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {serviceList.map((service, index) => (
@@ -115,7 +118,7 @@ export default function Home() {
           {projectsLoading ? (
             <CardSkeleton count={3} />
           ) : projectList.length === 0 ? (
-            <EmptyState title={emptyProjects} />
+            <EmptyState title={emptyProjects} description={emptyProjectsDesc} eyebrow="Hazırlanıyor" />
           ) : (
             <div className="stagger grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {projectList.map((project) => (
@@ -141,7 +144,7 @@ export default function Home() {
         />
         {testimonialList.length === 0 ? (
           <div className="mt-10">
-            <EmptyState title={emptyTestimonials} />
+            <EmptyState title={emptyTestimonials} description={emptyTestimonialsDesc} eyebrow="Hazırlanıyor" />
           </div>
         ) : (
           <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
