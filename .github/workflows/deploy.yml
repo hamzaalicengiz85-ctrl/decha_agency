@@ -1,0 +1,66 @@
+# Siteyi GitHub Pages'te yayınlar.
+#
+# main dalına her push'ta çalışır: bağımlılıkları kurar, lint + testleri
+# geçirir, üretim derlemesini yapar ve çıktıyı Pages'e yükler. Testler
+# düşerse yayın yapılmaz — bozuk bir sürüm canlıya çıkmaz.
+#
+# Supabase bilgileri derleme anında paketin içine giriyor; bu yüzden depo
+# değişkeni (Variables) olarak tanımlanmaları gerekiyor. Anon anahtar zaten
+# public'tir, koruma RLS'tedir. service_role anahtarını ASLA eklemeyin.
+name: GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Actions sekmesinden elle de çalıştırılabilir
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Aynı anda tek yayın; üst üste gelen push'larda sonuncusu kazanır.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx eslint .
+      - run: npm test
+
+      - name: Derle
+        env:
+          # Depo adının altında yayınlanıyor: /decha_agency/
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_SITE_URL: https://${{ github.repository_owner }}.github.io
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
+          VITE_ADMIN_EMAIL: ${{ vars.VITE_ADMIN_EMAIL }}
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

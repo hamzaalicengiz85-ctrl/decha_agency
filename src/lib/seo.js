@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { SITE_URL } from './siteUrl'
+import { SITE_URL, absoluteUrl } from './siteUrl'
 
 const SITE_NAME = 'Decha Agency'
 const DEFAULT_DESCRIPTION =
   'Decha Agency; markalar için web tasarımı, yazılım geliştirme, dijital pazarlama ve marka kimliği çözümleri üretir.'
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
+const DEFAULT_IMAGE = absoluteUrl('og-image.png')
 
 const JSONLD_ID = 'decha-page-schema'
 
@@ -63,7 +63,7 @@ export function breadcrumb(trail = []) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: absoluteUrl(item.path),
     })),
   }
 }
@@ -123,9 +123,9 @@ export function articleSchema(post) {
     description: post.excerpt ?? undefined,
     datePublished: post.published_at ?? undefined,
     inLanguage: 'tr-TR',
-    mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
     author: { '@type': 'Organization', name: SITE_NAME },
-    publisher: { '@id': `${SITE_URL}/#kurum` },
+    publisher: { '@id': `${absoluteUrl()}/#kurum` },
     image: DEFAULT_IMAGE,
   }
 }
@@ -140,8 +140,8 @@ export function projectSchema(project) {
     genre: project.category ?? undefined,
     dateCreated: project.year ? String(project.year) : undefined,
     inLanguage: 'tr-TR',
-    url: `${SITE_URL}/projeler/${project.slug}`,
-    creator: { '@id': `${SITE_URL}/#kurum` },
+    url: absoluteUrl(`/projeler/${project.slug}`),
+    creator: { '@id': `${absoluteUrl()}/#kurum` },
     image: DEFAULT_IMAGE,
   }
 }

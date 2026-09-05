@@ -15,7 +15,10 @@ if (!container) {
 createRoot(container).render(
   <StrictMode>
     <ErrorBoundary>
-      <BrowserRouter>
+      {/* GitHub Pages'te site depo adının altında duruyor; rotalar bu ön ekin
+          altından başlamalı. Kök dizinde yayınlanırsa BASE_URL "/" olur ve
+          hiçbir şey değişmez. */}
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <SiteCopyProvider>
           <App />
         </SiteCopyProvider>

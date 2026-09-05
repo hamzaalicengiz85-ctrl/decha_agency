@@ -1,10 +1,11 @@
 # Decha Agency
 
 Dijital ajans web sitesi. **React + Vite** ile geliştirildi, veritabanı olarak **Supabase**
-kullanır. Şu an yayında değil; site yerelde çalıştırılıyor. Netlify yapılandırması
-(`netlify.toml`) ileride yayına almak isterseniz hazır duruyor.
+kullanır. **GitHub Pages** üzerinden yayınlanır: `main` dalına her push
+otomatik olarak yeni sürümü canlıya alır.
 
-Ana dal: **`main`**.
+Ana dal: **`main`**. Netlify yapılandırması (`netlify.toml`) ileride oraya
+taşımak isterseniz duruyor, kullanılmıyor.
 
 ---
 
@@ -14,6 +15,7 @@ Ana dal: **`main`**.
 - [Hızlı başlangıç](#hızlı-başlangıç)
 - [Supabase kurulumu](#supabase-kurulumu)
 - [Yönetim paneli](#yönetim-paneli)
+- [GitHub Pages ile yayınlama](#github-pages-ile-yayınlama)
 - [Netlify ile yayınlama](#netlify-ile-yayınlama)
 - [Proje yapısı](#proje-yapısı)
 - [Tasarım sistemi](#tasarım-sistemi)
@@ -265,6 +267,58 @@ masaüstündeki gibi davranıyor.
 3. SQL Editor'de `supabase/migrations/0003_site_content.sql` dosyasını
    çalıştırın.
 4. Netlify → Environment variables → `VITE_ADMIN_EMAIL` ekleyin.
+
+---
+
+## GitHub Pages ile yayınlama
+
+`main` dalına push → `.github/workflows/deploy.yml` çalışır → lint ve testler
+geçerse derleme Pages'e yüklenir. Testler düşerse yayın yapılmaz.
+
+Adres: `https://<kullanıcı>.github.io/<depo>/`
+
+### Tek seferlik kurulum
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+2. **Settings → Secrets and variables → Actions → Variables** sekmesinde üç
+   değişken: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ADMIN_EMAIL`.
+   Secret değil **Variable** kullanılıyor: anon anahtar zaten public'tir
+   (koruma RLS'te) ve derleme çıktısının içine giriyor, gizlemenin anlamı yok.
+   `service_role` anahtarını hiçbir koşulda eklemeyin.
+3. **Supabase → Authentication → URL Configuration** içine Pages adresini
+   ekleyin, yoksa panel oturumu açılmaz.
+
+### Alt dizinde yayınlanmanın getirdikleri
+
+Site kökte değil `/depo-adı/` altında duruyor. Bunu üç yer biliyor ve hepsi
+`VITE_BASE_PATH` değişkeninden besleniyor:
+
+- `vite.config.js` → `base` (varlık adresleri)
+- `src/main.jsx` → `BrowserRouter basename`
+- `src/lib/siteUrl.js` → `absoluteUrl()` (canonical, og, JSON-LD, sitemap)
+
+Kök dizinde yayınlarsanız (özel alan adı ya da `<kullanıcı>.github.io` deposu)
+değişkeni boş bırakmak yetiyor; kod aynen çalışır.
+
+### Derin bağlantılar
+
+Pages'te sunucu tarafı yönlendirme yok. İki katmanlı çözüm derleme sırasında
+üretiliyor:
+
+| Adres | Nasıl sunuluyor | HTTP |
+| ----- | --------------- | ---- |
+| `/`, `/hizmetler`, `/projeler`, `/hakkimizda`, `/blog`, `/iletisim`, `/gizlilik` | Her biri için ayrı `index.html` | **200** |
+| `/projeler/<slug>`, `/blog/<slug>`, `/yonetim` | `404.html` (index.html'in aynısı) | 404 |
+
+İkinci gruptaki sayfalar ekranda doğru çiziliyor; yalnızca HTTP durumu 404
+kalıyor. Pages'te bunu değiştirmenin yolu yok.
+
+### Pages'te olmayan şeyler
+
+`netlify.toml` içindeki güvenlik başlıkları (CSP, HSTS, X-Frame-Options,
+Referrer-Policy) **uygulanmaz** — GitHub Pages özel başlık ayarlamaya izin
+vermiyor. Site çalışır ama bu katman devre dışıdır. Başlıklar önemliyse
+Netlify/Cloudflare Pages gibi bir yere taşımak gerekir.
 
 ---
 
