@@ -45,7 +45,7 @@ export default function SectionHeading({
         </div>
       ) : null}
 
-      <Heading className="phosphor mt-4 text-headline font-bold uppercase text-accent">
+      <Heading className="fill-scroll mt-4 text-balance text-headline font-bold">
         {titleKey ? <Copy k={titleKey}>{title}</Copy> : title}
       </Heading>
 

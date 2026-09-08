@@ -25,7 +25,7 @@ export default function PostCard({ post, index = 0, as: Heading = 'h3' }) {
           {String(index + 1).padStart(2, '0')}
         </span>
 
-        <Heading className="mt-4 font-display text-[15px] font-bold uppercase leading-snug text-accent">
+        <Heading className="mt-4 font-display text-[16px] font-bold leading-snug text-fg">
           {post.title}
         </Heading>
         <p className="mt-3 flex-1 text-[13.5px] leading-relaxed text-fg-muted">{post.excerpt}</p>

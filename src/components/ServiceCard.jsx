@@ -20,7 +20,7 @@ export default function ServiceCard({ service, index = 0, as: Heading = 'h3' }) 
         </span>
       </div>
 
-      <Heading className="mt-5 font-display text-[16px] font-bold uppercase leading-snug text-accent">
+      <Heading className="mt-5 font-display text-[16.5px] font-bold leading-snug text-fg">
         {service.title}
       </Heading>
       <p className="mt-3 flex-1 text-[14px] leading-relaxed text-fg-muted">{service.summary}</p>

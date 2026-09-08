@@ -79,7 +79,7 @@ export default function ProjectDetail() {
             <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
               {project.category}
             </span>
-            <h1 className="mt-5 font-display text-display font-bold uppercase leading-tight">
+            <h1 className="mt-5 text-balance font-display text-display font-bold leading-tight text-fg">
               {project.title}
             </h1>
             <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">{project.summary}</p>
@@ -116,7 +116,7 @@ export default function ProjectDetail() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <h2 className="font-display text-[20px] font-bold uppercase"><Copy k="proje.hakkinda">Proje hakkında</Copy></h2>
+            <h2 className="font-display text-[20px] font-bold text-fg"><Copy k="proje.hakkinda">Proje hakkında</Copy></h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-fg-muted">
               {String(project.description ?? '')
                 .split('\n')
@@ -162,7 +162,7 @@ export default function ProjectDetail() {
 
       {related.length > 0 ? (
         <Section spacing="top-none" className="bg-bg-soft/60">
-          <h2 className="font-display text-[20px] font-bold uppercase"><Copy k="proje.diger">Diğer projeler</Copy></h2>
+          <h2 className="font-display text-[20px] font-bold text-fg"><Copy k="proje.diger">Diğer projeler</Copy></h2>
           <div className="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link

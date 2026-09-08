@@ -44,7 +44,7 @@ export default function ProjectCard({ project, as: Heading = 'h3' }) {
 
       <div className="flex flex-1 flex-col px-4 py-4">
         <div className="flex items-start justify-between gap-3">
-          <Heading className="font-display text-[15px] font-bold uppercase text-accent">{project.title}</Heading>
+          <Heading className="font-display text-[16px] font-bold text-fg">{project.title}</Heading>
           <Icon
             name="arrow"
             className="mt-0.5 h-4 w-4 shrink-0 text-accent/60 transition group-hover:text-accent"

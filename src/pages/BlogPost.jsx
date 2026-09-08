@@ -81,7 +81,7 @@ export default function BlogPost() {
             {post.author ? <span>· {post.author}</span> : null}
           </div>
 
-          <h1 className="mt-5 font-display text-headline font-bold uppercase leading-tight">{post.title}</h1>
+          <h1 className="mt-5 text-balance font-display text-headline font-bold leading-tight text-fg">{post.title}</h1>
           <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">{post.excerpt}</p>
         </div>
       </Section>
@@ -104,7 +104,7 @@ export default function BlogPost() {
 
         {others.length > 0 ? (
           <div className="mx-auto mt-16 max-w-3xl border-t border-accent/30 pt-10">
-            <h2 className="font-display text-[18px] font-bold uppercase"><Copy k="yazi.ilgili">Bunlar da ilginizi çekebilir</Copy></h2>
+            <h2 className="font-display text-[18px] font-bold text-fg"><Copy k="yazi.ilgili">Bunlar da ilginizi çekebilir</Copy></h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
                 <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">

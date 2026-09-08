@@ -41,7 +41,7 @@ export default function Privacy() {
       <Section sectionId="gizlilik.metin" label="Politika metni" spacing="top-none">
         <div className="panel brackets mx-auto max-w-3xl space-y-9 p-7 sm:p-10">
           <section>
-            <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
+            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
               <Copy k="gizlilik.veri.baslik">1 · Hangi verileri topluyoruz</Copy>
             </h2>
             <div className="prose-column mt-3 space-y-3 text-[15px] leading-[1.75] text-fg-muted">
@@ -59,7 +59,7 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
+            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
               <Copy k="gizlilik.amac.baslik">2 · Neden işliyoruz</Copy>
             </h2>
             <Copy
@@ -74,7 +74,7 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
+            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
               <Copy k="gizlilik.saklama.baslik">3 · Nerede ve ne kadar saklanıyor</Copy>
             </h2>
             <Copy
@@ -90,7 +90,7 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
+            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
               <Copy k="gizlilik.tarayici.baslik">4 · Tarayıcınızda tutulanlar</Copy>
             </h2>
             <Copy
@@ -107,7 +107,7 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
+            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
               <Copy k="gizlilik.haklar.baslik">5 · Haklarınız</Copy>
             </h2>
             <Copy

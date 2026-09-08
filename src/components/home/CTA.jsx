@@ -24,7 +24,7 @@ export default function CTA() {
               <Copy k="cta.eyebrow">Randevu</Copy>
               <span className="ml-2 inline-block h-2 w-2 animate-blink bg-accent align-middle" />
             </p>
-            <h2 className="phosphor mx-auto mt-5 max-w-2xl text-headline font-bold uppercase text-accent">
+            <h2 className="mx-auto mt-5 max-w-2xl text-balance text-headline font-bold text-fg">
               <Copy k="cta.baslik">Projenizi kayda geçirelim</Copy>
             </h2>
             <p className="mx-auto mt-5 max-w-lg font-mono text-[13px] leading-relaxed text-fg-muted">

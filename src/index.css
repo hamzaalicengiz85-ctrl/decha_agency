@@ -425,6 +425,54 @@
   }
 
   /* Fosfor parıltısı: turuncu metinlerde tüpün ışıması */
+  /* ============================================================
+     BAŞLIKLARDA ÇİZGİ → DOLGU
+     Başlık görünür alana girerken önce dış çizgi olarak beliriyor,
+     kaydırma ilerledikçe soldan sağa doluyor. Teknik çizim / blueprint
+     diline oturuyor.
+
+     Varsayılan durum DOLU: tarayıcı scroll-driven animasyonu ya da
+     hareket azaltma tercihi devredeyse metin normal görünür. Animasyon
+     yalnızca desteklendiğinde başlangıcı boşaltıyor — böylece hiçbir
+     koşulda "görünmez başlık" riski yok.
+     ============================================================ */
+  .fill-scroll {
+    color: transparent;
+    background-image: linear-gradient(90deg, rgb(var(--c-fg)) 50%, rgb(var(--c-fg) / 0) 50%);
+    background-size: 220% 100%;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 1px rgb(var(--c-fg) / 0.42);
+  }
+
+  @keyframes heading-fill {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .fill-scroll {
+        animation: heading-fill linear both;
+        animation-timeline: view();
+        animation-range: entry 25% cover 40%;
+      }
+    }
+  }
+
+  /* Panelde başlıklar her zaman dolu görünmeli: düzenlenen metnin yarısı
+     boş dururken hangi yazıyı değiştirdiğiniz belli olmuyor. */
+  [data-edit] .fill-scroll {
+    animation: none;
+    background-position: 0 0;
+  }
+
   .phosphor {
     text-shadow: 0 0 18px rgb(var(--c-accent) / 0.45);
   }
@@ -454,19 +502,24 @@
         rgb(255 190 130 / 0.02) 18%,
         transparent 38%
       ),
-      /* tarama çizgileri */
+      /* Tarama çizgileri.
+         Eskiden 3px'te bir %34 siyah çizgi vardı: ekranın tamamını ~%11
+         karartıyor ve 3px'lik yüksek frekanslı desen, tam sayı olmayan
+         piksel oranlarında titreşiyordu. %18 / 4px hem deseni görünür
+         bırakıyor hem karartmayı ~%4'e indiriyor. */
       repeating-linear-gradient(
         0deg,
-        rgb(0 0 0 / 0.34) 0px,
-        rgb(0 0 0 / 0.34) 1px,
+        rgb(0 0 0 / 0.18) 0px,
+        rgb(0 0 0 / 0.18) 1px,
         transparent 1px,
-        transparent 3px
+        transparent 4px
       ),
-      /* köşe karartması */
+      /* Köşe karartması. İçeriğe değil ekrana sabit olduğu için kenardaki
+         metni (menü, alt bilgi, HUD) sürekli soluklaştırıyordu; %55 → %32. */
       radial-gradient(
-        ellipse 92% 88% at 50% 48%,
-        transparent 58%,
-        rgb(0 0 0 / 0.55) 100%
+        ellipse 96% 92% at 50% 48%,
+        transparent 62%,
+        rgb(0 0 0 / 0.32) 100%
       );
   }
 
@@ -484,8 +537,10 @@
     position: absolute;
     inset-inline: 0;
     height: 22%;
-    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.07), transparent);
-    animation: tv-sweep 9s linear infinite;
+    background: linear-gradient(180deg, transparent, rgb(255 255 255 / 0.045), transparent);
+    /* 9sn'de bir geçen parlak bant sürekli dikkat çekiyordu. 24sn'de bir ve
+       daha sönük: efekt fark ediliyor, göze binmiyor. */
+    animation: tv-sweep 24s linear infinite;
   }
 
   @keyframes tv-sweep {

@@ -36,7 +36,7 @@ export function EmptyState({ title = 'Kayıt bulunamadı', description, eyebrow 
   return (
     <div className="panel brackets p-12 text-center">
       <p className="eyebrow">{eyebrow}</p>
-      <h3 className="mt-3 font-display text-lg font-bold uppercase text-accent">{title}</h3>
+      <h3 className="mt-3 font-display text-lg font-bold text-fg">{title}</h3>
       {description ? <p className="mt-2 text-sm text-fg-muted">{description}</p> : null}
     </div>
   )

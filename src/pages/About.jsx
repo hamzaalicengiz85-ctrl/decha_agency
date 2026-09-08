@@ -2,6 +2,7 @@ import Section from '../components/ui/Section'
 import SectionHeading from '../components/ui/SectionHeading'
 import CTA from '../components/home/CTA'
 import Icon from '../components/ui/Icon'
+import CountUp from '../components/ui/CountUp'
 import { breadcrumb, usePageMeta } from '../lib/seo'
 import { stats } from '../data/content'
 import {
@@ -83,7 +84,7 @@ export default function About() {
             </div>
           </div>
           <div>
-            <h2 className="font-display text-headline font-bold uppercase">
+            <h2 className="text-balance font-display text-headline font-bold text-fg">
               <Copy k="hakkimizda.metin.baslik">Ajans değil, uzatılmış ekibiniz</Copy>
             </h2>
             <div className="mt-5 space-y-4 leading-relaxed text-fg-muted">
@@ -102,10 +103,10 @@ export default function About() {
               {statList.map((item, index) => (
                 <div key={item.label} className="panel p-5">
                   <dd
-                    className="font-display text-2xl font-bold text-accent"
+                    className="num font-display text-2xl font-bold text-accent"
                     {...listAttrs(edit, STATS_KEY, index, 'value')}
                   >
-                    {item.value}
+                    <CountUp value={item.value} />
                   </dd>
                   <dt className="mt-1 eyebrow" {...listAttrs(edit, STATS_KEY, index, 'label')}>
                     {item.label}

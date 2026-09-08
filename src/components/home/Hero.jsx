@@ -1,6 +1,7 @@
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import DecodeText from '../ui/DecodeText'
+import CountUp from '../ui/CountUp'
 import { Copy } from '../../lib/siteCopy'
 import { stats } from '../../data/content'
 import { listAttrs, useList, useSectionVisible, useSiteCopy } from '../../lib/siteCopyContext'
@@ -34,7 +35,7 @@ export default function Hero() {
               <span className="hatch inline-block h-2.5 w-14" aria-hidden="true" />
             </p>
 
-            <h1 className="phosphor mt-7 animate-fade-up text-display font-bold uppercase text-accent [animation-delay:90ms]">
+            <h1 className="mt-7 animate-fade-up text-display font-bold uppercase text-fg [animation-delay:90ms]">
               <Copy k="home.hero.baslik.on">Markanızı dijitalde</Copy>
               <br className="hidden sm:block" />{' '}
               <DecodeText words={HEADLINE_WORDS} />{' '}
@@ -77,7 +78,7 @@ export default function Hero() {
                     className="num phosphor font-display text-2xl font-bold text-accent sm:text-3xl"
                     {...listAttrs(edit, STATS_KEY, index, 'value')}
                   >
-                    {item.value}
+                    <CountUp value={item.value} />
                   </p>
                   <p className="eyebrow mt-1.5" {...listAttrs(edit, STATS_KEY, index, 'label')}>
                     {item.label}
