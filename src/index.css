@@ -473,6 +473,32 @@
     background-position: 0 0;
   }
 
+  /* Alt durum şeridi.
+     Eskiden neredeyse mat (%95) bir bantti ve arkasındaki içeriği tamamen
+     kesiyordu — mobilde iletişim formunun bir alanının üstüne biniyordu.
+     Yarı saydam + bulanık zemin: altındaki içerik seziliyor ama şeridin
+     kendi yazısı okunaklı kalıyor.
+
+     Bulanıklık desteklenmeyen tarayıcıda saydamlık geri alınıyor; aksi
+     hâlde şeridin turuncu yazısı, altından geçen turuncu bir düğmenin
+     üstünde okunmaz hâle gelirdi. */
+  .hud-bar {
+    /* %80: sentetik en kötü durumda (şeridin tam altında dolu turuncu bir
+       düğme) yazı/zemin kontrastı 4.76:1 çıkıyor. %72'de 4.18 idi. */
+    background-color: rgb(var(--c-bg) / 0.8);
+    /* saturate(0.3): altından turuncu bir düğme geçtiğinde zemin gri-kahveye
+       düşüyor, şeridin turuncu yazısı üstünde okunur kalıyor. Yalnız
+       saydamlıkla bunu sağlamak mümkün değildi — turuncu üstünde turuncu. */
+    backdrop-filter: blur(10px) saturate(0.3);
+    -webkit-backdrop-filter: blur(10px) saturate(0.3);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hud-bar {
+      background-color: rgb(var(--c-bg) / 0.92);
+    }
+  }
+
   .phosphor {
     text-shadow: 0 0 18px rgb(var(--c-accent) / 0.45);
   }
