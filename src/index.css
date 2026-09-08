@@ -281,6 +281,16 @@
     @apply font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-fg-subtle;
   }
 
+  /* Uzun düz metin sütunu.
+     Ölçüldü: gizlilik sayfasında satır başına ~98 karakter düşüyordu; göz
+     satır sonundan başına dönerken satırı kaybediyor. 65ch, kapsayıcı
+     panelin genişliğinden bağımsız olarak rahat aralıkta tutuyor.
+     56ch seçildi, 65 değil: ch birimi "0" rakamının genişliği, Türkçe düz
+     metnin ortalama karakteri ondan dar — 65ch ölçümde 83 karakter veriyordu. */
+  .prose-column {
+    max-width: 56ch;
+  }
+
   .num {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.02em;

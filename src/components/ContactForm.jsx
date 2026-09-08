@@ -130,7 +130,9 @@ export default function ContactForm() {
           <p className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-accent">
             Başvuru Formu
           </p>
-          <p className="eyebrow mt-0.5">Form DA-42 · Tüm alanlar okunaklı doldurulmalıdır</p>
+          <p className="mt-1 font-mono text-[11.5px] leading-relaxed tracking-[0.08em] text-fg-subtle">
+            Form DA-42 · Tüm alanlar okunaklı doldurulmalıdır
+          </p>
         </div>
         <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-accent/85 sm:block">
           Rev. 2026.04
@@ -310,7 +312,7 @@ export default function ContactForm() {
             onChange={handleChange}
             aria-describedby={errors.kvkk ? 'kvkk-error' : 'kvkk-detay'}
             aria-invalid={errors.kvkk ? 'true' : undefined}
-            className="mt-0.5 h-4 w-4 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
           />
           <span>Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).</span>
         </label>

@@ -44,7 +44,7 @@ export default function Privacy() {
             <h2 className="font-display text-[15px] font-bold uppercase tracking-[0.08em] text-accent">
               <Copy k="gizlilik.veri.baslik">1 · Hangi verileri topluyoruz</Copy>
             </h2>
-            <div className="mt-3 space-y-3 text-[14px] leading-relaxed text-fg-muted">
+            <div className="prose-column mt-3 space-y-3 text-[15px] leading-[1.75] text-fg-muted">
               <Copy as="p" k="gizlilik.veri.metin">
                 Yalnızca sizin doldurduğunuz form alanlarını topluyoruz: ad soyad,
                 e-posta adresi, isteğe bağlı telefon ve şirket bilgisi, seçtiğiniz
@@ -65,7 +65,7 @@ export default function Privacy() {
             <Copy
               as="p"
               k="gizlilik.amac.metin"
-              className="mt-3 text-[14px] leading-relaxed text-fg-muted"
+              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
             >
               Verileriniz yalnızca talebinizi değerlendirmek, size dönüş yapmak ve
               teklif hazırlamak için işlenir. Pazarlama listesine eklenmez, satılmaz
@@ -80,7 +80,7 @@ export default function Privacy() {
             <Copy
               as="p"
               k="gizlilik.saklama.metin"
-              className="mt-3 text-[14px] leading-relaxed text-fg-muted"
+              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
             >
               Form kayıtları, altyapı sağlayıcımız Supabase üzerindeki veritabanında
               tutulur ve yalnızca yetkili ekip üyeleri erişebilir. Kayıtlar,
@@ -96,7 +96,7 @@ export default function Privacy() {
             <Copy
               as="p"
               k="gizlilik.tarayici.metin"
-              className="mt-3 text-[14px] leading-relaxed text-fg-muted"
+              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
             >
               Sitenin çalışması için tarayıcınızın yerel deposunda iki küçük kayıt
               tutulur: giriş animasyonunun tekrar tekrar oynamaması için bir işaret
@@ -113,7 +113,7 @@ export default function Privacy() {
             <Copy
               as="p"
               k="gizlilik.haklar.metin"
-              className="mt-3 text-[14px] leading-relaxed text-fg-muted"
+              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
             >
               6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında; verilerinize
               erişme, düzeltilmesini, silinmesini ya da işlenmesinin durdurulmasını
