@@ -17,7 +17,11 @@ import { supabase, isSupabaseConfigured } from './supabase'
  * yalnızca iç kimliktir, gerçek bir posta kutusu değildir ve oraya hiçbir şey
  * gönderilmez. Kullanıcı panelde sadece "admin" yazar.
  */
-const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || 'admin@decha.local'
+// Ayarda e-posta biçiminde olmayan bir değer verilirse (örn. sadece "admin")
+// Supabase "invalid format" döner ve giriş sebepsiz düşer; o durumda
+// varsayılana geri dönülür.
+const ADMIN_EMAIL_AYAR = String(import.meta.env.VITE_ADMIN_EMAIL ?? '').trim()
+const ADMIN_EMAIL = ADMIN_EMAIL_AYAR.includes('@') ? ADMIN_EMAIL_AYAR : 'admin@decha.local'
 
 // Kullanıcı adı → e-posta. Türkçe yerele duyarlı küçültme KULLANILMAZ:
 // 'ADMIN'.toLocaleLowerCase('tr') → 'admın' olur ve eşleşme kaçar.
