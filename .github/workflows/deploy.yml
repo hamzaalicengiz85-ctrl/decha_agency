@@ -50,10 +50,16 @@ jobs:
           VITE_ADMIN_EMAIL: ${{ vars.VITE_ADMIN_EMAIL }}
         run: npm run build
 
+      # ÖNEMLİ — TEK SEFERLİK ELLE AYAR
+      # Pages'in depo ayarlarından bir kez açılması gerekiyor:
+      #   Settings > Pages > Build and deployment > Source: GitHub Actions
+      # Açılmadan bu adım şu hatayla düşer ve yayın yapılmaz:
+      #   "Get Pages site failed ... Create Pages site failed:
+      #    Resource not accessible by integration"
+      # enablement:true otomatik açmayı dener ama iş akışı jetonunun bunu
+      # yapmaya yetkisi yok; ayarı açan kişi olmak zorunda.
       - uses: actions/configure-pages@v5
         with:
-          # Pages'i gerekiyorsa kendisi açar. Bu olmadan, depo ayarlarından
-          # elle açılmamışsa iş akışı "Get Pages site failed" ile düşüyordu.
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
