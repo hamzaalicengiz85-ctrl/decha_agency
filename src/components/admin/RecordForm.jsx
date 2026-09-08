@@ -103,12 +103,24 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
 
   function handleSubmit(event) {
     event.preventDefault()
-    const found = validate(typeKey, values)
+
+    // Adres eki alanına hiç girilmediyse `onBlur` tetiklenmez ve "zorunlu"
+    // hatası, kullanıcının doldurması beklenmeyen bir alan için çıkardı.
+    // Gönderirken de türet.
+    const filled = { ...values }
+    for (const field of type.fields) {
+      if (field.slugFrom && !String(filled[field.name] ?? '').trim()) {
+        filled[field.name] = slugify(filled[field.slugFrom] ?? '')
+      }
+    }
+    setValues(filled)
+
+    const found = validate(typeKey, filled)
     if (Object.keys(found).length > 0) {
       setErrors(found)
       return
     }
-    onSave(toPayload(typeKey, values), values.id)
+    onSave(toPayload(typeKey, filled), filled.id)
   }
 
   return (

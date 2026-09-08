@@ -1,15 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_ANON_KEY, SUPABASE_KAYNAK, SUPABASE_URL } from './supabaseConfig'
 
-const url = import.meta.env.VITE_SUPABASE_URL
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const url = SUPABASE_URL
+const anonKey = SUPABASE_ANON_KEY
 
 /**
- * Ortam değişkenleri tanımlı mı? Tanımlı değilse site yerel demo içerikle
- * çalışmaya devam eder (build ve deploy asla kırılmaz).
+ * Bağlantı kurulabilir mi? Ortam değişkeni yoksa supabaseConfig.js'deki
+ * gömülü varsayılanlar devreye giriyor, bu yüzden normal koşulda hep true.
+ * Yine de kontrol duruyor: biri değerleri bilerek boşaltırsa site yedek
+ * içerikle açılmaya devam etsin, derleme kırılmasın.
  */
-export const isSupabaseConfigured = Boolean(
-  url && anonKey && url.startsWith('http') && !url.includes('xxxxxxxx'),
-)
+export const isSupabaseConfigured = Boolean(url && anonKey && url.startsWith('http'))
 
 export const supabase = isSupabaseConfigured
   ? createClient(url, anonKey, {
@@ -29,9 +30,13 @@ export const supabase = isSupabaseConfigured
     })
   : null
 
-if (!isSupabaseConfigured && import.meta.env.DEV) {
-  console.warn(
-    '[Supabase] VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY tanımlı değil. ' +
-      'Site yerel demo içerikle çalışıyor. .env dosyanızı .env.example baz alarak oluşturun.',
-  )
+if (import.meta.env.DEV) {
+  if (!isSupabaseConfigured) {
+    console.warn(
+      '[Supabase] Bağlantı bilgisi yok. Site yerel demo içerikle çalışıyor, ' +
+        'yönetim paneli açılmaz. src/lib/supabaseConfig.js dosyasına bakın.',
+    )
+  } else if (SUPABASE_KAYNAK === 'gömülü varsayılan') {
+    console.info(`[Supabase] ${url} — gömülü varsayılan kullanılıyor (.env yok).`)
+  }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AdminLogin from '../components/admin/AdminLogin'
 import AdminShell from '../components/admin/AdminShell'
 import { getSession, onAuthChange } from '../lib/adminAuth'
@@ -16,16 +16,28 @@ export default function Admin() {
 
   const [session, setSession] = useState(undefined) // undefined = henüz bilinmiyor
   const [reason, setReason] = useState('')
+  // Supabase açılışta oturumsuz bir olay yayınlıyor. Bunu "oturum kapandı"
+  // saymak, siteye ilk kez giren birine hiç açmadığı oturumun kapandığını
+  // söylüyordu. Yalnızca gerçekten açık bir oturum varken kapanırsa uyar.
+  const oturumVardi = useRef(false)
 
   useEffect(() => {
     let alive = true
     getSession().then((found) => {
-      if (alive) setSession(found)
+      if (!alive) return
+      if (found) oturumVardi.current = true
+      setSession(found)
     })
     const unsubscribe = onAuthChange((next) => {
       if (!alive) return
       setSession(next)
-      if (!next) setReason('Oturum kapandı, tekrar giriş yapın.')
+      if (next) {
+        oturumVardi.current = true
+        setReason('')
+      } else if (oturumVardi.current) {
+        oturumVardi.current = false
+        setReason('Oturum kapandı, tekrar giriş yapın.')
+      }
     })
     return () => {
       alive = false
