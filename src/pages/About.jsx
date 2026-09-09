@@ -5,12 +5,9 @@ import Icon from '../components/ui/Icon'
 import CountUp from '../components/ui/CountUp'
 import { breadcrumb, usePageMeta } from '../lib/seo'
 import { stats } from '../data/content'
-import {
-  HAKKIMIZDA_EKIP,
-  HAKKIMIZDA_ILKELER,
-  HAKKIMIZDA_KUNYE,
-} from '../data/lists'
+import { HAKKIMIZDA_EKIP, HAKKIMIZDA_ILKELER, HAKKIMIZDA_KUNYE } from '../data/lists'
 import { initials } from '../lib/initials'
+import { safeUrl } from '../lib/url'
 import { Copy } from '../lib/siteCopy'
 import { listAttrs, useList, useSiteCopy } from '../lib/siteCopyContext'
 import { cardGrid } from '../lib/grid'
@@ -19,9 +16,6 @@ const VALUES_KEY = 'hakkimizda.ilkeler'
 const TEAM_KEY = 'hakkimizda.ekip'
 const STATS_KEY = 'site.istatistikler'
 const KUNYE_KEY = 'hakkimizda.kunye'
-
-
-
 
 export default function About() {
   const { edit } = useSiteCopy()
@@ -39,9 +33,7 @@ export default function About() {
 
   return (
     <>
-      <Section
-        sectionId="hakkimizda.giris"
-        label="Sayfa başlığı" spacing="intro">
+      <Section sectionId="hakkimizda.giris" label="Sayfa başlığı" spacing="intro">
         <SectionHeading
           code="03"
           eyebrow="Kurum künyesi"
@@ -55,9 +47,7 @@ export default function About() {
         />
       </Section>
 
-      <Section
-        sectionId="hakkimizda.kunye-bolumu"
-        label="Künye ve tanıtım" spacing="top-none">
+      <Section sectionId="hakkimizda.kunye-bolumu" label="Künye ve tanıtım" spacing="top-none">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="panel brackets relative overflow-hidden p-8 sm:p-10">
             <div className="relative">
@@ -119,16 +109,13 @@ export default function About() {
         </div>
       </Section>
 
-      <Section
-        sectionId="hakkimizda.ilkeler-bolumu"
-        label="İlkeler" className="bg-bg-soft/60">
+      <Section sectionId="hakkimizda.ilkeler-bolumu" label="İlkeler" className="bg-bg-soft/60">
         <SectionHeading
           code="07"
           eyebrow="Yönetmelik"
           eyebrowKey="hakkimizda.ilkeler.eyebrow"
           title="Bizi biz yapan dört ilke"
           titleKey="hakkimizda.ilkeler.baslik"
-          align="center"
         />
         <div className={`stagger mt-14 grid gap-6 ${cardGrid(valueList.length, 4)}`}>
           {valueList.map((value, index) => (
@@ -153,45 +140,59 @@ export default function About() {
         </div>
       </Section>
 
-      <Section
-        sectionId="hakkimizda.ekip-bolumu"
-        label="Ekip">
+      <Section sectionId="hakkimizda.ekip-bolumu" label="Ekip">
         <SectionHeading
           code="08"
           eyebrow="Personel"
           eyebrowKey="hakkimizda.ekip.eyebrow"
           title="Projenizde çalışacak kişiler"
           titleKey="hakkimizda.ekip.baslik"
-          align="center"
         />
         {/* Fotoğraf yokken kare bir monogram kutusu kartın yarısını boş
             bırakıyordu. Baş harfler artık isme eşlik eden küçük bir işaret;
             kart bilginin boyunda. */}
         <div className={`stagger mt-14 grid gap-6 ${cardGrid(teamList.length, 4)}`}>
-          {teamList.map((member, index) => (
-            <div key={member.name} className="panel flex items-center gap-4 p-5">
-              <span
-                className="grid h-12 w-12 shrink-0 place-items-center border border-line/40 bg-accent/[0.06] font-display text-title font-bold text-fg/80"
-                aria-hidden="true"
-              >
-                {initials(member.name)}
-              </span>
-              <div className="min-w-0">
-                <p
-                  className="truncate font-mono text-meta font-medium uppercase tracking-data text-fg"
-                  {...listAttrs(edit, TEAM_KEY, index, 'name')}
+          {teamList.map((member, index) => {
+            // Boş adres `<img src="">` üretip sayfayı yeniden isterdi.
+            const foto = member.photo ? safeUrl(member.photo, '') : ''
+            return (
+              <div key={member.name} className="panel flex items-center gap-4 p-5">
+                {/* Fotoğraf panelden yüklenir; yokken baş harfler durur.
+                  Adres veritabanından geldiği için şema denetimden geçer. */}
+                <span
+                  className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden border border-line/40 bg-accent/[0.06] font-display text-title font-bold text-fg/80"
+                  aria-hidden="true"
+                  {...listAttrs(edit, TEAM_KEY, index, 'photo')}
                 >
-                  {member.name}
-                </p>
-                <p
-                  className="mt-1 font-mono text-label uppercase tracking-label text-fg-subtle"
-                  {...listAttrs(edit, TEAM_KEY, index, 'role')}
-                >
-                  {member.role}
-                </p>
+                  {foto ? (
+                    <img
+                      src={foto}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    initials(member.name)
+                  )}
+                </span>
+                <div className="min-w-0">
+                  <p
+                    className="truncate font-mono text-meta font-medium uppercase tracking-data text-fg"
+                    {...listAttrs(edit, TEAM_KEY, index, 'name')}
+                  >
+                    {member.name}
+                  </p>
+                  <p
+                    className="mt-1 font-mono text-label uppercase tracking-label text-fg-subtle"
+                    {...listAttrs(edit, TEAM_KEY, index, 'role')}
+                  >
+                    {member.role}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </Section>
 

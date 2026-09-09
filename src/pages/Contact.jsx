@@ -130,9 +130,8 @@ export default function Contact() {
           eyebrowKey="sss.eyebrow"
           title="Sık sorulan sorular"
           titleKey="sss.baslik"
-          align="center"
         />
-        <div className="mx-auto mt-12 max-w-3xl space-y-4">
+        <div className="mt-12 max-w-3xl space-y-4">
           {faqList.map((faq, index) => (
             <details
               key={faq.q}

@@ -77,7 +77,6 @@ export default function Services() {
           eyebrowKey="hizmetler.surec.eyebrow"
           title="4 adımda net bir süreç"
           titleKey="hizmetler.surec.baslik"
-          align="center"
         />
         <ol className="stagger mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((item, index) => (
@@ -109,9 +108,8 @@ export default function Services() {
           eyebrowKey="sss.eyebrow"
           title="Sık sorulan sorular"
           titleKey="sss.baslik"
-          align="center"
         />
-        <div className="mx-auto mt-12 max-w-3xl space-y-4">
+        <div className="mt-12 max-w-3xl space-y-4">
           {faqList.map((faq, index) => (
             <details
               key={faq.q}

@@ -16,7 +16,7 @@ export default function CTA() {
       data-section="ortak.cta"
       data-section-label="Randevu çağrısı"
       data-section-hidden={published ? undefined : '1'}
-      className={`py-16 sm:py-20 ${!published && edit ? 'opacity-40' : ''}`}
+      className={`pb-16 pt-24 sm:pb-24 sm:pt-36 ${!published && edit ? 'opacity-40' : ''}`}
     >
       <div className="container">
         <div className="panel brackets px-6 py-14 text-center sm:px-12 sm:py-20">

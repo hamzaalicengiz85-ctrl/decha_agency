@@ -86,7 +86,6 @@
     --grain-op: 0.06;
 
     /* Sabit arayüz parçalarının ölçüleri */
-    --rail-w: 0px;
     --hud-h: 24px;
     --map-filter: none;
 
@@ -101,13 +100,6 @@
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --dur-fast: 0.14s;
     --dur-base: 0.42s;
-  }
-}
-
-@media (min-width: 768px) {
-  :root {
-    /* Sol ikon rayı */
-    --rail-w: 52px;
   }
 }
 

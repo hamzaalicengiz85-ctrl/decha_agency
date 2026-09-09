@@ -12,7 +12,8 @@ export default function Process() {
   return (
     <Section
         sectionId="ortak.surec"
-        label="Süreç adımları">
+        label="Süreç adımları"
+        spacing="loose">
       <SectionHeading
         code="03"
         eyebrow="İşleyiş"
@@ -21,7 +22,6 @@ export default function Process() {
         titleKey="surec.baslik"
         description="Şeffaf, ölçülebilir ve tahmin edilebilir. Her aşama kayıt altına alınır."
         descriptionKey="surec.aciklama"
-        align="center"
       />
 
       <div className="mt-12">

@@ -31,7 +31,7 @@ export default function Navbar() {
   }, [open])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 pl-[var(--rail-w)]">
+    <header className="fixed inset-x-0 top-0 z-50">
       {/* Kontrol paneli */}
       <nav
         className="border-b border-line/45 bg-bg/95 backdrop-blur-sm"

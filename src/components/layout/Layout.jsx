@@ -5,7 +5,6 @@ import Footer from './Footer'
 import ScrollToTop from './ScrollToTop'
 import ScreenFx from './ScreenFx'
 import Intro from './Intro'
-import Rail from './Rail'
 import Hud from './Hud'
 import { Spinner } from '../ui/Loader'
 import { isEditMode } from '../../lib/siteCopyContext'
@@ -29,11 +28,10 @@ export default function Layout() {
       )}
 
       <ScreenFx />
-      <Rail />
       <Hud />
       <ScrollToTop />
 
-      <div className="relative z-10 flex min-h-screen flex-col pl-[var(--rail-w)] pb-[calc(var(--hud-h)+8px)]">
+      <div className="relative z-10 flex min-h-screen flex-col pb-[calc(var(--hud-h)+8px)]">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-caption focus:font-medium focus:uppercase focus:text-accent-fg"

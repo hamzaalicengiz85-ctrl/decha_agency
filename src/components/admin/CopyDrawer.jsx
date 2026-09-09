@@ -249,6 +249,7 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
               item={draft}
               fields={fieldNames(listRow)}
               onChange={(name, next) => setDraft((current) => ({ ...current, [name]: next }))}
+              onNeedsReauth={onNeedsReauth}
             />
 
             {feedback ? (

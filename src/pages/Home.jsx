@@ -96,9 +96,11 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* Projeler hizmetlerin devamı: "ne yapıyoruz" → "ne yaptık". */}
       <Section
         sectionId="home.projeler"
-        label="Öne çıkan projeler">
+        label="Öne çıkan projeler"
+        spacing="tight">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <SectionHeading
                 code="02"
@@ -132,16 +134,17 @@ export default function Home() {
 
       <Process />
 
+      {/* Referanslar sürecin kanıtı: ona bitişik durur. */}
       <Section
         sectionId="home.referanslar"
-        label="Referanslar">
+        label="Referanslar"
+        spacing="tight">
         <SectionHeading
           code="04"
           eyebrow="Tutanaklar"
           eyebrowKey="home.referanslar.eyebrow"
           title="Müşterilerimiz ne diyor?"
           titleKey="home.referanslar.baslik"
-          align="center"
         />
         {testimonialList.length === 0 ? (
           <div className="mt-10">
@@ -154,7 +157,7 @@ export default function Home() {
             ))}
           </div>
         )}
-        <p className="mt-8 text-center font-mono text-label uppercase tracking-label text-fg-subtle">
+        <p className="mt-8 font-mono text-label uppercase tracking-label text-fg-subtle">
           <Copy k="home.referanslar.davet">Referanslarımızla görüşmek ister misiniz?</Copy>{' '}
           <Link to="/iletisim" className="tap link-underline -my-2 inline-flex items-center py-2 text-accent">
             <Copy k="home.referanslar.baglanti">Bize yazın</Copy>

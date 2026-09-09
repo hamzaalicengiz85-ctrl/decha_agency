@@ -32,11 +32,16 @@ export const HAKKIMIZDA_ILKELER = [
   },
 ]
 
+/**
+ * `photo` bilerek boş: fotoğraf yönetim panelinden yüklenir (liste
+ * düzenleyicisindeki "Fotoğraf" alanı). Boşken adın baş harfleri gösterilir —
+ * uydurma bir görsel koymaktansa dürüst bir yer tutucu.
+ */
 export const HAKKIMIZDA_EKIP = [
-  { name: 'Deniz Yılmaz', role: 'Kurucu & Kreatif Direktör' },
-  { name: 'Cem Arslan', role: 'Teknoloji Direktörü' },
-  { name: 'Nil Şahin', role: 'Ürün Tasarımcısı' },
-  { name: 'Barış Öz', role: 'Büyüme Uzmanı' },
+  { name: 'Deniz Yılmaz', role: 'Kurucu & Kreatif Direktör', photo: '' },
+  { name: 'Cem Arslan', role: 'Teknoloji Direktörü', photo: '' },
+  { name: 'Nil Şahin', role: 'Ürün Tasarımcısı', photo: '' },
+  { name: 'Barış Öz', role: 'Büyüme Uzmanı', photo: '' },
 ]
 
 export const HAKKIMIZDA_KUNYE = [

@@ -1,4 +1,5 @@
 import { ICON_NAMES } from './records'
+import PhotoField from './PhotoField'
 
 /**
  * Liste öğesi düzenleyicisi.
@@ -23,6 +24,7 @@ const LABELS = {
   icon: 'Simge',
   href: 'Bağlantı (https://…)',
   to: 'Site içi adres (/hizmetler)',
+  photo: 'Fotoğraf',
 }
 
 const LONG = new Set(['text', 'a', 'summary'])
@@ -31,7 +33,7 @@ function fieldLabel(name) {
   return LABELS[name] ?? name
 }
 
-export default function ListEditor({ item, fields, onChange }) {
+export default function ListEditor({ item, fields, onChange, onNeedsReauth }) {
   return (
     <div className="space-y-3">
       {fields.map((name) => {
@@ -47,7 +49,14 @@ export default function ListEditor({ item, fields, onChange }) {
               {fieldLabel(name)}
             </label>
 
-            {name === 'icon' ? (
+            {name === 'photo' ? (
+              <PhotoField
+                id={id}
+                value={value}
+                onChange={(next) => onChange(name, next)}
+                onNeedsReauth={onNeedsReauth}
+              />
+            ) : name === 'icon' ? (
               <select
                 id={id}
                 value={value}

@@ -3,14 +3,31 @@ import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useSectionVisible, useSiteCopy } from '../../lib/siteCopyContext'
 
 /**
+ * DİKEY RİTİM
+ *
  * Dikey boşluk `spacing` prop'u ile verilir — className üzerinden geçilen
- * pt-0 gibi sınıflar duyarlı varsayılanı (sm:py-28) ezemediği için
- * masaüstünde sessizce etkisiz kalıyordu.
+ * pt-0 gibi sınıflar duyarlı varsayılanı ezemediği için masaüstünde
+ * sessizce etkisiz kalıyordu.
+ *
+ * Önceki düzende her bölüm `py-20` idi: sayfa eşit aralıklı beş dilim gibi
+ * okunuyordu, hiçbir yerde "yeni bir konu başlıyor" duygusu yoktu.
+ *
+ * İki kural:
+ *
+ * 1) BOŞLUK SONRAKİ BÖLÜME AİT. Üst dolgu alt dolgudan belirgin biçimde
+ *    büyük: bölüm kendi başlığına yapışır, ayrılık başlığın ÖNÜNDE olur.
+ *    Eşit dolguda başlık iki bölümün ortasında asılı kalıyordu.
+ *
+ * 2) BÖLÜMLER İKİLİ GRUPLANIR. `tight` bir önceki bölümün devamı demektir
+ *    (hizmetler → projeler, süreç → referanslar); `loose` yeni bir hareket
+ *    ya da sayfanın kapanışı. Sıra şöyle okunur: ara — bitişik — ARA —
+ *    bitişik — ARA.
  */
 const SPACING = {
-  default: 'py-14 sm:py-20',
-  tight: 'py-10 sm:py-14',
-  intro: 'pb-8 pt-12 sm:pb-10 sm:pt-14', // sayfa başlığı bloğu
+  default: 'pb-10 pt-16 sm:pb-14 sm:pt-24',
+  tight: 'pb-10 pt-8 sm:pb-14 sm:pt-10', // bir öncekinin devamı
+  loose: 'pb-16 pt-24 sm:pb-24 sm:pt-36', // yeni hareket / kapanış
+  intro: 'pb-6 pt-12 sm:pb-8 sm:pt-16', // sayfa başlığı bloğu
   'top-none': 'pb-14 sm:pb-20',
   'bottom-none': 'pt-14 sm:pt-20',
   none: '',
