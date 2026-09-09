@@ -62,8 +62,15 @@
     --c-danger-fill: 195 32 38;
     --c-danger-fg: 255 244 241;
 
-    /* Çerçeveler turuncu — referanstaki tek renkli çizgi dili */
-    --c-line: 255 107 0;
+    /* ÇERÇEVE RENGİ AYRI BİR ROL
+       Denetimde sayıldı: turuncu (255 107 0) sitedeki EN ÇOK kullanılan
+       metin rengiydi — 170 öğe, gövde bejinden (153) fazla. Her çerçeve,
+       her etiket, her ikon turuncu olunca vurgu vurgulamayı bırakıyor.
+       Yapısal çizgiler artık sıcak nötr bir tona geçti (markanın Endüstriyel
+       Kahve tonundan türetildi); turuncu yalnız tıklanabilir öğelerde,
+       etkin durumlarda ve bölüm başına tek işarette kalıyor.
+       Zemin ızgarası da bu tondan çiziliyor. */
+    --c-line: 138 108 84;
     --line-op: 0.42;
     --line-op-strong: 0.85;
 
@@ -73,7 +80,7 @@
        paneller aslında saydam kalıp sayfa ızgarasını içeriden
        gösteriyordu. Sayfa zemininden bir tık açık — çerçeve zaten ayırıyor. */
     --panel-bg: 18 13 9;
-    --panel-border: rgb(255 107 0 / 0.5);
+    --panel-border: rgb(138 108 84 / 0.62);
     --panel-shadow: none;
 
     --grain-op: 0.06;
@@ -114,8 +121,8 @@
     @apply bg-bg font-sans text-fg-muted antialiased;
     min-height: 100vh;
     background-image:
-      linear-gradient(rgb(var(--c-line) / 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--c-line) / 0.055) 1px, transparent 1px),
+      linear-gradient(rgb(var(--c-line) / 0.085) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-line) / 0.085) 1px, transparent 1px),
       radial-gradient(ellipse 120% 80% at 50% 0%, rgb(var(--c-bg-soft)) 0%, rgb(var(--c-bg)) 60%);
     background-size: 28px 28px, 28px 28px, 100% 100%;
     background-attachment: fixed;
@@ -156,6 +163,26 @@
   }
 }
 
+@layer utilities {
+  /* DOKUNMA HEDEFİ
+     Denetimde ölçüldü: mobilde sayfa başına 15-20 bağlantı/düğme 40px'in
+     altındaydı (alt bilgi bağlantıları 29px, sosyal rozetler 29px, küçük
+     düğmeler 38px). Fare/kalemde görsel boyut aynı kalsın diye kural
+     yalnızca dokunmatik girişte açılıyor. */
+  @media (pointer: coarse) {
+    .tap,
+    .key {
+      min-height: 44px;
+    }
+
+    input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+    select,
+    .field-input {
+      min-height: 44px;
+    }
+  }
+}
+
 @layer components {
   /* ============================================================
      TERMİNAL ARAYÜZÜ
@@ -168,7 +195,7 @@
     position: relative;
     background-color: rgb(var(--panel-bg));
     border: 1px solid var(--panel-border);
-    box-shadow: 0 0 0 3px rgb(var(--c-bg)), 0 0 0 4px rgb(var(--c-accent) / 0.28);
+    box-shadow: 0 0 0 3px rgb(var(--c-bg)), 0 0 0 4px rgb(var(--c-line) / 0.35);
     border-radius: 0;
   }
 
@@ -265,9 +292,9 @@
     border: 1px solid rgb(var(--c-danger) / 0.8);
     color: rgb(var(--c-danger));
     font-family: 'IBM Plex Mono', ui-monospace, monospace;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
   }
 
@@ -278,7 +305,7 @@
 
   /* Form etiketi / üst başlık */
   .eyebrow {
-    @apply font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-fg-subtle;
+    @apply font-mono text-label font-medium uppercase tracking-eyebrow text-fg-subtle;
   }
 
   /* Uzun düz metin sütunu.
@@ -461,7 +488,12 @@
       .fill-scroll {
         animation: heading-fill linear both;
         animation-timeline: view();
-        animation-range: entry 25% cover 40%;
+        /* Ölçüldü: eski aralıkta (entry 25% cover 40%) başlık ekranın %85
+           yüksekliğindeyken hâlâ yarı boştu — "4 adımda net b|ir süreç" —
+           ve göz kaydırırken tam da oraya düşüyor. Yeni aralıkta başlık
+           ekranın ~%70'ine geldiğinde dolmuş oluyor: animasyon duruyor,
+           okuma anında yazı net. */
+        animation-range: entry 5% cover 22%;
       }
     }
   }

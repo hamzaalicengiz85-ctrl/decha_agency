@@ -1,7 +1,7 @@
 export function Spinner({ label = 'Kayıt getiriliyor' }) {
   return (
     <div
-      className="flex items-center justify-center gap-3 py-12 font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle"
+      className="flex items-center justify-center gap-3 py-12 font-mono text-label uppercase tracking-label text-fg-subtle"
       role="status"
     >
       <span className="h-2 w-2 animate-blink bg-accent" />
@@ -36,8 +36,8 @@ export function EmptyState({ title = 'Kayıt bulunamadı', description, eyebrow 
   return (
     <div className="panel brackets p-12 text-center">
       <p className="eyebrow">{eyebrow}</p>
-      <h3 className="mt-3 font-display text-lg font-bold text-fg">{title}</h3>
-      {description ? <p className="mt-2 text-sm text-fg-muted">{description}</p> : null}
+      <h3 className="mt-3 font-display text-title font-bold text-fg">{title}</h3>
+      {description ? <p className="mt-2 text-caption text-fg-muted">{description}</p> : null}
     </div>
   )
 }

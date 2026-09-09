@@ -57,7 +57,7 @@ export default function Hud() {
   return (
     <div
       aria-hidden="true"
-      className="hud-bar pointer-events-none fixed inset-x-0 bottom-0 z-30 flex h-[var(--hud-h)] items-center justify-between gap-4 border-t border-accent/40 px-3 font-mono text-[9.5px] uppercase tracking-[0.16em] text-accent/90 sm:px-5 sm:text-[10px]"
+      className="hud-bar pointer-events-none fixed inset-x-0 bottom-0 z-30 flex h-[var(--hud-h)] items-center justify-between gap-4 border-t border-line/40 px-3 font-mono text-label uppercase tracking-label text-accent/90 sm:px-5 sm:text-label"
     >
       <span className="num">DA · {section}</span>
       <span className="num hidden sm:inline">{clock}</span>

@@ -228,12 +228,12 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
   return (
     <aside
       className={[
-        'flex shrink-0 flex-col border border-accent/35 bg-bg-soft/40 transition-[width]',
+        'flex shrink-0 flex-col border border-line/35 bg-bg-soft/40 transition-[width]',
         isRecord ? 'w-[26rem]' : 'w-80',
       ].join(' ')}
     >
-      <div className="border-b border-accent/35 px-4 py-3">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+      <div className="border-b border-line/35 px-4 py-3">
+        <p className="font-mono text-label uppercase tracking-eyebrow text-accent">
           {picked ? 'Seçili öğe' : 'Sayfa metinleri'}
         </p>
       </div>
@@ -241,7 +241,7 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
       <div className="min-h-0 flex-1 overflow-y-auto p-4">
         {isList ? (
           <>
-            <p className="mb-3 break-all font-mono text-[10px] text-fg-subtle">
+            <p className="mb-3 break-all font-mono text-label text-fg-subtle">
               {picked.listKey} · {Number(picked.listIndex) + 1}. öğe / {listRow?.length ?? '—'}
             </p>
 
@@ -252,7 +252,7 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
             />
 
             {feedback ? (
-              <p role="status" className="mt-3 font-mono text-[10.5px] text-accent">
+              <p role="status" className="mt-3 font-mono text-label text-accent">
                 {feedback}
               </p>
             ) : null}
@@ -266,8 +266,8 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
               </Button>
             </div>
 
-            <div className="mt-6 border-t border-accent/25 pt-4">
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">
+            <div className="mt-6 border-t border-line/25 pt-4">
+              <p className="mb-2 font-mono text-label uppercase tracking-label text-fg-subtle">
                 Liste işlemleri
               </p>
               <div className="flex flex-wrap gap-2">
@@ -302,7 +302,7 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
                   Aşağı taşı
                 </Button>
               </div>
-              <p className="mt-2 font-mono text-[10px] leading-relaxed text-fg-subtle">
+              <p className="mt-2 font-mono text-label leading-relaxed text-fg-subtle">
                 Yeni öğe seçili öğenin altına eklenir. Listedeki son öğe
                 silinemez — boş liste koddaki varsayılana döner.
               </p>
@@ -310,20 +310,20 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
           </>
         ) : picked?.copyKey ? (
           <>
-            <p className="mb-2 break-all font-mono text-[10px] text-fg-subtle">{picked.copyKey}</p>
+            <p className="mb-2 break-all font-mono text-label text-fg-subtle">{picked.copyKey}</p>
             <textarea
               value={value}
               onChange={(event) => setValue(event.target.value)}
               rows={6}
               aria-label="Metin"
-              className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2.5 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+              className="w-full border border-line/40 bg-accent/[0.04] px-3 py-2.5 font-mono text-meta text-fg focus:border-accent focus:outline-none"
             />
-            <p className="mt-2 font-mono text-[10px] leading-relaxed text-fg-subtle">
+            <p className="mt-2 font-mono text-label leading-relaxed text-fg-subtle">
               Boş bırakırsanız sitedeki varsayılan metin kullanılır.
             </p>
 
             {feedback ? (
-              <p role="status" className="mt-3 font-mono text-[10.5px] text-accent">
+              <p role="status" className="mt-3 font-mono text-label text-accent">
                 {feedback}
               </p>
             ) : null}
@@ -339,11 +339,11 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
           </>
         ) : isRecord ? (
           <>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+            <p className="mb-3 font-mono text-label uppercase tracking-label text-accent">
               {RECORD_TYPES[record.table].singular}
             </p>
             {feedback ? (
-              <p role="status" className="mb-3 font-mono text-[10.5px] text-accent">
+              <p role="status" className="mb-3 font-mono text-label text-accent">
                 {feedback}
               </p>
             ) : null}
@@ -357,10 +357,10 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
           </>
         ) : missingRecord ? (
           <>
-            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+            <p className="mb-2 font-mono text-label uppercase tracking-label text-accent">
               {RECORD_TYPES[record.table].singular} · veritabanında yok
             </p>
-            <p className="font-mono text-[11.5px] leading-relaxed text-fg-muted">
+            <p className="font-mono text-label leading-relaxed text-fg-muted">
               Sitede şu an koddaki örnek içerik gösteriliyor; bu kart
               Supabase&apos;de bir kayda karşılık gelmediği için düzenlenemiyor.
               Sol menüdeki <strong className="text-accent">{RECORD_TYPES[record.table].label}</strong>{' '}
@@ -368,11 +368,11 @@ export default function CopyDrawer({ picked, onSelect, onClose, onApplied, onNee
             </p>
           </>
         ) : picked?.rec ? (
-          <p className="font-mono text-[11.5px] leading-relaxed text-fg-muted">
+          <p className="font-mono text-label leading-relaxed text-fg-muted">
             Bu kaydı okumak için Supabase bağlantısı gerekiyor.
           </p>
         ) : (
-          <p className="font-mono text-[10.5px] leading-relaxed text-fg-subtle">
+          <p className="font-mono text-label leading-relaxed text-fg-subtle">
             Soldaki görselden ya da içerik ağacından bir öğe seçin.
           </p>
         )}

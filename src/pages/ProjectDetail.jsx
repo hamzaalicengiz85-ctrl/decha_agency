@@ -68,7 +68,7 @@ export default function ProjectDetail() {
       <Section spacing="intro">
         <Link
           to="/projeler"
-          className="inline-flex items-center gap-2 text-sm text-fg-muted transition hover:text-fg"
+          className="inline-flex items-center gap-2 text-caption text-fg-muted transition hover:text-fg"
         >
           <Icon name="arrow" className="h-4 w-4 rotate-180" />
           Projeler
@@ -76,13 +76,13 @@ export default function ProjectDetail() {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-end">
           <div>
-            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+            <span className="border border-line/50 px-2.5 py-1 font-mono text-label uppercase tracking-label text-accent">
               {project.category}
             </span>
             <h1 className="mt-5 text-balance font-display text-display font-bold leading-tight text-fg">
               {project.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">{project.summary}</p>
+            <p className="mt-5 max-w-2xl text-body leading-relaxed text-fg-muted">{project.summary}</p>
           </div>
 
           <dl className="grid grid-cols-2 gap-4">
@@ -106,7 +106,7 @@ export default function ProjectDetail() {
           </span>
           <div className="relative text-right">
             <p className="eyebrow"><Copy k="proje.dosya-kodu">Dosya kodu</Copy></p>
-            <p className="num mt-1 font-mono text-[13px] text-fg">
+            <p className="num mt-1 font-mono text-caption text-fg">
               {fileCode(project.slug, project.year)}
             </p>
           </div>
@@ -116,8 +116,8 @@ export default function ProjectDetail() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
           <div>
-            <h2 className="font-display text-[20px] font-bold text-fg"><Copy k="proje.hakkinda">Proje hakkında</Copy></h2>
-            <div className="mt-5 space-y-4 text-base leading-relaxed text-fg-muted">
+            <h2 className="font-display text-title font-bold text-fg"><Copy k="proje.hakkinda">Proje hakkında</Copy></h2>
+            <div className="mt-5 space-y-4 text-lead leading-relaxed text-fg-muted">
               {String(project.description ?? '')
                 .split('\n')
                 .filter(Boolean)
@@ -131,7 +131,7 @@ export default function ProjectDetail() {
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="border border-accent/35 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.1em] text-fg-subtle"
+                    className="border border-line/35 px-3 py-1 font-mono text-label uppercase tracking-data text-fg-subtle"
                   >
                     {tag}
                   </span>
@@ -148,10 +148,10 @@ export default function ProjectDetail() {
               <dl className="mt-6 space-y-6">
                 {metrics.map((metric) => (
                   <div key={metric.label}>
-                    <dd className="font-display text-3xl font-bold text-accent">
+                    <dd className="font-display text-stat font-bold text-accent">
                       {metric.value}
                     </dd>
-                    <dt className="mt-1 text-sm text-fg-muted">{metric.label}</dt>
+                    <dt className="mt-1 text-caption text-fg-muted">{metric.label}</dt>
                   </div>
                 ))}
               </dl>
@@ -162,7 +162,7 @@ export default function ProjectDetail() {
 
       {related.length > 0 ? (
         <Section spacing="top-none" className="bg-bg-soft/60">
-          <h2 className="font-display text-[20px] font-bold text-fg"><Copy k="proje.diger">Diğer projeler</Copy></h2>
+          <h2 className="font-display text-title font-bold text-fg"><Copy k="proje.diger">Diğer projeler</Copy></h2>
           <div className="stagger mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link
@@ -171,14 +171,14 @@ export default function ProjectDetail() {
                 className="panel panel-hover flex items-center gap-4 p-5"
               >
                 <span
-                  className="grid h-14 w-14 shrink-0 place-items-center border border-accent/45 font-display text-[15px] font-bold text-accent"
+                  className="grid h-14 w-14 shrink-0 place-items-center border border-line/45 font-display text-body font-bold text-accent"
                   aria-hidden="true"
                 >
                   {initials(item.client || item.title)}
                 </span>
                 <div>
-                  <p className="font-display text-[13px] font-bold uppercase text-accent">{item.title}</p>
-                  <p className="mt-1 text-xs text-fg-subtle">{item.category}</p>
+                  <p className="font-display text-caption font-bold uppercase text-accent">{item.title}</p>
+                  <p className="mt-1 text-meta text-fg-subtle">{item.category}</p>
                 </div>
               </Link>
             ))}

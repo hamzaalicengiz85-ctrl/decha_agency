@@ -32,12 +32,12 @@ export default function SectionHeading({
           )}
         >
           {code ? (
-            <span className="num bg-accent px-1.5 py-0.5 font-mono text-[10px] font-medium text-accent-fg">
+            <span className="num bg-accent px-1.5 py-0.5 font-mono text-label font-medium text-accent-fg">
               {code}
             </span>
           ) : null}
           {eyebrow ? (
-            <span className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+            <span className="font-mono text-label font-medium uppercase tracking-eyebrow text-accent">
               {eyebrowKey ? <Copy k={eyebrowKey}>{eyebrow}</Copy> : eyebrow}
             </span>
           ) : null}
@@ -50,7 +50,7 @@ export default function SectionHeading({
       </Heading>
 
       {description ? (
-        <p className="mt-4 text-[15px] leading-relaxed text-fg-muted">
+        <p className="mt-4 text-body leading-relaxed text-fg-muted">
           {descriptionKey ? <Copy k={descriptionKey}>{description}</Copy> : description}
         </p>
       ) : null}

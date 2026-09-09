@@ -24,6 +24,9 @@ export default function Contact() {
   const address = useCopy('site.adres', SITE.address)
   const hours = useCopy('iletisim.calisma-saatleri', 'Hafta içi 09:00 – 18:00')
 
+  // Değeri boş olan kanal listelenmez — uydurma telefon kaldırıldıktan
+  // sonra "Telefon: (boş)" satırı kalmasın. Panelde hepsi görünür ki
+  // tıklanıp doldurulabilsin.
   const channelList = [
     { icon: 'mail', label: 'E-posta', value: email, href: `mailto:${email}`, k: 'site.eposta' },
     {
@@ -35,7 +38,7 @@ export default function Contact() {
     },
     { icon: 'pin', label: 'Ofis', value: address, k: 'site.adres' },
     { icon: 'clock', label: 'Çalışma saatleri', value: hours, k: 'iletisim.calisma-saatleri' },
-  ]
+  ].filter((channel) => edit || channel.value)
 
   usePageMeta({
     title: 'İletişim',
@@ -55,7 +58,7 @@ export default function Contact() {
           title="Projenizi konuşalım"
           titleKey="iletisim.baslik"
           as="h1"
-          description="Formu doldurun, en geç 1 iş günü içinde size dönüş yapalım. Dilerseniz doğrudan e-posta veya telefonla da ulaşabilirsiniz."
+          description="Formu doldurun, en geç 1 iş günü içinde size dönüş yapalım. Dilerseniz doğrudan e-posta ile de ulaşabilirsiniz."
           descriptionKey="iletisim.aciklama"
           align="center"
         />
@@ -65,35 +68,40 @@ export default function Contact() {
         sectionId="iletisim.form"
         label="İletişim formu ve kanallar" spacing="top-none">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+          {/* Dört kanal önce dört ayrı çerçeveli kutuydu: tek satırlık bilgi
+              için dört kez tekrar eden ağır bir kabuk. Tek panel, içinde
+              ayraçlı satırlar — aynı bilgi, dörtte bir çerçeve. */}
           <div className="space-y-4">
-            {channelList.map((channel) => (
-              <div key={channel.label} className="panel flex items-start gap-4 p-5">
-                <span className="grid h-10 w-10 shrink-0 place-items-center border border-accent/35 text-accent">
-                  <Icon name={channel.icon} className="h-5 w-5" />
-                </span>
-                <div>
-                  <p className="eyebrow">{channel.label}</p>
-                  {channel.href ? (
-                    <a
-                      href={channel.href}
-                      className="mt-1.5 block font-mono text-[13px] text-fg transition hover:text-accent"
-                    >
-                      <Copy k={channel.k}>{channel.value}</Copy>
-                    </a>
-                  ) : (
-                    <p className="mt-1.5 font-mono text-[13px] text-fg">
-                      <Copy k={channel.k}>{channel.value}</Copy>
-                    </p>
-                  )}
+            <div className="panel divide-y divide-line/25">
+              {channelList.map((channel) => (
+                <div key={channel.label} className="flex items-center gap-4 px-5 py-4">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center border border-line/35 text-accent">
+                    <Icon name={channel.icon} className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="eyebrow">{channel.label}</p>
+                    {channel.href ? (
+                      <a
+                        href={channel.href}
+                        className="tap -my-2 flex items-center py-2 font-mono text-caption text-fg transition hover:text-accent"
+                      >
+                        <Copy k={channel.k}>{channel.value}</Copy>
+                      </a>
+                    ) : (
+                      <p className="mt-1 font-mono text-caption text-fg">
+                        <Copy k={channel.k}>{channel.value}</Copy>
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             <div className="panel p-5">
               <p className="eyebrow">
                 <Copy k="iletisim.konum.baslik">Konum kaydı</Copy>
               </p>
-              <dl className="mt-4 space-y-2.5 font-mono text-[12px]">
+              <dl className="mt-4 space-y-2.5 font-mono text-meta">
                 {konum.map((item, index) => (
                   <div key={item.label} className="flex items-baseline justify-between gap-4">
                     <dt className="text-fg-subtle" {...listAttrs(edit, KONUM_KEY, index, 'label')}>
@@ -130,14 +138,14 @@ export default function Contact() {
               key={faq.q}
               className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.06em] text-accent">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-body font-bold uppercase tracking-data text-accent">
                 <span {...listAttrs(edit, FAQ_KEY, index, 'q')}>{faq.q}</span>
                 <Icon
                   name="plus"
                   className="h-5 w-5 shrink-0 text-accent transition group-open:rotate-45"
                 />
               </summary>
-              <p className="mt-4 text-sm leading-relaxed text-fg-muted">{faq.a}</p>
+              <p className="mt-4 text-caption leading-relaxed text-fg-muted">{faq.a}</p>
             </details>
           ))}
         </div>

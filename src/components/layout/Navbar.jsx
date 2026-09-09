@@ -34,16 +34,16 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 pl-[var(--rail-w)]">
       {/* Kontrol paneli */}
       <nav
-        className="border-b border-accent/45 bg-bg/95 backdrop-blur-sm"
+        className="border-b border-line/45 bg-bg/95 backdrop-blur-sm"
         aria-label="Ana menü"
       >
         <div className="container flex h-14 items-center justify-between gap-4 sm:h-16">
           <Link
             to="/"
-            className="glitch-hover flex items-center"
+            className="tap glitch-hover flex items-center"
             aria-label="Decha Agency ana sayfa"
           >
-            <Logo className="text-[25px] sm:text-[30px]" />
+            <Logo className="text-[22px] sm:text-[30px]" />
           </Link>
 
           <ul className="hidden items-center gap-1 lg:flex">
@@ -54,14 +54,14 @@ export default function Navbar() {
                   end={link.to === '/'}
                   className={({ isActive }) =>
                     classNames(
-                      'flex items-baseline gap-1.5 border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition',
+                      'flex items-baseline gap-1.5 border px-3 py-1.5 font-mono text-label uppercase tracking-label transition',
                       isActive
-                        ? 'border-accent/60 bg-accent/15 text-fg'
-                        : 'border-transparent text-fg-muted hover:border-accent/35 hover:text-fg',
+                        ? 'border-line/60 bg-accent/15 text-fg'
+                        : 'border-transparent text-fg-muted hover:border-line/35 hover:text-fg',
                     )
                   }
                 >
-                  <span className="num text-[9px] opacity-80">{link.code}</span>
+                  <span className="num text-label opacity-80">{link.code}</span>
                   <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
                 </NavLink>
               </li>
@@ -77,7 +77,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
-            className="grid h-11 w-11 place-items-center border border-accent/50 text-accent lg:hidden"
+            className="grid h-11 w-11 place-items-center border border-line/50 text-accent lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Menüyü kapat' : 'Menüyü aç'}
@@ -90,7 +90,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         className={classNames(
-          'overflow-hidden border-b border-accent/45 bg-bg transition-[max-height] duration-300 lg:hidden',
+          'overflow-hidden border-b border-line/45 bg-bg transition-[max-height] duration-300 lg:hidden',
           open ? 'max-h-[75vh]' : 'invisible max-h-0',
         )}
         aria-hidden={!open}
@@ -98,18 +98,18 @@ export default function Navbar() {
       >
         <ul className="container flex flex-col py-2">
           {links.map((link, index) => (
-            <li key={link.to} className="border-b border-accent/20 last:border-0">
+            <li key={link.to} className="border-b border-line/20 last:border-0">
               <NavLink
                 to={safePath(link.to)}
                 end={link.to === '/'}
                 className={({ isActive }) =>
                   classNames(
-                    'flex items-baseline gap-3 px-3 py-3.5 font-mono text-[13px] uppercase tracking-[0.12em] transition-colors',
+                    'flex items-baseline gap-3 px-3 py-3.5 font-mono text-caption uppercase tracking-label transition-colors',
                     isActive ? 'bg-accent text-accent-fg' : 'text-accent',
                   )
                 }
               >
-                <span className="num text-[10px] opacity-80">{link.code}</span>
+                <span className="num text-label opacity-80">{link.code}</span>
                 <span {...listAttrs(edit, MENU_KEY, index, 'label')}>{link.label}</span>
               </NavLink>
             </li>

@@ -19,7 +19,7 @@ function ListEditor({ items, onChange }) {
               next[index] = event.target.value
               onChange(next)
             }}
-            className={classNames(fieldInputClass, 'border-accent/40')}
+            className={classNames(fieldInputClass, 'border-line/40')}
             aria-label={`Madde ${index + 1}`}
           />
           <button
@@ -35,7 +35,7 @@ function ListEditor({ items, onChange }) {
       <button
         type="button"
         onClick={() => onChange([...list, ''])}
-        className="key inline-flex items-center gap-1.5 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent"
+        className="key inline-flex items-center gap-1.5 px-3 py-2 font-mono text-label uppercase tracking-label text-accent"
       >
         <Icon name="plus" className="h-3.5 w-3.5" /> Madde ekle
       </button>
@@ -58,14 +58,14 @@ function PairsEditor({ items, onChange }) {
             value={item.label ?? ''}
             onChange={(event) => update(index, 'label', event.target.value)}
             placeholder="Etiket"
-            className={classNames(fieldInputClass, 'border-accent/40')}
+            className={classNames(fieldInputClass, 'border-line/40')}
             aria-label={`Sonuç ${index + 1} etiketi`}
           />
           <input
             value={item.value ?? ''}
             onChange={(event) => update(index, 'value', event.target.value)}
             placeholder="Değer"
-            className={classNames(fieldInputClass, 'border-accent/40')}
+            className={classNames(fieldInputClass, 'border-line/40')}
             aria-label={`Sonuç ${index + 1} değeri`}
           />
           <button
@@ -81,7 +81,7 @@ function PairsEditor({ items, onChange }) {
       <button
         type="button"
         onClick={() => onChange([...list, { label: '', value: '' }])}
-        className="key inline-flex items-center gap-1.5 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent"
+        className="key inline-flex items-center gap-1.5 px-3 py-2 font-mono text-label uppercase tracking-label text-accent"
       >
         <Icon name="plus" className="h-3.5 w-3.5" /> Sonuç ekle
       </button>
@@ -129,7 +129,7 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
         if (field.type === 'list') {
           return (
             <div key={field.name}>
-              <p className="mb-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+              <p className="mb-1.5 font-mono text-label uppercase tracking-label text-accent">
                 {field.label}
               </p>
               <ListEditor items={values[field.name]} onChange={(next) => set(field.name, next)} />
@@ -139,7 +139,7 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
         if (field.type === 'pairs') {
           return (
             <div key={field.name}>
-              <p className="mb-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+              <p className="mb-1.5 font-mono text-label uppercase tracking-label text-accent">
                 {field.label}
               </p>
               <PairsEditor items={values[field.name]} onChange={(next) => set(field.name, next)} />
@@ -155,7 +155,7 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
                 onChange={(event) => set(field.name, event.target.checked)}
                 className="h-4 w-4 accent-[rgb(var(--c-accent))]"
               />
-              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-fg-muted">
+              <span className="font-mono text-label uppercase tracking-label text-fg-muted">
                 {field.label}
               </span>
             </label>
@@ -208,7 +208,7 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
         )
       })}
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-accent/25 pt-4">
+      <div className="flex flex-wrap items-center gap-2 border-t border-line/25 pt-4">
         <Button type="submit" size="sm" disabled={saving}>
           {saving ? 'Kaydediliyor…' : isNew ? 'Oluştur' : 'Kaydet'}
         </Button>
@@ -219,7 +219,7 @@ export default function RecordForm({ typeKey, record, onSave, onCancel, onDelete
           <button
             type="button"
             onClick={() => onDelete(values.id)}
-            className="ml-auto font-mono text-[10px] uppercase tracking-[0.16em] text-danger underline underline-offset-4"
+            className="ml-auto font-mono text-label uppercase tracking-label text-danger underline underline-offset-4"
           >
             Kaydı sil
           </button>

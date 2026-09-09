@@ -6,6 +6,7 @@ import { useSupabaseData } from '../hooks/useSupabaseData'
 import { breadcrumb, usePageMeta } from '../lib/seo'
 import { useCopy } from '../lib/siteCopyContext'
 import { posts } from '../data/content'
+import { cardGrid } from '../lib/grid'
 
 export default function Blog() {
   const emptyTitle = useCopy('blog.bos.baslik', 'Çok yakında sizlerle')
@@ -45,7 +46,7 @@ export default function Blog() {
         ) : postList.length === 0 ? (
           <EmptyState title={emptyTitle} description={emptyDesc} eyebrow="Hazırlanıyor" />
         ) : (
-          <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={`stagger grid gap-5 ${cardGrid(postList.length)}`}>
             {postList.map((post) => (
               <PostCard key={post.id ?? post.slug} post={post} as="h2" />
             ))}

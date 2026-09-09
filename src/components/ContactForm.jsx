@@ -118,23 +118,25 @@ export default function ContactForm() {
 
   const inputClass = (field) =>
     classNames(
-      'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-[13px] text-fg transition placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none',
-      errors[field] ? 'border-danger bg-danger/10' : 'border-accent/40',
+      'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-caption text-fg transition placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none',
+      // Arayüz sınırı: WCAG 1.4.11 için 3:1. Ölçüldü — %40 opaklıkta
+      // 1.6:1, %80'de 3:1.
+      errors[field] ? 'border-danger bg-danger/10' : 'border-line/90',
     )
 
   return (
     <form onSubmit={handleSubmit} noValidate className="panel brackets p-0">
       {/* Resmî form başlığı */}
-      <div className="flex items-center justify-between border-b border-accent/45 bg-accent/10 px-5 py-3">
+      <div className="flex items-center justify-between border-b border-line/45 bg-accent/10 px-5 py-3">
         <div>
-          <p className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-accent">
+          <p className="font-display text-caption font-bold uppercase tracking-label text-accent">
             Başvuru Formu
           </p>
-          <p className="mt-1 font-mono text-[11.5px] leading-relaxed tracking-[0.08em] text-fg-subtle">
+          <p className="mt-1 font-mono text-label leading-relaxed tracking-data text-fg-subtle">
             Form DA-42 · Tüm alanlar okunaklı doldurulmalıdır
           </p>
         </div>
-        <span className="num hidden font-mono text-[10px] uppercase tracking-[0.16em] text-accent/85 sm:block">
+        <span className="num hidden font-mono text-label uppercase tracking-label text-accent/85 sm:block">
           Rev. 2026.04
         </span>
       </div>
@@ -157,7 +159,7 @@ export default function ContactForm() {
 
       <div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
         <div>
-          <label htmlFor="name" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="name" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             Ad Soyad <span className="text-danger">*</span>
           </label>
           <input
@@ -174,12 +176,12 @@ export default function ContactForm() {
             aria-describedby={errors.name ? 'name-error' : undefined}
           />
           {errors.name ? (
-            <p id="name-error" className="mt-1.5 text-xs text-danger">{errors.name}</p>
+            <p id="name-error" className="mt-1.5 text-meta text-danger">{errors.name}</p>
           ) : null}
         </div>
 
         <div>
-          <label htmlFor="email" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="email" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             E-posta <span className="text-danger">*</span>
           </label>
           <input
@@ -196,12 +198,12 @@ export default function ContactForm() {
             aria-describedby={errors.email ? 'email-error' : undefined}
           />
           {errors.email ? (
-            <p id="email-error" className="mt-1.5 text-xs text-danger">{errors.email}</p>
+            <p id="email-error" className="mt-1.5 text-meta text-danger">{errors.email}</p>
           ) : null}
         </div>
 
         <div>
-          <label htmlFor="phone" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="phone" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             Telefon
           </label>
           <input
@@ -215,11 +217,11 @@ export default function ContactForm() {
             maxLength={32}
             className={inputClass('phone')}
           />
-          {errors.phone ? <p className="mt-1.5 text-xs text-danger">{errors.phone}</p> : null}
+          {errors.phone ? <p className="mt-1.5 text-meta text-danger">{errors.phone}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="company" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="company" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             Şirket
           </label>
           <input
@@ -236,7 +238,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="service" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="service" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             İlgilendiğiniz hizmet
           </label>
           <select
@@ -256,7 +258,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="budget" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="budget" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             Bütçe aralığı
           </label>
           <select
@@ -276,7 +278,7 @@ export default function ContactForm() {
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="message" className="mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent">
+          <label htmlFor="message" className="mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent">
             Projeniz <span className="text-danger">*</span>
           </label>
           <textarea
@@ -292,17 +294,17 @@ export default function ContactForm() {
             aria-describedby={errors.message ? 'message-error' : undefined}
           />
           {errors.message ? (
-            <p id="message-error" className="mt-1.5 text-xs text-danger">{errors.message}</p>
+            <p id="message-error" className="mt-1.5 text-meta text-danger">{errors.message}</p>
           ) : null}
         </div>
       </div>
 
       {/* Bağlantı etiketin DIŞINDA: içine konsaydı ona tıklamak hem onay
           kutusunu işaretler hem sayfayı değiştirirdi. */}
-      <div className="border-t border-dashed border-accent/30 px-5 py-4 sm:px-6">
+      <div className="border-t border-dashed border-line/30 px-5 py-4 sm:px-6">
         <label
           htmlFor="kvkk"
-          className="flex cursor-pointer items-start gap-3 text-[12.5px] leading-relaxed text-fg-muted"
+          className="flex cursor-pointer items-start gap-3 text-meta leading-relaxed text-fg-muted"
         >
           <input
             id="kvkk"
@@ -312,31 +314,31 @@ export default function ContactForm() {
             onChange={handleChange}
             aria-describedby={errors.kvkk ? 'kvkk-error' : 'kvkk-detay'}
             aria-invalid={errors.kvkk ? 'true' : undefined}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-accent/30 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
+            className="mt-0.5 h-5 w-5 shrink-0 rounded border-line/80 bg-transparent text-accent accent-[rgb(var(--c-accent))]"
           />
           <span>Verilerimin talebimi değerlendirmek amacıyla işlenmesini kabul ediyorum (KVKK).</span>
         </label>
 
-        <p id="kvkk-detay" className="mt-2 pl-7 font-mono text-[11px] text-fg-subtle">
+        <p id="kvkk-detay" className="mt-2 pl-8 font-mono text-label text-fg-subtle">
           Verilerin nasıl işlendiği:{' '}
-          <Link to="/gizlilik" className="text-accent underline underline-offset-4">
+          <Link to="/gizlilik" className="tap -my-2 inline-flex items-center py-2 text-accent underline underline-offset-4">
             Gizlilik ve KVKK aydınlatma metni
           </Link>
         </p>
 
         {errors.kvkk ? (
-          <p id="kvkk-error" className="mt-2 pl-7 text-xs text-danger">
+          <p id="kvkk-error" className="mt-2 pl-7 text-meta text-danger">
             {errors.kvkk}
           </p>
         ) : null}
       </div>
 
-      <div className="flex flex-col gap-4 border-t border-accent/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
+      <div className="flex flex-col gap-4 border-t border-line/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:px-6">
         <Button type="submit" disabled={status === 'loading'} size="lg">
           {status === 'loading' ? 'Gönderiliyor…' : 'Mesajı Gönder'}
           {status !== 'loading' ? <Icon name="arrow" className="h-4 w-4" /> : null}
         </Button>
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle">Ortalama yanıt: 1 iş günü</p>
+        <p className="font-mono text-label uppercase tracking-label text-fg-subtle">Ortalama yanıt: 1 iş günü</p>
       </div>
 
       {feedback ? (
@@ -344,7 +346,7 @@ export default function ContactForm() {
           role="status"
           aria-live="polite"
           className={classNames(
-            'mx-5 mb-5 flex items-start gap-2 border p-3.5 font-mono text-[12px] sm:mx-6',
+            'mx-5 mb-5 flex items-start gap-2 border p-3.5 font-mono text-meta sm:mx-6',
             status === 'success'
               ? 'border-accent bg-accent/12 text-accent'
               : 'border-red-500/30 bg-red-500/10 text-danger',

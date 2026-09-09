@@ -194,16 +194,16 @@ export default function MeetingModal({ open, onClose }) {
 
   const fieldClass = (field) =>
     classNames(
-      'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-[13px] text-fg transition placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none',
-      errors[field] ? 'border-danger bg-danger/10' : 'border-accent/40',
+      'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-caption text-fg transition placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none',
+      errors[field] ? 'border-danger bg-danger/10' : 'border-line/90',
     )
 
   const labelClass =
-    'mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-accent'
+    'mb-1.5 block font-mono text-label font-medium uppercase tracking-label text-accent'
 
   const errorFor = (field, id) =>
     errors[field] ? (
-      <p id={id} className="mt-1.5 font-mono text-[11px] text-danger">
+      <p id={id} className="mt-1.5 font-mono text-label text-danger">
         {errors[field]}
       </p>
     ) : null
@@ -215,11 +215,11 @@ export default function MeetingModal({ open, onClose }) {
           <span className="mx-auto grid h-11 w-11 place-items-center border border-accent text-accent">
             <Icon name="check" className="h-5 w-5" />
           </span>
-          <p className="mt-5 font-display text-[15px] font-bold uppercase text-accent">
+          <p className="mt-5 font-display text-body font-bold uppercase text-accent">
             Talep kaydedildi
           </p>
 
-          <dl className="mx-auto mt-6 max-w-sm space-y-2 font-mono text-[12px]">
+          <dl className="mx-auto mt-6 max-w-sm space-y-2 font-mono text-meta">
             {[
               ['Ad', values.name],
               ['E-posta', values.email],
@@ -235,7 +235,7 @@ export default function MeetingModal({ open, onClose }) {
             ))}
           </dl>
 
-          <p className="mt-6 text-[12.5px] leading-relaxed text-fg-muted">{feedback}</p>
+          <p className="mt-6 text-meta leading-relaxed text-fg-muted">{feedback}</p>
           <Button type="button" onClick={close} className="mt-7">
             Kapat
           </Button>
@@ -255,7 +255,7 @@ export default function MeetingModal({ open, onClose }) {
             />
           </div>
 
-          <p className="border-b border-dashed border-accent/30 px-5 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-fg-subtle sm:px-6">
+          <p className="border-b border-dashed border-line/30 px-5 py-3 font-mono text-label uppercase tracking-label text-fg-subtle sm:px-6">
             Form DA-07 · Hafta içi 09:00 – 18:00 · Yıldızlı alanlar zorunlu
           </p>
 
@@ -317,7 +317,7 @@ export default function MeetingModal({ open, onClose }) {
                 {errors.date ? (
                   errorFor('date', 'meeting-date-error')
                 ) : (
-                  <p id="meeting-date-hint" className="mt-1.5 font-mono text-[10px] text-fg-subtle">
+                  <p id="meeting-date-hint" className="mt-1.5 font-mono text-label text-fg-subtle">
                     Hafta içi · resmî tatiller kapalı
                   </p>
                 )}
@@ -354,7 +354,7 @@ export default function MeetingModal({ open, onClose }) {
               </legend>
 
               {!dateUsable ? (
-                <p className="border border-dashed border-accent/30 px-3 py-4 text-center font-mono text-[11px] text-fg-subtle">
+                <p className="border border-dashed border-line/30 px-3 py-4 text-center font-mono text-label text-fg-subtle">
                   Saatleri görmek için önce uygun bir tarih seçin.
                 </p>
               ) : (
@@ -378,12 +378,12 @@ export default function MeetingModal({ open, onClose }) {
                           aria-pressed={selected}
                           onClick={() => selectSlot(slot)}
                           className={classNames(
-                            'num min-h-[38px] border px-2 py-2 font-mono text-[12px] transition-colors duration-150',
+                            'num min-h-[38px] border px-2 py-2 font-mono text-meta transition-colors duration-150',
                             selected
                               ? 'border-accent bg-accent text-accent-fg'
                               : disabled
-                                ? 'cursor-not-allowed border-accent/15 text-fg-subtle/50 line-through'
-                                : 'border-accent/40 text-accent hover:bg-accent hover:text-accent-fg',
+                                ? 'cursor-not-allowed border-line/15 text-fg-subtle/50 line-through'
+                                : 'border-line/80 text-accent hover:bg-accent hover:text-accent-fg',
                           )}
                         >
                           {slot}
@@ -394,7 +394,7 @@ export default function MeetingModal({ open, onClose }) {
 
                   <p
                     id="meeting-time-hint"
-                    className="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle"
+                    className="mt-2 font-mono text-label uppercase tracking-label text-fg-subtle"
                   >
                     {slotsLoading
                       ? 'Dolu saatler kontrol ediliyor…'
@@ -426,14 +426,14 @@ export default function MeetingModal({ open, onClose }) {
             <p
               role="status"
               aria-live="polite"
-              className="mx-5 mb-4 flex items-start gap-2 border border-danger/40 bg-danger/10 p-3 font-mono text-[12px] text-danger sm:mx-6"
+              className="mx-5 mb-4 flex items-start gap-2 border border-danger/40 bg-danger/10 p-3 font-mono text-meta text-danger sm:mx-6"
             >
               <Icon name="close" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               {feedback}
             </p>
           ) : null}
 
-          <div className="flex flex-col gap-3 border-t border-accent/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="flex flex-col gap-3 border-t border-line/40 bg-accent/[0.06] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <Button type="submit" disabled={status === 'loading'}>
               {status === 'loading' ? 'Kaydediliyor…' : 'Toplantıyı Planla'}
               {status !== 'loading' ? <Icon name="arrow" className="h-3.5 w-3.5" /> : null}
@@ -441,7 +441,7 @@ export default function MeetingModal({ open, onClose }) {
             <button
               type="button"
               onClick={close}
-              className="font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle transition hover:text-accent"
+              className="font-mono text-label uppercase tracking-label text-fg-subtle transition hover:text-accent"
             >
               Vazgeç
             </button>

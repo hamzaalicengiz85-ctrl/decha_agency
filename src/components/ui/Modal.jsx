@@ -88,16 +88,16 @@ export default function Modal({ open, onClose, title, code, children }) {
         aria-labelledby={titleId}
         className="panel brackets relative z-10 w-full max-w-lg animate-fade-up"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-accent/45 bg-accent/10 px-4 py-3">
+        <div className="flex items-center justify-between gap-4 border-b border-line/45 bg-accent/10 px-4 py-3">
           <div className="flex items-baseline gap-2.5">
             {code ? (
-              <span className="num bg-accent px-1.5 py-0.5 font-mono text-[10px] font-medium text-accent-fg">
+              <span className="num bg-accent px-1.5 py-0.5 font-mono text-label font-medium text-accent-fg">
                 {code}
               </span>
             ) : null}
             <h2
               id={titleId}
-              className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-accent"
+              className="font-display text-caption font-bold uppercase tracking-label text-accent"
             >
               {title}
             </h2>
@@ -107,7 +107,7 @@ export default function Modal({ open, onClose, title, code, children }) {
             type="button"
             onClick={onClose}
             aria-label="Pencereyi kapat"
-            className="grid h-8 w-8 place-items-center border border-accent/45 text-accent transition hover:bg-accent hover:text-accent-fg"
+            className="grid h-8 w-8 place-items-center border border-line/45 text-accent transition hover:bg-accent hover:text-accent-fg"
           >
             <Icon name="close" className="h-4 w-4" />
           </button>

@@ -1,11 +1,12 @@
 /**
- * Sitenin genel adresi. Netlify'da özel alan adı bağlandığında tek yerden
- * değişsin diye ortam değişkeninden okunur; tanımsızsa Netlify'ın verdiği
- * varsayılan adres kullanılır.
+ * Sitenin genel adresi. Özel alan adı bağlandığında tek yerden değişsin
+ * diye ortam değişkeninden (VITE_SITE_URL) okunur; tanımsızsa GitHub
+ * Pages'in verdiği varsayılan adres kullanılır. (Site Netlify'dan Pages'e
+ * taşındı; kanonik adres ve site haritası buradan üretiliyor.)
  *
  * Sonda eğik çizgi bırakılmaz: adresler `${SITE_URL}${yol}` ile kurulur.
  */
-export const DEFAULT_SITE_URL = 'https://decha-agency.netlify.app'
+export const DEFAULT_SITE_URL = 'https://hamzaalicengiz85-ctrl.github.io/decha_agency'
 
 export function normalizeSiteUrl(value) {
   const raw = (value ?? '').trim()

@@ -34,9 +34,30 @@ export default {
         display: ['"Chakra Petch"', 'Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
+      // TEK TİPOGRAFİ ÖLÇEĞİ
+      // Denetimde sitede 19 farklı punto sayıldı (9px'e kadar inen, 0.5px
+      // farklarla çoğalan değerler). Serbest `text-[10.5px]` yazımı yerine
+      // yedi adımlı bir ölçek: her adımın bir işi var, taban 11px.
+      // 9-10px'lik yazı retro his için değil, okunmadığı için sorundu.
       fontSize: {
-        display: ['clamp(2.2rem, 4.4vw, 3.6rem)', { lineHeight: '1.04', letterSpacing: '0.005em' }],
+        label: ['11px', { lineHeight: '1.45' }], // mono büyük harf etiketler
+        meta: ['12px', { lineHeight: '1.5' }], // ikincil veri: tarih, fiyat, künye
+        caption: ['13px', { lineHeight: '1.55' }], // kart açıklaması, form yardımı
+        body: ['15px', { lineHeight: '1.65' }], // paragraf
+        lead: ['17px', { lineHeight: '1.6' }], // giriş paragrafı
+        title: ['20px', { lineHeight: '1.3' }], // kart başlığı
+        subhead: ['26px', { lineHeight: '1.22' }], // ara başlık
+        stat: ['30px', { lineHeight: '1.05' }], // büyük rakam (sayaç, adım no)
         headline: ['clamp(1.6rem, 2.7vw, 2.3rem)', { lineHeight: '1.12', letterSpacing: '0.005em' }],
+        display: ['clamp(2.2rem, 4.4vw, 3.6rem)', { lineHeight: '1.04', letterSpacing: '0.005em' }],
+      },
+
+      // Harf aralığı da 26 farklı değere dağılmıştı. Dört rol kaldı.
+      letterSpacing: {
+        micro: '0.02em', // cümle düzenindeki başlıklar
+        data: '0.08em', // rakam ve kod dizileri
+        label: '0.14em', // mono büyük harf etiketler
+        eyebrow: '0.22em', // bölüm kodu / üst etiket
       },
       borderRadius: {
         // Retro donanım: yumuşak yuvarlaklar yerine sert, küçük kavisler

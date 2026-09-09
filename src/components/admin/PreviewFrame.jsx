@@ -59,7 +59,7 @@ export default function PreviewFrame({ src, frameRef: externalRef, onPick, onOut
   }, [onPick, onOutline, onReady, frameRef])
 
   return (
-    <div ref={wrapperRef} className="h-full w-full overflow-hidden border border-accent/35 bg-bg">
+    <div ref={wrapperRef} className="h-full w-full overflow-hidden border border-line/35 bg-bg">
       <iframe
         ref={frameRef}
         src={src}

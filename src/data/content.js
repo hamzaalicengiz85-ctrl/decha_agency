@@ -12,7 +12,10 @@ export const SITE = {
   name: 'Decha Agency',
   tagline: 'Dijital büyüme için tasarım ve yazılım',
   email: import.meta.env.VITE_CONTACT_EMAIL || 'merhaba@dechaagency.com',
-  phone: '+90 (212) 000 00 00',
+  // Telefon bilerek boş: '+90 (212) 000 00 00' uydurma bir numaraydı ve
+  // ziyaretçi arayınca boşa çıkıyordu. Gerçek numara yönetim panelinden
+  // (site.telefon) girilir; girilene kadar telefon satırı hiç çizilmez.
+  phone: '',
   address: 'Levent, İstanbul, Türkiye',
   social: [
     { label: 'Instagram', href: 'https://instagram.com' },

@@ -15,6 +15,7 @@ import { usePageMeta } from '../lib/seo'
 import { services, projects, testimonials } from '../data/content'
 import { Copy } from '../lib/siteCopy'
 import { useCopy } from '../lib/siteCopyContext'
+import { cardGrid } from '../lib/grid'
 
 export default function Home() {
   // Tablo boşken bölüm bomboş kalmasın: yedeğe düşmüyoruz, o yüzden
@@ -86,7 +87,7 @@ export default function Home() {
           ) : serviceList.length === 0 ? (
             <EmptyState title={emptyServices} description={emptyServicesDesc} eyebrow="Hazırlanıyor" />
           ) : (
-            <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`stagger grid gap-5 ${cardGrid(serviceList.length)}`}>
               {serviceList.map((service, index) => (
                 <ServiceCard key={service.id ?? service.slug} service={service} index={index} />
               ))}
@@ -120,7 +121,7 @@ export default function Home() {
           ) : projectList.length === 0 ? (
             <EmptyState title={emptyProjects} description={emptyProjectsDesc} eyebrow="Hazırlanıyor" />
           ) : (
-            <div className="stagger grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div className={`stagger grid gap-5 ${cardGrid(projectList.length)}`}>
               {projectList.map((project) => (
                 <ProjectCard key={project.id ?? project.slug} project={project} />
               ))}
@@ -147,15 +148,15 @@ export default function Home() {
             <EmptyState title={emptyTestimonials} description={emptyTestimonialsDesc} eyebrow="Hazırlanıyor" />
           </div>
         ) : (
-          <div className="stagger mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className={`stagger mt-10 grid gap-5 ${cardGrid(testimonialList.length)}`}>
             {testimonialList.map((testimonial) => (
               <TestimonialCard key={testimonial.id ?? testimonial.name} testimonial={testimonial} />
             ))}
           </div>
         )}
-        <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle">
+        <p className="mt-8 text-center font-mono text-label uppercase tracking-label text-fg-subtle">
           <Copy k="home.referanslar.davet">Referanslarımızla görüşmek ister misiniz?</Copy>{' '}
-          <Link to="/iletisim" className="link-underline text-accent">
+          <Link to="/iletisim" className="tap link-underline -my-2 inline-flex items-center py-2 text-accent">
             <Copy k="home.referanslar.baglanti">Bize yazın</Copy>
           </Link>
         </p>

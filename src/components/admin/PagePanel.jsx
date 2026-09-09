@@ -91,10 +91,10 @@ export default function PagePanel({ onNeedsReauth }) {
             }}
             aria-current={item.key === pageKey ? 'page' : undefined}
             className={[
-              'px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.12em] transition',
+              'px-3 py-1.5 font-mono text-label uppercase tracking-label transition',
               item.key === pageKey
                 ? 'bg-accent text-accent-fg'
-                : 'border border-accent/35 text-fg-muted hover:text-accent',
+                : 'border border-line/35 text-fg-muted hover:text-accent',
             ].join(' ')}
           >
             {item.label}
@@ -106,7 +106,7 @@ export default function PagePanel({ onNeedsReauth }) {
             value={activeSlug}
             onChange={(event) => setSlug(event.target.value)}
             aria-label="Gösterilecek kayıt"
-            className="border border-accent/40 bg-accent/[0.04] px-2 py-1.5 font-mono text-[10.5px] text-fg"
+            className="border border-line/40 bg-accent/[0.04] px-2 py-1.5 font-mono text-label text-fg"
           >
             {slugs.length === 0 ? <option value="ornek">(kayıt yok)</option> : null}
             {slugs.map((item) => (
@@ -118,7 +118,7 @@ export default function PagePanel({ onNeedsReauth }) {
         ) : null}
       </div>
 
-      <p className="mb-3 font-mono text-[10.5px] text-fg-subtle">
+      <p className="mb-3 font-mono text-label text-fg-subtle">
         Sayfadaki bir yazıya tıklayın ya da yandaki ağaçtan seçin. Bölüm
         başlığındaki Online/Offline düğmesi o bölümü siteden kaldırır.
         {error ? <span className="ml-2 text-accent">{error}</span> : null}
@@ -135,9 +135,9 @@ export default function PagePanel({ onNeedsReauth }) {
           />
         </div>
 
-        <div className="flex w-72 shrink-0 flex-col border border-accent/35 bg-bg-soft/40">
-          <div className="border-b border-accent/35 px-3 py-2.5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+        <div className="flex w-72 shrink-0 flex-col border border-line/35 bg-bg-soft/40">
+          <div className="border-b border-line/35 px-3 py-2.5">
+            <p className="font-mono text-label uppercase tracking-eyebrow text-accent">
               Sayfa içeriği
             </p>
           </div>

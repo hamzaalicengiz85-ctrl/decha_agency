@@ -33,10 +33,10 @@ function Leaf({ item, label, picked, onSelect }) {
       onClick={() => onSelect?.(item)}
       title={label}
       className={[
-        'block w-full truncate border-l px-2 py-1 text-left font-mono text-[10.5px] transition',
+        'block w-full truncate border-l px-2 py-1 text-left font-mono text-label transition',
         active
           ? 'border-accent bg-accent/10 text-accent'
-          : 'border-accent/20 text-fg-muted hover:border-accent hover:text-accent',
+          : 'border-line/20 text-fg-muted hover:border-accent hover:text-accent',
       ].join(' ')}
     >
       {label}
@@ -47,13 +47,13 @@ function Leaf({ item, label, picked, onSelect }) {
 function Window({ title, badge, defaultOpen = false, children, tone = 'sub' }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className={tone === 'top' ? 'border border-accent/30' : 'border border-accent/20'}>
+    <div className={tone === 'top' ? 'border border-line/30' : 'border border-line/20'}>
       <div className="flex items-center gap-1 bg-accent/[0.06]">
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
-          className="flex min-w-0 flex-1 items-center gap-1.5 px-2 py-1.5 text-left font-mono text-[10.5px] uppercase tracking-[0.1em] text-accent"
+          className="flex min-w-0 flex-1 items-center gap-1.5 px-2 py-1.5 text-left font-mono text-label uppercase tracking-data text-accent"
         >
           <span aria-hidden="true" className="text-fg-subtle">
             {open ? '▾' : '▸'}
@@ -75,7 +75,7 @@ function fieldLabel(field, text) {
 export default function OutlineTree({ sections, picked, onSelect, onToggleSection, busySection }) {
   if (!sections || sections.length === 0) {
     return (
-      <p className="p-3 font-mono text-[10.5px] leading-relaxed text-fg-subtle">
+      <p className="p-3 font-mono text-label leading-relaxed text-fg-subtle">
         Sayfa yükleniyor…
       </p>
     )
@@ -97,10 +97,10 @@ export default function OutlineTree({ sections, picked, onSelect, onToggleSectio
                 disabled={busySection === section.id}
                 title={section.hidden ? 'Bölümü yayına al' : 'Bölümü yayından kaldır'}
                 className={[
-                  'mr-1.5 shrink-0 border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] transition disabled:opacity-50',
+                  'mr-1.5 shrink-0 border px-1.5 py-0.5 font-mono text-label uppercase tracking-data transition disabled:opacity-50',
                   section.hidden
                     ? 'border-fg-subtle/50 text-fg-subtle hover:text-fg'
-                    : 'border-accent/50 text-accent hover:bg-accent/10',
+                    : 'border-line/50 text-accent hover:bg-accent/10',
                 ].join(' ')}
               >
                 {section.hidden ? 'Offline' : 'Online'}
@@ -165,7 +165,7 @@ export default function OutlineTree({ sections, picked, onSelect, onToggleSectio
           {section.texts.length === 0 &&
           section.lists.length === 0 &&
           section.records.length === 0 ? (
-            <p className="px-2 py-1 font-mono text-[10px] text-fg-subtle">
+            <p className="px-2 py-1 font-mono text-label text-fg-subtle">
               Bu bölümde düzenlenebilir metin yok.
             </p>
           ) : null}

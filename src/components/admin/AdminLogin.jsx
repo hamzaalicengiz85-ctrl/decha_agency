@@ -38,13 +38,13 @@ export default function AdminLogin({ onSignedIn, reason }) {
       <form onSubmit={handleSubmit} noValidate className="panel brackets w-full max-w-sm p-7">
         <div className="mb-6 text-center">
           <Logo className="text-[26px]" />
-          <h1 className="mt-3 font-mono text-[10px] uppercase tracking-[0.24em] text-accent/85">
+          <h1 className="mt-3 font-mono text-label uppercase tracking-eyebrow text-accent/85">
             Yönetim Girişi
           </h1>
         </div>
 
         {reason ? (
-          <p role="status" className="mb-5 border border-accent/40 bg-accent/[0.06] p-3 font-mono text-[11px] text-fg-muted">
+          <p role="status" className="mb-5 border border-line/40 bg-accent/[0.06] p-3 font-mono text-label text-fg-muted">
             {reason}
           </p>
         ) : null}
@@ -70,7 +70,7 @@ export default function AdminLogin({ onSignedIn, reason }) {
         />
 
         {status === 'error' ? (
-          <p role="alert" className="mb-4 border border-danger/50 bg-danger/10 p-3 font-mono text-[11px] text-danger">
+          <p role="alert" className="mb-4 border border-danger/50 bg-danger/10 p-3 font-mono text-label text-danger">
             {message}
           </p>
         ) : null}

@@ -48,10 +48,10 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
 
   return (
     <div className="flex min-h-screen bg-bg">
-      <aside className="flex w-60 shrink-0 flex-col border-r border-accent/35">
-        <div className="border-b border-accent/35 p-5">
+      <aside className="flex w-60 shrink-0 flex-col border-r border-line/35">
+        <div className="border-b border-line/35 p-5">
           <Logo className="text-[22px]" />
-          <p className="mt-2 font-mono text-[9.5px] uppercase tracking-[0.22em] text-accent/85">
+          <p className="mt-2 font-mono text-label uppercase tracking-eyebrow text-accent/85">
             Yönetim
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
         <nav className="flex-1 overflow-y-auto p-3">
           {GROUPS.map((group) => (
             <div key={group.title} className="mb-4">
-              <p className="mb-1.5 px-3 font-mono text-[9px] uppercase tracking-[0.22em] text-fg-subtle">
+              <p className="mb-1.5 px-3 font-mono text-label uppercase tracking-eyebrow text-fg-subtle">
                 {group.title}
               </p>
               <ul className="space-y-1">
@@ -70,7 +70,7 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
                       onClick={() => setActive(item.key)}
                       aria-current={item.key === active ? 'page' : undefined}
                       className={[
-                        'w-full px-3 py-2 text-left font-mono text-[11px] uppercase tracking-[0.12em] transition',
+                        'w-full px-3 py-2 text-left font-mono text-label uppercase tracking-label transition',
                         item.key === active
                           ? 'bg-accent text-accent-fg'
                           : 'text-fg-muted hover:bg-accent/10 hover:text-accent',
@@ -85,11 +85,11 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
           ))}
         </nav>
 
-        <div className="border-t border-accent/35 p-3">
-          <p className="mb-2 truncate px-1 font-mono text-[10px] text-fg-subtle">{email}</p>
+        <div className="border-t border-line/35 p-3">
+          <p className="mb-2 truncate px-1 font-mono text-label text-fg-subtle">{email}</p>
           <Link
             to="/"
-            className="mb-1 block px-3 py-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-fg-muted transition hover:text-accent"
+            className="mb-1 block px-3 py-2 font-mono text-label uppercase tracking-label text-fg-muted transition hover:text-accent"
           >
             <Icon name="arrow" className="mr-1.5 inline h-3 w-3 rotate-180" />
             Siteye dön
@@ -97,7 +97,7 @@ export default function AdminShell({ email, onSignedOut, onNeedsReauth }) {
           <button
             type="button"
             onClick={handleSignOut}
-            className="w-full px-3 py-2 text-left font-mono text-[10.5px] uppercase tracking-[0.14em] text-danger transition hover:underline"
+            className="w-full px-3 py-2 text-left font-mono text-label uppercase tracking-label text-danger transition hover:underline"
           >
             Çıkış yap
           </button>

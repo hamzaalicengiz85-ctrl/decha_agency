@@ -34,8 +34,8 @@ export default function PasswordPanel() {
 
   return (
     <div className="max-w-md">
-      <h2 className="font-display text-[19px] font-bold uppercase text-accent">Şifre değiştir</h2>
-      <p className="mb-5 mt-1 font-mono text-[10.5px] uppercase tracking-[0.14em] text-fg-subtle">
+      <h2 className="font-display text-title font-bold uppercase text-accent">Şifre değiştir</h2>
+      <p className="mb-5 mt-1 font-mono text-label uppercase tracking-label text-fg-subtle">
         En az 8 karakter
       </p>
 
@@ -70,8 +70,8 @@ export default function PasswordPanel() {
             role={status === 'error' ? 'alert' : 'status'}
             className={
               status === 'error'
-                ? 'border border-danger/50 bg-danger/10 p-3 font-mono text-[11px] text-danger'
-                : 'border border-accent/40 bg-accent/[0.06] p-3 font-mono text-[11px] text-fg-muted'
+                ? 'border border-danger/50 bg-danger/10 p-3 font-mono text-label text-danger'
+                : 'border border-line/40 bg-accent/[0.06] p-3 font-mono text-label text-fg-muted'
             }
           >
             {message}

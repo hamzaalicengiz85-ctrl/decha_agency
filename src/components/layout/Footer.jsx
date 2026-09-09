@@ -21,18 +21,18 @@ export default function Footer() {
   const { data: services } = useServices({ limit: 5 })
 
   return (
-    <footer className="border-t border-accent/40 bg-accent/[0.03]">
+    <footer className="border-t border-line/40 bg-accent/[0.03]">
       <div className="container py-14">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
           <div>
             <Link
               to="/"
-              className="glitch-hover inline-flex items-center"
+              className="tap glitch-hover inline-flex items-center"
               aria-label="Decha Agency ana sayfa"
             >
-              <Logo className="text-[28px]" />
+              <Logo className="text-[26px]" />
             </Link>
-            <p className="mt-5 max-w-sm text-[13.5px] leading-relaxed text-fg-muted">
+            <p className="mt-5 max-w-sm text-caption leading-relaxed text-fg-muted">
               <Copy k="footer.slogan">
                 {`${SITE.tagline}. Strateji, tasarım ve mühendislik tek dosyada.`}
               </Copy>
@@ -44,7 +44,7 @@ export default function Footer() {
                   href={safeUrl(item.href)}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="border border-accent/35 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-accent transition hover:bg-accent hover:text-accent-fg"
+                  className="tap inline-flex items-center border border-line/35 px-3 py-2 font-mono text-label uppercase tracking-label text-fg-muted transition hover:border-accent hover:bg-accent hover:text-accent-fg"
                   {...listAttrs(edit, SOCIAL_KEY, index, 'label')}
                 >
                   {item.label}
@@ -54,15 +54,15 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+            <p className="font-mono text-label font-medium uppercase tracking-eyebrow text-fg-subtle">
               <Copy k="footer.baslik.bolumler">Bölümler</Copy>
             </p>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-3 space-y-0.5">
               {navigation.map((item, index) => (
                 <li key={item.to}>
                   <Link
                     to={safePath(item.to)}
-                    className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
+                    className="tap -mx-1 flex items-center px-1 py-2 font-mono text-meta uppercase tracking-data text-fg-muted transition hover:text-accent"
                     {...listAttrs(edit, NAV_KEY, index, 'label')}
                   >
                     {item.label}
@@ -73,22 +73,22 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+            <p className="font-mono text-label font-medium uppercase tracking-eyebrow text-fg-subtle">
               <Copy k="footer.baslik.hizmetler">Hizmetler</Copy>
             </p>
             {/* Hizmet kaydı yokken başlığın altını boş bırakmak sütunu bozuk
                 gösteriyordu. */}
             {services.length === 0 ? (
-              <p className="mt-4 font-mono text-[12px] text-fg-subtle">
+              <p className="mt-4 font-mono text-meta text-fg-subtle">
                 <Copy k="footer.hizmetler.bos">Çok yakında sizlerle</Copy>
               </p>
             ) : (
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-0.5">
                 {services.map((service) => (
                   <li key={service.slug}>
                     <Link
                       to="/hizmetler"
-                      className="font-mono text-[12px] uppercase tracking-[0.08em] text-fg-muted transition hover:text-accent"
+                      className="tap -mx-1 flex items-center px-1 py-2 font-mono text-meta uppercase tracking-data text-fg-muted transition hover:text-accent"
                     >
                       {service.title}
                     </Link>
@@ -99,25 +99,30 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-accent">
+            <p className="font-mono text-label font-medium uppercase tracking-eyebrow text-fg-subtle">
               <Copy k="footer.baslik.buro">Büro</Copy>
             </p>
-            <ul className="mt-4 space-y-3 text-[13px] text-fg-muted">
+            <ul className="mt-4 space-y-3 text-caption text-fg-muted">
               <li className="flex items-start gap-2.5">
                 <Icon name="mail" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a href={`mailto:${email}`} className="transition hover:text-accent">
+                <a href={`mailto:${email}`} className="tap -my-2 flex items-center py-2 transition hover:text-accent">
                   <Copy k="site.eposta">{SITE.email}</Copy>
                 </a>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <a
-                  href={`tel:${phone.replace(/\s|\(|\)/g, '')}`}
-                  className="num transition hover:text-accent"
-                >
-                  <Copy k="site.telefon">{SITE.phone}</Copy>
-                </a>
-              </li>
+              {/* Numara girilmemişse satır hiç çizilmez: boş bir `tel:`
+                  bağlantısı ziyaretçiyi hiçbir yere götürmez. Panelde ise
+                  görünür kalır ki tıklanıp doldurulabilsin. */}
+              {phone || edit ? (
+                <li className="flex items-start gap-2.5">
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <a
+                    href={`tel:${phone.replace(/\s|\(|\)/g, '')}`}
+                    className="tap num -my-2 flex items-center py-2 transition hover:text-accent"
+                  >
+                    <Copy k="site.telefon">{phone || 'Telefon numarası girilmedi'}</Copy>
+                  </a>
+                </li>
+              ) : null}
               <li className="flex items-start gap-2.5">
                 <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 <span>
@@ -129,8 +134,8 @@ export default function Footer() {
         </div>
 
         {/* Resmî alt şerit */}
-        <div className="mt-12 border-t border-accent/30 pt-6">
-          <div className="flex flex-col items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-accent/85 sm:flex-row">
+        <div className="mt-12 border-t border-line/30 pt-6">
+          <div className="flex flex-col items-center justify-between gap-3 font-mono text-label uppercase tracking-label text-fg-subtle sm:flex-row">
             {/* Yönetim paneli girişi: üç kez art arda tıklama.
                 event.detail tarayıcının kendi çoklu tıklama sayacı — işletim
                 sisteminin zamanlamasını kullanır, elle sayaç tutmaya gerek
@@ -142,11 +147,11 @@ export default function Footer() {
             <p className="num">
               <Copy k="footer.form">Form DA-01 · Rev. 2026.04</Copy>
             </p>
-            <Link to="/gizlilik" className="transition hover:text-accent">
+            <Link to="/gizlilik" className="tap -my-2 inline-flex items-center py-2 transition hover:text-accent">
               <Copy k="footer.gizlilik">Gizlilik &amp; KVKK</Copy>
             </Link>
             <p>
-              <Copy k="footer.teknoloji">React · Supabase · Netlify</Copy>
+              <Copy k="footer.teknoloji">React · Supabase · GitHub Pages</Copy>
             </p>
           </div>
         </div>

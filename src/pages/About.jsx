@@ -13,6 +13,7 @@ import {
 import { initials } from '../lib/initials'
 import { Copy } from '../lib/siteCopy'
 import { listAttrs, useList, useSiteCopy } from '../lib/siteCopyContext'
+import { cardGrid } from '../lib/grid'
 
 const VALUES_KEY = 'hakkimizda.ilkeler'
 const TEAM_KEY = 'hakkimizda.ekip'
@@ -66,14 +67,14 @@ export default function About() {
               <p className="num phosphor mt-4 font-display text-[4rem] font-bold leading-none text-accent sm:text-[5.5rem]">
                 <Copy k="hakkimizda.kunye.yil">2018</Copy>
               </p>
-              <div className="mt-8 grid gap-px border border-accent/35 bg-accent/25 sm:grid-cols-2">
+              <div className="mt-8 grid gap-px border border-line/35 bg-line/35 sm:grid-cols-2">
                 {kunye.map((item, index) => (
                   <div key={item.label} className="bg-bg px-4 py-3">
                     <p className="eyebrow" {...listAttrs(edit, KUNYE_KEY, index, 'label')}>
                       {item.label}
                     </p>
                     <p
-                      className="mt-1 font-mono text-[12.5px] text-fg"
+                      className="mt-1 font-mono text-meta text-fg"
                       {...listAttrs(edit, KUNYE_KEY, index, 'value')}
                     >
                       {item.value}
@@ -103,7 +104,7 @@ export default function About() {
               {statList.map((item, index) => (
                 <div key={item.label} className="panel p-5">
                   <dd
-                    className="num font-display text-2xl font-bold text-accent"
+                    className="num font-display text-subhead font-bold text-accent"
                     {...listAttrs(edit, STATS_KEY, index, 'value')}
                   >
                     <CountUp value={item.value} />
@@ -129,20 +130,20 @@ export default function About() {
           titleKey="hakkimizda.ilkeler.baslik"
           align="center"
         />
-        <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className={`stagger mt-14 grid gap-6 ${cardGrid(valueList.length, 4)}`}>
           {valueList.map((value, index) => (
             <div key={value.title} className="panel panel-hover p-7">
-              <span className="grid h-10 w-10 place-items-center border border-accent/35 text-accent">
+              <span className="grid h-10 w-10 place-items-center border border-line/35 text-accent">
                 <Icon name={value.icon} className="h-5 w-5" />
               </span>
               <h3
-                className="mt-5 font-display text-[15px] font-bold uppercase text-accent"
+                className="mt-5 font-display text-body font-bold uppercase text-fg"
                 {...listAttrs(edit, VALUES_KEY, index, 'title')}
               >
                 {value.title}
               </h3>
               <p
-                className="mt-3 text-sm leading-relaxed text-fg-muted"
+                className="mt-3 text-caption leading-relaxed text-fg-muted"
                 {...listAttrs(edit, VALUES_KEY, index, 'text')}
               >
                 {value.text}
@@ -163,26 +164,27 @@ export default function About() {
           titleKey="hakkimizda.ekip.baslik"
           align="center"
         />
-        <div className="stagger mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Fotoğraf yokken kare bir monogram kutusu kartın yarısını boş
+            bırakıyordu. Baş harfler artık isme eşlik eden küçük bir işaret;
+            kart bilginin boyunda. */}
+        <div className={`stagger mt-14 grid gap-6 ${cardGrid(teamList.length, 4)}`}>
           {teamList.map((member, index) => (
-            <div key={member.name} className="panel overflow-hidden pb-1 text-center">
-              <div
-                className="grid aspect-square w-full place-items-center border-b border-accent/30 bg-accent/8"
+            <div key={member.name} className="panel flex items-center gap-4 p-5">
+              <span
+                className="grid h-12 w-12 shrink-0 place-items-center border border-line/40 bg-accent/[0.06] font-display text-title font-bold text-fg/80"
                 aria-hidden="true"
               >
-                <span className="font-display text-[2rem] font-bold text-fg/80">
-                  {initials(member.name)}
-                </span>
-              </div>
-              <div className="p-5">
+                {initials(member.name)}
+              </span>
+              <div className="min-w-0">
                 <p
-                  className="font-mono text-[12px] font-medium uppercase tracking-[0.06em] text-accent"
+                  className="truncate font-mono text-meta font-medium uppercase tracking-data text-fg"
                   {...listAttrs(edit, TEAM_KEY, index, 'name')}
                 >
                   {member.name}
                 </p>
                 <p
-                  className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-fg-subtle"
+                  className="mt-1 font-mono text-label uppercase tracking-label text-fg-subtle"
                   {...listAttrs(edit, TEAM_KEY, index, 'role')}
                 >
                   {member.role}

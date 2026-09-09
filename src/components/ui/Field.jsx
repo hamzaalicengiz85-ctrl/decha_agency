@@ -11,7 +11,7 @@ import { classNames } from '../../lib/format'
  */
 
 export const fieldInputClass =
-  'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-[13px] text-fg transition ' +
+  'w-full border bg-accent/[0.04] px-3 py-2.5 font-mono text-caption text-fg transition ' +
   'placeholder:text-fg-subtle focus:border-accent focus:bg-accent/[0.09] focus:outline-none'
 
 export default function Field({
@@ -33,7 +33,7 @@ export default function Field({
     <div className={className}>
       <label
         htmlFor={id}
-        className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-accent"
+        className="mb-1.5 block font-mono text-label uppercase tracking-label text-accent"
       >
         {label}
         {required ? <span className="text-danger"> *</span> : null}
@@ -45,7 +45,11 @@ export default function Field({
         aria-describedby={classNames(error && errorId, hint && hintId) || undefined}
         className={classNames(
           fieldInputClass,
-          error ? 'border-danger bg-danger/10' : 'border-accent/40',
+          // Form alanının çerçevesi bir arayüz sınırı: WCAG 1.4.11 için
+          // 3:1 gerekiyor. Ölçüldü — çizgi rengi %40 opaklıkta 1.9:1,
+          // %80'de 3.0:1. Dekoratif kart çerçeveleri daha soluk kalabilir,
+          // bu kalamaz.
+          error ? 'border-danger bg-danger/10' : 'border-line/90',
         )}
         {...props}
       >
@@ -53,12 +57,12 @@ export default function Field({
       </Control>
 
       {hint && !error ? (
-        <p id={hintId} className="mt-1.5 font-mono text-[10.5px] text-fg-subtle">
+        <p id={hintId} className="mt-1.5 font-mono text-label text-fg-subtle">
           {hint}
         </p>
       ) : null}
       {error ? (
-        <p id={errorId} className="mt-1.5 font-mono text-[10.5px] text-danger">
+        <p id={errorId} className="mt-1.5 font-mono text-label text-danger">
           {error}
         </p>
       ) : null}

@@ -27,7 +27,7 @@ export default function CTA() {
             <h2 className="mx-auto mt-5 max-w-2xl text-balance text-headline font-bold text-fg">
               <Copy k="cta.baslik">Projenizi kayda geçirelim</Copy>
             </h2>
-            <p className="mx-auto mt-5 max-w-lg font-mono text-[13px] leading-relaxed text-fg-muted">
+            <p className="mx-auto mt-5 max-w-lg font-mono text-caption leading-relaxed text-fg-muted">
               <Copy k="cta.aciklama">
                 30 dakikalık ücretsiz keşif görüşmesinde hedeflerinizi dinleyip yol haritası
                 önerelim.

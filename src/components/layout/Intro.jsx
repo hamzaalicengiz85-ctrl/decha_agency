@@ -137,18 +137,18 @@ export default function Intro() {
       <div className="intro-panel">
         {/* Dekoratif: ekran okuyucular başlığı zaten sayfadan okur. */}
         <div className="text-center" aria-hidden="true">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent/85">
+          <p className="font-mono text-label uppercase tracking-eyebrow text-accent/85">
             Dijital Tasarım &amp; Yazılım
           </p>
 
           <span className="relative mt-5 inline-block">
-            <span className="phosphor font-display text-[clamp(3rem,12vw,5rem)] font-bold uppercase leading-none tracking-[0.16em] text-accent">
+            <span className="phosphor font-display text-[clamp(3rem,12vw,5rem)] font-bold uppercase leading-none tracking-label text-accent">
               {text}
             </span>
             {phase === 'lock' ? <span className="intro-sweep" /> : null}
           </span>
 
-          <p className="num mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-fg-subtle">
+          <p className="num mt-6 font-mono text-label uppercase tracking-eyebrow text-fg-subtle">
             Dosya No: {fileNo}
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function Intro() {
       <button
         type="button"
         onClick={dismiss}
-        className="key intro-skip absolute inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-4 font-mono text-[10px] uppercase tracking-[0.18em]"
+        className="key intro-skip absolute inline-flex min-h-[44px] min-w-[44px] items-center justify-center px-4 font-mono text-label uppercase tracking-label"
       >
         Geç
       </button>

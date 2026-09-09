@@ -61,8 +61,8 @@ export default function RecordPanel({ typeKey, onNeedsReauth }) {
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="font-display text-[19px] font-bold uppercase text-accent">{type.label}</h2>
-          <p className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.16em] text-fg-subtle">
+          <h2 className="font-display text-title font-bold uppercase text-accent">{type.label}</h2>
+          <p className="mt-1 font-mono text-label uppercase tracking-label text-fg-subtle">
             {rows.length} kayıt
           </p>
         </div>
@@ -74,19 +74,19 @@ export default function RecordPanel({ typeKey, onNeedsReauth }) {
       </div>
 
       {error ? (
-        <p role="alert" className="mb-4 border border-danger/50 bg-danger/10 p-3 font-mono text-[11px] text-danger">
+        <p role="alert" className="mb-4 border border-danger/50 bg-danger/10 p-3 font-mono text-label text-danger">
           {error}
         </p>
       ) : null}
 
       {feedback ? (
-        <p role="status" className="mb-4 border border-accent/40 bg-accent/[0.06] p-3 font-mono text-[11px] text-fg-muted">
+        <p role="status" className="mb-4 border border-line/40 bg-accent/[0.06] p-3 font-mono text-label text-fg-muted">
           {feedback}
         </p>
       ) : null}
 
       {rows.length === 0 && !error ? (
-        <p className="panel mb-4 p-5 font-mono text-[12px] text-fg-muted">
+        <p className="panel mb-4 p-5 font-mono text-meta text-fg-muted">
           Bu tabloda hiç kayıt yok. Site şu an yerel demo içeriğini gösteriyor —
           buraya kayıt ekleyene kadar öyle kalır.
         </p>
@@ -94,7 +94,7 @@ export default function RecordPanel({ typeKey, onNeedsReauth }) {
 
       {editing !== null ? (
         <div className="panel brackets p-5">
-          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+          <p className="mb-4 font-mono text-label uppercase tracking-eyebrow text-accent">
             {editing === 'new' ? `Yeni ${type.singular.toLocaleLowerCase('tr')}` : 'Kaydı düzenle'}
           </p>
           <RecordForm
@@ -116,10 +116,10 @@ export default function RecordPanel({ typeKey, onNeedsReauth }) {
                 className="panel panel-hover flex w-full items-center justify-between gap-4 p-4 text-left"
               >
                 <span className="min-w-0">
-                  <span className="block truncate font-display text-[14px] font-bold uppercase text-accent">
+                  <span className="block truncate font-display text-body font-bold uppercase text-accent">
                     {row[type.titleField] || '(başlıksız)'}
                   </span>
-                  <span className="mt-0.5 block truncate font-mono text-[10.5px] text-fg-subtle">
+                  <span className="mt-0.5 block truncate font-mono text-label text-fg-subtle">
                     {row.slug ?? row.company ?? row.category ?? ''}
                   </span>
                 </span>

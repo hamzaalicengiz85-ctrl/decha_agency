@@ -42,7 +42,7 @@ export default function ListEditor({ item, fields, onChange }) {
           <div key={name}>
             <label
               htmlFor={id}
-              className="mb-1 block font-mono text-[10px] uppercase tracking-[0.14em] text-fg-subtle"
+              className="mb-1 block font-mono text-label uppercase tracking-label text-fg-subtle"
             >
               {fieldLabel(name)}
             </label>
@@ -52,7 +52,7 @@ export default function ListEditor({ item, fields, onChange }) {
                 id={id}
                 value={value}
                 onChange={(event) => onChange(name, event.target.value)}
-                className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+                className="w-full border border-line/40 bg-accent/[0.04] px-3 py-2 font-mono text-meta text-fg focus:border-accent focus:outline-none"
               >
                 <option value="">(varsayılan)</option>
                 {ICON_NAMES.map((icon) => (
@@ -67,7 +67,7 @@ export default function ListEditor({ item, fields, onChange }) {
                 rows={4}
                 value={value}
                 onChange={(event) => onChange(name, event.target.value)}
-                className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+                className="w-full border border-line/40 bg-accent/[0.04] px-3 py-2 font-mono text-meta text-fg focus:border-accent focus:outline-none"
               />
             ) : (
               <input
@@ -75,7 +75,7 @@ export default function ListEditor({ item, fields, onChange }) {
                 type="text"
                 value={value}
                 onChange={(event) => onChange(name, event.target.value)}
-                className="w-full border border-accent/40 bg-accent/[0.04] px-3 py-2 font-mono text-[12.5px] text-fg focus:border-accent focus:outline-none"
+                className="w-full border border-line/40 bg-accent/[0.04] px-3 py-2 font-mono text-meta text-fg focus:border-accent focus:outline-none"
               />
             )}
           </div>

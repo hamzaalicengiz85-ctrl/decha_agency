@@ -36,7 +36,7 @@ export default function Layout() {
       <div className="relative z-10 flex min-h-screen flex-col pl-[var(--rail-w)] pb-[calc(var(--hud-h)+8px)]">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-medium focus:uppercase focus:text-accent-fg"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-caption focus:font-medium focus:uppercase focus:text-accent-fg"
         >
           İçeriğe geç
         </a>

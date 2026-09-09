@@ -67,14 +67,14 @@ export default function BlogPost() {
         <div className="mx-auto max-w-3xl">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-sm text-fg-muted transition hover:text-fg"
+            className="inline-flex items-center gap-2 text-caption text-fg-muted transition hover:text-fg"
           >
             <Icon name="arrow" className="h-4 w-4 rotate-180" />
             Blog
           </Link>
 
-          <div className="mt-8 flex items-center gap-3 text-xs text-fg-subtle">
-            <span className="border border-accent/50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+          <div className="mt-8 flex items-center gap-3 text-meta text-fg-subtle">
+            <span className="border border-line/50 px-2.5 py-1 font-mono text-label uppercase tracking-label text-accent">
               {post.category}
             </span>
             <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
@@ -82,7 +82,7 @@ export default function BlogPost() {
           </div>
 
           <h1 className="mt-5 text-balance font-display text-headline font-bold leading-tight text-fg">{post.title}</h1>
-          <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">{post.excerpt}</p>
+          <p className="mt-5 text-body leading-relaxed text-fg-muted">{post.excerpt}</p>
         </div>
       </Section>
 
@@ -93,7 +93,7 @@ export default function BlogPost() {
       </div>
 
       <Section>
-        <article className="mx-auto max-w-3xl space-y-5 text-base leading-relaxed text-fg-muted">
+        <article className="mx-auto max-w-3xl space-y-5 text-lead leading-relaxed text-fg-muted">
           {String(post.content ?? '')
             .split('\n')
             .filter((paragraph) => paragraph.trim())
@@ -103,13 +103,13 @@ export default function BlogPost() {
         </article>
 
         {others.length > 0 ? (
-          <div className="mx-auto mt-16 max-w-3xl border-t border-accent/30 pt-10">
-            <h2 className="font-display text-[18px] font-bold text-fg"><Copy k="yazi.ilgili">Bunlar da ilginizi çekebilir</Copy></h2>
+          <div className="mx-auto mt-16 max-w-3xl border-t border-line/30 pt-10">
+            <h2 className="font-display text-title font-bold text-fg"><Copy k="yazi.ilgili">Bunlar da ilginizi çekebilir</Copy></h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {others.map((item) => (
                 <Link key={item.slug} to={`/blog/${item.slug}`} className="panel panel-hover p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">{item.category}</p>
-                  <p className="mt-2 font-display text-[13px] font-bold uppercase leading-snug text-accent">{item.title}</p>
+                  <p className="font-mono text-label uppercase tracking-label text-accent">{item.category}</p>
+                  <p className="mt-2 font-display text-caption font-bold uppercase leading-snug text-accent">{item.title}</p>
                 </Link>
               ))}
             </div>

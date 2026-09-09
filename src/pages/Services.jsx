@@ -8,6 +8,7 @@ import { useSupabaseData } from '../hooks/useSupabaseData'
 import { breadcrumb, usePageMeta } from '../lib/seo'
 import { listAttrs, useCopy, useList, useSiteCopy } from '../lib/siteCopyContext'
 import { services, faqs, processSteps } from '../data/content'
+import { cardGrid } from '../lib/grid'
 
 const FAQ_KEY = 'sss.liste'
 const STEP_KEY = 'surec.adimlar'
@@ -59,7 +60,7 @@ export default function Services() {
         ) : serviceList.length === 0 ? (
           <EmptyState title={emptyLabel} description={emptyDesc} eyebrow="Hazırlanıyor" />
         ) : (
-          <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={`stagger grid gap-5 ${cardGrid(serviceList.length)}`}>
             {serviceList.map((service, index) => (
               <ServiceCard key={service.id ?? service.slug} service={service} index={index} as="h2" />
             ))}
@@ -81,15 +82,15 @@ export default function Services() {
         <ol className="stagger mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((item, index) => (
             <li key={item.step} className="panel p-6">
-              <span className="num font-display text-3xl font-bold text-accent">{item.step}</span>
+              <span className="num font-display text-stat font-bold text-accent">{item.step}</span>
               <h3
-                className="mt-4 font-display text-[15px] font-bold uppercase text-accent"
+                className="mt-4 font-display text-body font-bold uppercase text-accent"
                 {...listAttrs(edit, STEP_KEY, index, 'title')}
               >
                 {item.title}
               </h3>
               <p
-                className="mt-3 text-sm leading-relaxed text-fg-muted"
+                className="mt-3 text-caption leading-relaxed text-fg-muted"
                 {...listAttrs(edit, STEP_KEY, index, 'text')}
               >
                 {item.text}
@@ -116,7 +117,7 @@ export default function Services() {
               key={faq.q}
               className="panel group px-5 py-4 [&_summary::-webkit-details-marker]:hidden"
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-[14px] font-bold uppercase tracking-[0.06em] text-accent">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-display text-body font-bold uppercase tracking-data text-accent">
                 <span {...listAttrs(edit, FAQ_KEY, index, 'q')}>{faq.q}</span>
                 <Icon
                   name="plus"
@@ -124,7 +125,7 @@ export default function Services() {
                 />
               </summary>
               <p
-                className="mt-3 text-[13.5px] leading-relaxed text-fg-muted"
+                className="mt-3 text-caption leading-relaxed text-fg-muted"
                 {...listAttrs(edit, FAQ_KEY, index, 'a')}
               >
                 {faq.a}

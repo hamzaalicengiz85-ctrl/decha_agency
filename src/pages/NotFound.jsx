@@ -16,7 +16,7 @@ export default function NotFound() {
           <h1 className="mt-5 text-balance font-display text-headline font-bold text-fg">
             <Copy k="404.baslik">Aradığınız kayıt bulunamadı</Copy>
           </h1>
-          <p className="mt-4 max-w-md font-mono text-[13px] leading-relaxed text-fg-muted">
+          <p className="mt-4 max-w-md font-mono text-caption leading-relaxed text-fg-muted">
             Bağlantı hatalı olabilir ya da dosya arşivden kaldırılmış olabilir.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">

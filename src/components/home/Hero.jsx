@@ -29,7 +29,7 @@ export default function Hero() {
       <div className="container relative">
         {/* Ana yayın monitörü */}
         <div className="px-2 py-14 text-center sm:py-20">
-            <p className="flex animate-fade-up items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-accent">
+            <p className="flex animate-fade-up items-center justify-center gap-2 font-mono text-label uppercase tracking-eyebrow text-accent">
               <span className="h-2 w-2 animate-blink bg-accent" aria-hidden="true" />
               <Copy k="home.hero.durum">Kayıt açık</Copy>
               <span className="hatch inline-block h-2.5 w-14" aria-hidden="true" />
@@ -42,7 +42,7 @@ export default function Hero() {
               <Copy k="home.hero.baslik.son">tasarım ve yazılım</Copy>
             </h1>
 
-            <p className="mx-auto mt-7 max-w-xl animate-fade-up font-mono text-[13px] leading-relaxed text-fg-muted [animation-delay:180ms]">
+            <p className="mx-auto mt-7 max-w-xl animate-fade-up font-mono text-caption leading-relaxed text-fg-muted [animation-delay:180ms]">
               <Copy k="home.hero.aciklama">
                 Strateji, tasarım ve mühendisliği tek dosyada topluyoruz. Her proje kayıt altına
                 alınır, ölçülür ve raporlanır.
@@ -67,15 +67,15 @@ export default function Hero() {
                   key={item.label}
                   className={[
                     'px-4 py-6',
-                    index % 2 === 1 ? 'border-l border-accent/30' : '',
-                    index >= 2 ? 'border-t border-accent/30 sm:border-t-0' : '',
-                    index >= 1 ? 'sm:border-l sm:border-accent/30' : '',
+                    index % 2 === 1 ? 'border-l border-line/30' : '',
+                    index >= 2 ? 'border-t border-line/30 sm:border-t-0' : '',
+                    index >= 1 ? 'sm:border-l sm:border-line/30' : '',
                   ]
                     .filter(Boolean)
                     .join(' ')}
                 >
                   <p
-                    className="num phosphor font-display text-2xl font-bold text-accent sm:text-3xl"
+                    className="num phosphor font-display text-subhead font-bold text-accent sm:text-stat"
                     {...listAttrs(edit, STATS_KEY, index, 'value')}
                   >
                     <CountUp value={item.value} />

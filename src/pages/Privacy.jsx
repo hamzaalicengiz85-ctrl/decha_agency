@@ -41,10 +41,10 @@ export default function Privacy() {
       <Section sectionId="gizlilik.metin" label="Politika metni" spacing="top-none">
         <div className="panel brackets mx-auto max-w-3xl space-y-9 p-7 sm:p-10">
           <section>
-            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
+            <h2 className="font-display text-lead font-bold tracking-micro text-accent">
               <Copy k="gizlilik.veri.baslik">1 · Hangi verileri topluyoruz</Copy>
             </h2>
-            <div className="prose-column mt-3 space-y-3 text-[15px] leading-[1.75] text-fg-muted">
+            <div className="prose-column mt-3 space-y-3 text-body leading-[1.75] text-fg-muted">
               <Copy as="p" k="gizlilik.veri.metin">
                 Yalnızca sizin doldurduğunuz form alanlarını topluyoruz: ad soyad,
                 e-posta adresi, isteğe bağlı telefon ve şirket bilgisi, seçtiğiniz
@@ -59,13 +59,13 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
+            <h2 className="font-display text-lead font-bold tracking-micro text-accent">
               <Copy k="gizlilik.amac.baslik">2 · Neden işliyoruz</Copy>
             </h2>
             <Copy
               as="p"
               k="gizlilik.amac.metin"
-              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
+              className="prose-column mt-3 text-body leading-[1.75] text-fg-muted"
             >
               Verileriniz yalnızca talebinizi değerlendirmek, size dönüş yapmak ve
               teklif hazırlamak için işlenir. Pazarlama listesine eklenmez, satılmaz
@@ -74,13 +74,13 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
+            <h2 className="font-display text-lead font-bold tracking-micro text-accent">
               <Copy k="gizlilik.saklama.baslik">3 · Nerede ve ne kadar saklanıyor</Copy>
             </h2>
             <Copy
               as="p"
               k="gizlilik.saklama.metin"
-              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
+              className="prose-column mt-3 text-body leading-[1.75] text-fg-muted"
             >
               Form kayıtları, altyapı sağlayıcımız Supabase üzerindeki veritabanında
               tutulur ve yalnızca yetkili ekip üyeleri erişebilir. Kayıtlar,
@@ -90,13 +90,13 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
+            <h2 className="font-display text-lead font-bold tracking-micro text-accent">
               <Copy k="gizlilik.tarayici.baslik">4 · Tarayıcınızda tutulanlar</Copy>
             </h2>
             <Copy
               as="p"
               k="gizlilik.tarayici.metin"
-              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
+              className="prose-column mt-3 text-body leading-[1.75] text-fg-muted"
             >
               Sitenin çalışması için tarayıcınızın yerel deposunda iki küçük kayıt
               tutulur: giriş animasyonunun tekrar tekrar oynamaması için bir işaret
@@ -107,27 +107,27 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="font-display text-[16px] font-bold tracking-[0.01em] text-accent">
+            <h2 className="font-display text-lead font-bold tracking-micro text-accent">
               <Copy k="gizlilik.haklar.baslik">5 · Haklarınız</Copy>
             </h2>
             <Copy
               as="p"
               k="gizlilik.haklar.metin"
-              className="prose-column mt-3 text-[15px] leading-[1.75] text-fg-muted"
+              className="prose-column mt-3 text-body leading-[1.75] text-fg-muted"
             >
               6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında; verilerinize
               erişme, düzeltilmesini, silinmesini ya da işlenmesinin durdurulmasını
               isteme hakkınız var. Talebinizi aşağıdaki adrese iletmeniz yeterli;
               en geç 30 gün içinde yanıtlıyoruz.
             </Copy>
-            <p className="mt-4 border-t border-dashed border-accent/30 pt-4 font-mono text-[12.5px] text-fg">
+            <p className="mt-4 border-t border-dashed border-line/30 pt-4 font-mono text-meta text-fg">
               <a href={`mailto:${email}`} className="text-accent underline-offset-4 hover:underline">
                 {email}
               </a>
             </p>
           </section>
 
-          <p className="border-t border-accent/25 pt-5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-fg-subtle">
+          <p className="border-t border-line/25 pt-5 font-mono text-label uppercase tracking-label text-fg-subtle">
             <Copy k="gizlilik.revizyon">Belge DA-KVKK-01 · Son güncelleme: 2026</Copy>
           </p>
         </div>

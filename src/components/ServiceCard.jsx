@@ -7,29 +7,29 @@ export default function ServiceCard({ service, index = 0, as: Heading = 'h3' }) 
   const code = String(index + 1).padStart(2, '0')
 
   return (
-    <article className="panel panel-hover brackets flex h-full flex-col p-5"
+    <article className="panel panel-hover flex h-full flex-col p-5"
       data-rec={`services:${service.id ?? ''}`}
       data-rec-label={service.title}>
       {/* Form başlığı satırı */}
-      <div className="flex items-center justify-between border-b border-accent/35 pb-3">
-        <span className="num font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+      <div className="flex items-center justify-between border-b border-line/35 pb-3">
+        <span className="num font-mono text-label uppercase tracking-eyebrow text-fg-subtle">
           <Copy k="kart.hizmet.rozet">Hizmet</Copy> {code}
         </span>
-        <span className="grid h-8 w-8 place-items-center border border-accent/45 text-accent">
+        <span className="grid h-8 w-8 place-items-center border border-line/45 text-accent">
           <Icon name={service.icon} className="h-4 w-4" />
         </span>
       </div>
 
-      <Heading className="mt-5 font-display text-[16.5px] font-bold leading-snug text-fg">
+      <Heading className="mt-5 font-display text-lead font-bold leading-snug text-fg">
         {service.title}
       </Heading>
-      <p className="mt-3 flex-1 text-[14px] leading-relaxed text-fg-muted">{service.summary}</p>
+      <p className="mt-3 flex-1 text-body leading-relaxed text-fg-muted">{service.summary}</p>
 
       {features.length > 0 ? (
-        <ul className="mt-5 space-y-2 border-t border-accent/25 pt-4">
+        <ul className="mt-5 space-y-2 border-t border-line/25 pt-4">
           {features.map((feature) => (
-            <li key={feature} className="flex items-start gap-2 font-mono text-[11px] text-fg-muted">
-              <Icon name="check" className="mt-0.5 h-3 w-3 shrink-0 text-accent" />
+            <li key={feature} className="flex items-start gap-2 font-mono text-label text-fg-muted">
+              <Icon name="check" className="mt-0.5 h-3 w-3 shrink-0 text-fg-subtle" />
               {feature}
             </li>
           ))}
@@ -39,12 +39,12 @@ export default function ServiceCard({ service, index = 0, as: Heading = 'h3' }) 
       {service.price_from ? (
         <p
           className={classNames(
-            'num mt-5 flex items-baseline justify-between border-t border-dashed border-accent/30 pt-4',
-            'font-mono text-[11px] uppercase tracking-[0.14em] text-fg-subtle',
+            'num mt-5 flex items-baseline justify-between border-t border-dashed border-line/30 pt-4',
+            'font-mono text-label uppercase tracking-label text-fg-subtle',
           )}
         >
           <Copy k="kart.hizmet.tarife">Tarife</Copy>
-          <span className="text-[13px] font-medium text-fg">
+          <span className="text-caption font-medium text-fg">
             {new Intl.NumberFormat('tr-TR', {
               style: 'currency',
               currency: 'TRY',

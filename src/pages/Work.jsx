@@ -10,6 +10,7 @@ import { Copy } from '../lib/siteCopy'
 import { useCopy } from '../lib/siteCopyContext'
 import { projects } from '../data/content'
 import { classNames } from '../lib/format'
+import { cardGrid } from '../lib/grid'
 
 export default function Work() {
   // İki ayrı boş durum: hiç proje yoksa "çok yakında", proje varken filtre
@@ -70,10 +71,10 @@ export default function Work() {
         {/* Dolap sekmesi filtreleri. Hiç proje yokken tek başına "Tümü"
             düğmesi göstermek anlamsız; filtre satırı gizleniyor. */}
         <div
-          className="flex flex-wrap items-center justify-center gap-1.5 border-y border-accent/35 py-5"
+          className="flex flex-wrap items-center justify-center gap-1.5 border-y border-line/35 py-5"
           hidden={projectList.length === 0}
         >
-          <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-fg-subtle">
+          <span className="mr-2 font-mono text-label uppercase tracking-eyebrow text-fg-subtle">
             <Copy k="projeler.filtre">Sınıflandırma:</Copy>
           </span>
           {categories.map((category) => (
@@ -83,10 +84,10 @@ export default function Work() {
               onClick={() => setActiveCategory(category)}
               aria-pressed={activeCategory === category}
               className={classNames(
-                'min-h-[36px] border px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-150',
+                'min-h-[36px] border px-3 py-1.5 font-mono text-label uppercase tracking-label transition-colors duration-150',
                 activeCategory === category
                   ? 'border-accent bg-accent text-accent-fg'
-                  : 'border-accent/35 text-accent hover:bg-accent hover:text-accent-fg',
+                  : 'border-line/35 text-accent hover:bg-accent hover:text-accent-fg',
               )}
             >
               {category}
@@ -102,7 +103,7 @@ export default function Work() {
           ) : filtered.length === 0 ? (
             <EmptyState title={emptyTitle} description={emptyDesc} />
           ) : (
-            <div className="stagger grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`stagger grid gap-5 ${cardGrid(filtered.length)}`}>
               {filtered.map((project) => (
                 <ProjectCard key={project.id ?? project.slug} project={project} as="h2" />
               ))}
